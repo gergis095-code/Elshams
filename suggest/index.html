@@ -194,20 +194,27 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
       <p>الصفحة مش بتسجّل دخول ومش بتحفظ أي حاجة على الموبايل. بس خلي بالك: لو كتبت اسمك أو تفصيلة تدل عليك جوه الرسالة، هتوصل زي ما هي.</p>
     </section>
 
-    <form id="f" autocomplete="off" novalidate>
+    <form id="f" method="POST" accept-charset="UTF-8"
+          action="https://formsubmit.co/gergis095@gmail.com" autocomplete="off" novalidate>
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_subject" id="h_subj">
+        <input type="hidden" name="_next" id="h_next">
+        <input type="hidden" name="رقم الرسالة" id="h_code">
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
       <fieldset class="rise d2">
         <legend>الموضوع إيه؟</legend>
         <div class="swatches">
-          <label class="sw" style="--c:var(--c-complaint)"><input type="radio" name="kind" value="شكوى" checked><span>شكوى</span></label>
-          <label class="sw" style="--c:var(--c-idea)"><input type="radio" name="kind" value="اقتراح"><span>اقتراح</span></label>
-          <label class="sw" style="--c:var(--c-safety)"><input type="radio" name="kind" value="خطر أو أمان"><span>خطر أو أمان</span></label>
-          <label class="sw" style="--c:var(--c-other)"><input type="radio" name="kind" value="حاجة تانية"><span>حاجة تانية</span></label>
+          <label class="sw" style="--c:var(--c-complaint)"><input type="radio" name="النوع" value="شكوى" checked><span>شكوى</span></label>
+          <label class="sw" style="--c:var(--c-idea)"><input type="radio" name="النوع" value="اقتراح"><span>اقتراح</span></label>
+          <label class="sw" style="--c:var(--c-safety)"><input type="radio" name="النوع" value="خطر أو أمان"><span>خطر أو أمان</span></label>
+          <label class="sw" style="--c:var(--c-other)"><input type="radio" name="النوع" value="حاجة تانية"><span>حاجة تانية</span></label>
         </div>
       </fieldset>
 
       <fieldset>
         <label class="lbl" for="dept">القسم <span class="opt">— اختياري</span></label>
-        <select id="dept" name="dept">
+        <select id="dept" name="القسم">
           <option value="">مش عايز أقول</option>
           <option>الاستقبال والمخازن</option>
           <option>الصباغة</option>
@@ -224,7 +231,7 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
 
       <fieldset>
         <label class="lbl" for="msg">اكتب اللي عايز تقوله</label>
-        <textarea id="msg" name="msg" required minlength="5" maxlength="3000"
+        <textarea id="msg" name="الرسالة" required minlength="5" maxlength="3000"
           placeholder="مثال: ماكينة رقم ٣ بتسرّب مية على الأرض والناس بتزحلق.&#10;أو: لو غيّرنا ترتيب الشيلان في الوردية هنوفر وقت كبير."></textarea>
         <p class="hint">مش عارف تكتب؟ اضغط على <b>علامة المايك</b> اللي في كيبورد الموبايل واتكلم عادي.</p>
       </fieldset>
@@ -243,8 +250,11 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
 <script>
 (function(){
   "use strict";
-  var ENDPOINT = "https://formsubmit.co/ajax/gergis095@gmail.com";
   var COLORS = {"شكوى":"#C1443B","اقتراح":"#1E8B8B","خطر أو أمان":"#F2B705","حاجة تانية":"#B9AE96"};
+
+  /* لو رجعنا من FormSubmit ومعانا رقم رسالة، نعرض التذكرة بدل الفورم */
+  var q = new URLSearchParams(location.search), ok = q.get("ok");
+  if (ok && /^ES-\d{4}-\d{4}$/.test(ok)) { showTicket(ok, q.get("t") || "شكوى"); return; }
 
   var form = document.getElementById("f"),
       btn  = document.getElementById("btn"),
@@ -255,59 +265,32 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
     var d = new Date(),
         ym = String(d.getFullYear()).slice(2) + String(d.getMonth()+1).padStart(2,"0"),
         r  = new Uint16Array(1);
-    (window.crypto || window.msCrypto).getRandomValues(r);
+    window.crypto.getRandomValues(r);
     return "ES-" + ym + "-" + String(r[0] % 9000 + 1000);
   }
 
-  function fail(text){
-    err.textContent = text;
-    err.hidden = false;
-    btn.disabled = false;
-    btn.textContent = "ابعت تاني";
-  }
-
   form.addEventListener("submit", function(e){
-    e.preventDefault();
-    err.hidden = true;
-
-    var body = msg.value.trim();
-    if (body.length < 5){
+    if (msg.value.trim().length < 5){
+      e.preventDefault();
+      err.textContent = "اكتب رسالتك الأول، وبعدين اضغط ابعت.";
+      err.hidden = false;
       msg.focus();
-      return fail("اكتب رسالتك الأول، وبعدين اضغط ابعت.");
+      return;
     }
-
-    var kind = form.querySelector('input[name="kind"]:checked').value,
-        dept = form.dept.value || "—",
+    var kind = form.querySelector('input[name="النوع"]:checked').value,
         code = makeCode();
-
+    document.getElementById("h_code").value = code;
+    document.getElementById("h_subj").value = "[" + kind + "] رسالة مجهولة من العمال — " + code;
+    document.getElementById("h_next").value =
+      location.origin + location.pathname + "?ok=" + code + "&t=" + encodeURIComponent(kind);
     btn.disabled = true;
     btn.textContent = "بيتبعت…";
-
-    fetch(ENDPOINT, {
-      method: "POST",
-      headers: {"Content-Type":"application/json","Accept":"application/json"},
-      body: JSON.stringify({
-        "رقم الرسالة": code,
-        "النوع": kind,
-        "القسم": dept,
-        "الرسالة": body,
-        "_subject": "[" + kind + "] رسالة مجهولة من العمال — " + code,
-        "_captcha": "false",
-        "_template": "table"
-      })
-    })
-    .then(function(r){ return r.json().catch(function(){ return {}; }); })
-    .then(function(data){
-      if (data && (data.success === "true" || data.success === true)) { done(code, kind); }
-      else { fail("مبعتتش. اتأكد إن النت شغال وجرّب تاني."); }
-    })
-    .catch(function(){ fail("مبعتتش. اتأكد إن النت شغال وجرّب تاني."); });
+    /* من غير preventDefault — المتصفح بيبعت الفورم بنفسه */
   });
 
-  function done(code, kind){
-    var app = document.getElementById("app");
-    app.innerHTML =
-      '<div class="ticket rise" style="--c:'+COLORS[kind]+'">' +
+  function showTicket(code, kind){
+    document.getElementById("app").innerHTML =
+      '<div class="ticket rise" style="--c:' + (COLORS[kind] || "#1E8B8B") + '">' +
         '<div class="stripe"></div>' +
         '<div class="tick" aria-hidden="true">✓</div>' +
         '<h2>وصلت للإدارة</h2>' +
@@ -317,8 +300,9 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
         '<p class="note">صوّر الشاشة دي أو اكتب الرقم. لو حبيت تسأل على ردّ رسالتك، قول الرقم ده من غير ما تقول انت مين.</p>' +
       '</div>' +
       '<div style="text-align:center"><button class="again" type="button" id="again">ابعت رسالة تانية</button></div>';
-    window.scrollTo({top:0, behavior:"smooth"});
-    document.getElementById("again").addEventListener("click", function(){ location.reload(); });
+    document.getElementById("again").addEventListener("click", function(){
+      location.href = location.pathname;
+    });
   }
 })();
 </script>
