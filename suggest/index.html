@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>صندوق الشكاوى والاقتراحات — شركة الشمس</title>
+<meta name="description" content="اكتب شكواك أو اقتراحك لإدارة شركة الشمس من غير اسم ومن غير رقم.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#101F35">
+<meta name="referrer" content="no-referrer">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --vat:#101F35;        /* حوض الصباغة — أرضية الصفحة */
+  --vat-2:#182C46;
+  --vat-3:#22395A;
+  --line:rgba(232,230,223,.16);
+  --greige:#E8E6DF;     /* قماش خام */
+  --muted:#93A5BC;
+  --safe:#00A650;       /* أخضر السلامة ISO — معناه في المصنع: أمان */
+  --c-complaint:#C1443B;
+  --c-idea:#1E8B8B;
+  --c-safety:#F2B705;
+  --c-other:#B9AE96;
+  --ink:#0B1524;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--vat);
+  color:var(--greige);
+  font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;
+  font-size:17px;line-height:1.7;
+  -webkit-text-size-adjust:100%;
+  padding:0 18px calc(48px + env(safe-area-inset-bottom));
+  background-image:radial-gradient(120% 60% at 50% 0%,#1A3050 0%,var(--vat) 62%);
+  background-repeat:no-repeat;
+}
+.wrap{max-width:540px;margin:0 auto}
+
+/* ——— الترويسة ——— */
+header{padding:26px 0 6px;display:flex;align-items:center;gap:10px}
+.mark{
+  width:30px;height:30px;border-radius:50%;flex:none;
+  background:conic-gradient(from .5turn,#F2B705,#C1443B,#1E8B8B,#F2B705);
+}
+.co{font-family:"Readex Pro",sans-serif;font-weight:600;font-size:15px;letter-spacing:-.2px}
+.co small{display:block;font-weight:400;font-size:12px;color:var(--muted);letter-spacing:0}
+
+/* ——— العنوان الرئيسي ——— */
+h1{
+  font-family:"Readex Pro",sans-serif;
+  font-weight:700;font-size:clamp(28px,8vw,38px);line-height:1.25;
+  margin:22px 0 10px;letter-spacing:-.6px;
+}
+h1 em{font-style:normal;color:var(--safe)}
+.lede{color:var(--muted);margin:0 0 22px;font-size:16px}
+
+/* ——— لوحة الخصوصية ——— */
+.privacy{
+  border:1px solid var(--line);border-radius:var(--r);
+  background:linear-gradient(180deg,rgba(0,166,80,.10),rgba(0,166,80,.02));
+  padding:16px 16px 14px;margin-bottom:26px;
+}
+.privacy h2{
+  font-family:"Readex Pro",sans-serif;font-size:14px;font-weight:600;
+  margin:0 0 10px;color:var(--safe);display:flex;align-items:center;gap:7px;
+}
+.privacy ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.privacy li{font-size:14.5px;color:var(--greige);display:flex;align-items:center;gap:8px}
+.privacy li s{text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--c-complaint);opacity:.85}
+.privacy .x{color:var(--c-complaint);font-weight:600;font-size:15px;flex:none}
+.privacy p{margin:11px 0 0;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+
+/* ——— الحقول ——— */
+fieldset{border:0;margin:0 0 24px;padding:0}
+legend,.lbl{
+  font-family:"Readex Pro",sans-serif;font-weight:500;font-size:15px;
+  margin-bottom:10px;padding:0;display:block;
+}
+.opt{color:var(--muted);font-weight:400;font-size:13px;font-family:"IBM Plex Sans Arabic",sans-serif}
+
+/* شرائح ألوان زي عيّنات الصباغة */
+.swatches{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sw input{position:absolute;opacity:0;pointer-events:none}
+.sw span{
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  border:1px solid var(--line);border-radius:12px;
+  background:var(--vat-2);padding:13px 13px;
+  font-size:15.5px;font-weight:500;transition:border-color .15s,background .15s,transform .1s;
+}
+.sw span::before{
+  content:"";width:26px;height:26px;border-radius:6px;flex:none;
+  background:var(--c);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);
+}
+.sw input:checked + span{border-color:var(--c);background:var(--vat-3)}
+.sw input:checked + span::before{box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 0 0 3px color-mix(in srgb,var(--c) 35%,transparent)}
+.sw input:focus-visible + span{outline:3px solid var(--safe);outline-offset:2px}
+.sw span:active{transform:scale(.985)}
+
+select,textarea{
+  width:100%;font-family:inherit;font-size:16.5px;color:var(--greige);
+  background:var(--vat-2);border:1px solid var(--line);border-radius:12px;
+  padding:13px 14px;transition:border-color .15s;
+}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(0% + 18px) calc(50% + 2px),calc(0% + 24px) calc(50% + 2px);background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+textarea{min-height:170px;resize:vertical;line-height:1.75}
+textarea::placeholder{color:#6E82A0}
+select:focus,textarea:focus{outline:none;border-color:var(--safe);box-shadow:0 0 0 3px rgba(0,166,80,.18)}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.hint b{color:var(--greige);font-weight:500}
+
+/* ——— الإرسال ——— */
+.send{
+  width:100%;border:0;border-radius:12px;cursor:pointer;
+  background:var(--safe);color:#04120A;
+  font-family:"Readex Pro",sans-serif;font-weight:600;font-size:18px;
+  padding:16px;transition:filter .15s,transform .1s;
+}
+.send:hover{filter:brightness(1.07)}
+.send:active{transform:scale(.99)}
+.send:disabled{opacity:.55;cursor:progress}
+.send:focus-visible{outline:3px solid var(--greige);outline-offset:3px}
+.err{
+  margin:12px 0 0;padding:12px 14px;border-radius:10px;font-size:14.5px;
+  background:rgba(193,68,59,.14);border:1px solid rgba(193,68,59,.5);color:#FFD7D4;
+}
+footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);line-height:1.9}
+
+/* ——— تذكرة الاستلام: بطاقة دفعة ورقية ——— */
+.ticket{
+  background:var(--greige);color:var(--ink);border-radius:6px;
+  padding:26px 24px 22px;text-align:center;position:relative;
+  margin:12px 0 0;overflow:hidden;
+  box-shadow:0 24px 60px -20px rgba(0,0,0,.7);
+}
+.ticket::before,.ticket::after{
+  content:"";position:absolute;left:0;right:0;height:9px;
+  background:radial-gradient(circle at 5px -3px,transparent 6px,var(--greige) 6.5px);
+  background-size:14px 9px;
+}
+.ticket::before{top:-1px;transform:scaleY(-1)}
+.ticket::after{bottom:-1px}
+.ticket .stripe{height:7px;background:var(--c,#1E8B8B);border-radius:2px;margin:0 0 18px}
+.ticket .tick{
+  width:46px;height:46px;border-radius:50%;background:var(--safe);
+  display:grid;place-items:center;margin:0 auto 12px;color:#fff;font-size:24px;font-weight:700;
+}
+.ticket h2{font-family:"Readex Pro",sans-serif;font-size:23px;margin:0 0 4px;letter-spacing:-.4px}
+.ticket .sub{color:#4A5A6E;font-size:14.5px;margin:0 0 20px}
+.ticket .code-lbl{font-size:12px;letter-spacing:.14em;color:#6C7B8C;margin:0 0 6px;text-transform:uppercase}
+.ticket .code{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;
+  font-size:clamp(26px,8vw,34px);letter-spacing:.06em;
+  padding:12px 10px;border-block:2px dashed #C3BFB2;margin:0 0 16px;
+}
+.ticket .note{font-size:13.5px;color:#4A5A6E;margin:0}
+.again{
+  display:inline-block;margin-top:20px;color:var(--greige);
+  font-size:14.5px;text-decoration:underline;text-underline-offset:4px;
+  background:none;border:0;cursor:pointer;font-family:inherit;
+}
+
+/* ——— حركة عند الفتح ——— */
+.rise{animation:rise .5s cubic-bezier(.2,.7,.3,1) backwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.11s}.d3{animation-delay:.17s}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mark" aria-hidden="true"></div>
+    <div class="co">شركة الشمس<small>للصباغة والطباعة وتجهيز الأقمشة</small></div>
+  </header>
+
+  <main id="app">
+    <h1>قول اللي في دماغك.<br><em>من غير ما حد يعرف انت مين.</em></h1>
+    <p class="lede">الرسالة بتوصل للإدارة على طول. مفيش مدير ولا مشرف بيشوفها قبلها.</p>
+
+    <section class="privacy rise d1" aria-label="الخصوصية">
+      <h2><span aria-hidden="true">🛡️</span> احنا مش بنسألك على:</h2>
+      <ul>
+        <li><span class="x" aria-hidden="true">✕</span><s>الاسم</s></li>
+        <li><span class="x" aria-hidden="true">✕</span><s>رقم الموبايل</s></li>
+        <li><span class="x" aria-hidden="true">✕</span><s>الرقم الوظيفي أو رقم الكارنيه</s></li>
+        <li><span class="x" aria-hidden="true">✕</span><s>الوردية أو اسم المشرف بتاعك</s></li>
+      </ul>
+      <p>الصفحة مش بتسجّل دخول ومش بتحفظ أي حاجة على الموبايل. بس خلي بالك: لو كتبت اسمك أو تفصيلة تدل عليك جوه الرسالة، هتوصل زي ما هي.</p>
+    </section>
+
+    <form id="f" autocomplete="off" novalidate>
+      <fieldset class="rise d2">
+        <legend>الموضوع إيه؟</legend>
+        <div class="swatches">
+          <label class="sw" style="--c:var(--c-complaint)"><input type="radio" name="kind" value="شكوى" checked><span>شكوى</span></label>
+          <label class="sw" style="--c:var(--c-idea)"><input type="radio" name="kind" value="اقتراح"><span>اقتراح</span></label>
+          <label class="sw" style="--c:var(--c-safety)"><input type="radio" name="kind" value="خطر أو أمان"><span>خطر أو أمان</span></label>
+          <label class="sw" style="--c:var(--c-other)"><input type="radio" name="kind" value="حاجة تانية"><span>حاجة تانية</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label class="lbl" for="dept">القسم <span class="opt">— اختياري</span></label>
+        <select id="dept" name="dept">
+          <option value="">مش عايز أقول</option>
+          <option>الاستقبال والمخازن</option>
+          <option>الصباغة</option>
+          <option>الطباعة</option>
+          <option>التجهيز النهائي</option>
+          <option>المعمل والجودة</option>
+          <option>الصيانة</option>
+          <option>الشحن والتسليم</option>
+          <option>الأمن والسلامة</option>
+          <option>الإدارة والمكاتب</option>
+        </select>
+        <p class="hint">لو قسمك صغير وحاسس إن ده ممكن يدل عليك، سيبه فاضي.</p>
+      </fieldset>
+
+      <fieldset>
+        <label class="lbl" for="msg">اكتب اللي عايز تقوله</label>
+        <textarea id="msg" name="msg" required minlength="5" maxlength="3000"
+          placeholder="مثال: ماكينة رقم ٣ بتسرّب مية على الأرض والناس بتزحلق.&#10;أو: لو غيّرنا ترتيب الشيلان في الوردية هنوفر وقت كبير."></textarea>
+        <p class="hint">مش عارف تكتب؟ اضغط على <b>علامة المايك</b> اللي في كيبورد الموبايل واتكلم عادي.</p>
+      </fieldset>
+
+      <button class="send" type="submit" id="btn">ابعت</button>
+      <div id="err" class="err" role="alert" hidden></div>
+    </form>
+  </main>
+
+  <footer>
+    شركة الشمس للصباغة والطباعة وتجهيز الأقمشة<br>
+    العاشر من رمضان — الشرقية
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var ENDPOINT = "https://formsubmit.co/ajax/gergis095@gmail.com";
+  var COLORS = {"شكوى":"#C1443B","اقتراح":"#1E8B8B","خطر أو أمان":"#F2B705","حاجة تانية":"#B9AE96"};
+
+  var form = document.getElementById("f"),
+      btn  = document.getElementById("btn"),
+      err  = document.getElementById("err"),
+      msg  = document.getElementById("msg");
+
+  function makeCode(){
+    var d = new Date(),
+        ym = String(d.getFullYear()).slice(2) + String(d.getMonth()+1).padStart(2,"0"),
+        r  = new Uint16Array(1);
+    (window.crypto || window.msCrypto).getRandomValues(r);
+    return "ES-" + ym + "-" + String(r[0] % 9000 + 1000);
+  }
+
+  function fail(text){
+    err.textContent = text;
+    err.hidden = false;
+    btn.disabled = false;
+    btn.textContent = "ابعت تاني";
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    err.hidden = true;
+
+    var body = msg.value.trim();
+    if (body.length < 5){
+      msg.focus();
+      return fail("اكتب رسالتك الأول، وبعدين اضغط ابعت.");
+    }
+
+    var kind = form.querySelector('input[name="kind"]:checked').value,
+        dept = form.dept.value || "—",
+        code = makeCode();
+
+    btn.disabled = true;
+    btn.textContent = "بيتبعت…";
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: {"Content-Type":"application/json","Accept":"application/json"},
+      body: JSON.stringify({
+        "رقم الرسالة": code,
+        "النوع": kind,
+        "القسم": dept,
+        "الرسالة": body,
+        "_subject": "[" + kind + "] رسالة مجهولة من العمال — " + code,
+        "_captcha": "false",
+        "_template": "table"
+      })
+    })
+    .then(function(r){ return r.json().catch(function(){ return {}; }); })
+    .then(function(data){
+      if (data && (data.success === "true" || data.success === true)) { done(code, kind); }
+      else { fail("مبعتتش. اتأكد إن النت شغال وجرّب تاني."); }
+    })
+    .catch(function(){ fail("مبعتتش. اتأكد إن النت شغال وجرّب تاني."); });
+  });
+
+  function done(code, kind){
+    var app = document.getElementById("app");
+    app.innerHTML =
+      '<div class="ticket rise" style="--c:'+COLORS[kind]+'">' +
+        '<div class="stripe"></div>' +
+        '<div class="tick" aria-hidden="true">✓</div>' +
+        '<h2>وصلت للإدارة</h2>' +
+        '<p class="sub">من غير اسمك ومن غير أي بيانات عنك.</p>' +
+        '<p class="code-lbl">رقم رسالتك</p>' +
+        '<div class="code" dir="ltr">' + code + '</div>' +
+        '<p class="note">صوّر الشاشة دي أو اكتب الرقم. لو حبيت تسأل على ردّ رسالتك، قول الرقم ده من غير ما تقول انت مين.</p>' +
+      '</div>' +
+      '<div style="text-align:center"><button class="again" type="button" id="again">ابعت رسالة تانية</button></div>';
+    window.scrollTo({top:0, behavior:"smooth"});
+    document.getElementById("again").addEventListener("click", function(){ location.reload(); });
+  }
+})();
+</script>
+</body>
+</html>
