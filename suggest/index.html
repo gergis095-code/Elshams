@@ -197,24 +197,23 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
     <form id="f" method="POST" accept-charset="UTF-8"
           action="https://formsubmit.co/gergis095@gmail.com" autocomplete="off" novalidate>
         <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_subject" id="h_subj">
-        <input type="hidden" name="_next" id="h_next">
-        <input type="hidden" name="رقم الرسالة" id="h_code">
-        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+        <input type="hidden" name="_subject" id="h_subj" value="El Shams - anonymous worker message">
+        <input type="hidden" name="_next"    id="h_next" value="https://elshams.org/suggest/?ok=sent">
+        <input type="hidden" name="ref"      id="h_code" value="ES-0000-0000">
+
       <fieldset class="rise d2">
         <legend>الموضوع إيه؟</legend>
         <div class="swatches">
-          <label class="sw" style="--c:var(--c-complaint)"><input type="radio" name="النوع" value="شكوى" checked><span>شكوى</span></label>
-          <label class="sw" style="--c:var(--c-idea)"><input type="radio" name="النوع" value="اقتراح"><span>اقتراح</span></label>
-          <label class="sw" style="--c:var(--c-safety)"><input type="radio" name="النوع" value="خطر أو أمان"><span>خطر أو أمان</span></label>
-          <label class="sw" style="--c:var(--c-other)"><input type="radio" name="النوع" value="حاجة تانية"><span>حاجة تانية</span></label>
+          <label class="sw" style="--c:var(--c-complaint)"><input type="radio" name="type" value="شكوى" checked><span>شكوى</span></label>
+          <label class="sw" style="--c:var(--c-idea)"><input type="radio" name="type" value="اقتراح"><span>اقتراح</span></label>
+          <label class="sw" style="--c:var(--c-safety)"><input type="radio" name="type" value="خطر أو أمان"><span>خطر أو أمان</span></label>
+          <label class="sw" style="--c:var(--c-other)"><input type="radio" name="type" value="حاجة تانية"><span>حاجة تانية</span></label>
         </div>
       </fieldset>
 
       <fieldset>
         <label class="lbl" for="dept">القسم <span class="opt">— اختياري</span></label>
-        <select id="dept" name="القسم">
+        <select id="dept" name="department">
           <option value="">مش عايز أقول</option>
           <option>الاستقبال والمخازن</option>
           <option>الصباغة</option>
@@ -231,7 +230,7 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
 
       <fieldset>
         <label class="lbl" for="msg">اكتب اللي عايز تقوله</label>
-        <textarea id="msg" name="الرسالة" required minlength="5" maxlength="3000"
+        <textarea id="msg" name="message" required minlength="5" maxlength="3000"
           placeholder="مثال: ماكينة رقم ٣ بتسرّب مية على الأرض والناس بتزحلق.&#10;أو: لو غيّرنا ترتيب الشيلان في الوردية هنوفر وقت كبير."></textarea>
         <p class="hint">مش عارف تكتب؟ اضغط على <b>علامة المايك</b> اللي في كيبورد الموبايل واتكلم عادي.</p>
       </fieldset>
@@ -252,22 +251,42 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
   "use strict";
   var COLORS = {"شكوى":"#C1443B","اقتراح":"#1E8B8B","خطر أو أمان":"#F2B705","حاجة تانية":"#B9AE96"};
 
-  /* لو رجعنا من FormSubmit ومعانا رقم رسالة، نعرض التذكرة بدل الفورم */
+  function showTicket(code, kind){
+    document.getElementById("app").innerHTML =
+      '<div class="ticket rise" style="--c:' + (COLORS[kind] || "#1E8B8B") + '">' +
+        '<div class="stripe"></div>' +
+        '<div class="tick" aria-hidden="true">✓</div>' +
+        '<h2>وصلت للإدارة</h2>' +
+        '<p class="sub">من غير اسمك ومن غير أي بيانات عنك.</p>' +
+        (code ? '<p class="code-lbl">رقم رسالتك</p><div class="code" dir="ltr">' + code + '</div>' : '') +
+        '<p class="note">صوّر الشاشة دي أو اكتب الرقم. لو حبيت تسأل على ردّ رسالتك، قول الرقم ده من غير ما تقول انت مين.</p>' +
+      '</div>' +
+      '<div style="text-align:center"><button class="again" type="button" id="again">ابعت رسالة تانية</button></div>';
+    document.getElementById("again").addEventListener("click", function(){
+      location.href = location.pathname;
+    });
+  }
+
+  /* رجعنا من FormSubmit؟ اعرض التذكرة */
   var q = new URLSearchParams(location.search), ok = q.get("ok");
-  if (ok && /^ES-\d{4}-\d{4}$/.test(ok)) { showTicket(ok, q.get("t") || "شكوى"); return; }
+  if (ok){ showTicket(/^ES-\d{4}-\d{4}$/.test(ok) ? ok : "", q.get("t") || ""); return; }
 
   var form = document.getElementById("f"),
       btn  = document.getElementById("btn"),
       err  = document.getElementById("err"),
       msg  = document.getElementById("msg");
 
-  function makeCode(){
-    var d = new Date(),
-        ym = String(d.getFullYear()).slice(2) + String(d.getMonth()+1).padStart(2,"0"),
-        r  = new Uint16Array(1);
-    window.crypto.getRandomValues(r);
-    return "ES-" + ym + "-" + String(r[0] % 9000 + 1000);
-  }
+  /* رقم الرسالة والـ redirect بيتحطوا دلوقتي — مش وقت الإرسال.
+     كده لو أي حاجة في الجافاسكريبت وقعت، الحقول لسه فيها قيم صالحة. */
+  var d = new Date(),
+      r = new Uint16Array(1);
+  window.crypto.getRandomValues(r);
+  var code = "ES-" + String(d.getFullYear()).slice(2) + String(d.getMonth()+1).padStart(2,"0")
+           + "-" + String(r[0] % 9000 + 1000);
+
+  document.getElementById("h_code").value = code;
+  document.getElementById("h_subj").value = "El Shams - anonymous message " + code;
+  document.getElementById("h_next").value = location.origin + location.pathname + "?ok=" + code;
 
   form.addEventListener("submit", function(e){
     if (msg.value.trim().length < 5){
@@ -277,33 +296,9 @@ footer{margin-top:30px;text-align:center;font-size:12.5px;color:var(--muted);lin
       msg.focus();
       return;
     }
-    var kind = form.querySelector('input[name="النوع"]:checked').value,
-        code = makeCode();
-    document.getElementById("h_code").value = code;
-    document.getElementById("h_subj").value = "[" + kind + "] رسالة مجهولة من العمال — " + code;
-    document.getElementById("h_next").value =
-      location.origin + location.pathname + "?ok=" + code + "&t=" + encodeURIComponent(kind);
     btn.disabled = true;
     btn.textContent = "بيتبعت…";
-    /* من غير preventDefault — المتصفح بيبعت الفورم بنفسه */
   });
-
-  function showTicket(code, kind){
-    document.getElementById("app").innerHTML =
-      '<div class="ticket rise" style="--c:' + (COLORS[kind] || "#1E8B8B") + '">' +
-        '<div class="stripe"></div>' +
-        '<div class="tick" aria-hidden="true">✓</div>' +
-        '<h2>وصلت للإدارة</h2>' +
-        '<p class="sub">من غير اسمك ومن غير أي بيانات عنك.</p>' +
-        '<p class="code-lbl">رقم رسالتك</p>' +
-        '<div class="code" dir="ltr">' + code + '</div>' +
-        '<p class="note">صوّر الشاشة دي أو اكتب الرقم. لو حبيت تسأل على ردّ رسالتك، قول الرقم ده من غير ما تقول انت مين.</p>' +
-      '</div>' +
-      '<div style="text-align:center"><button class="again" type="button" id="again">ابعت رسالة تانية</button></div>';
-    document.getElementById("again").addEventListener("click", function(){
-      location.href = location.pathname;
-    });
-  }
 })();
 </script>
 </body>
