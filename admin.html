@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production desk — El Shams</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0E1729">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16233D; --ink-deep:#0E1729;
+  --amber:#E8A33D; --gold:#F4C16B;
+  --surface:#EEF1F5; --card:#fff;
+  --line:#D5DCE6; --line-soft:#E7ECF2;
+  --muted:#5C6B85; --muted-2:#8494AC;
+  --done:#2E7D5B; --hold:#B03A2E;
+  --r:4px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;
+  background:var(--surface);color:var(--ink);line-height:1.5;font-size:14.5px;
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+/* ---------- sign in ---------- */
+.gate{min-height:100vh;display:grid;place-items:center;padding:24px;
+  background:var(--ink-deep);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 2px,transparent 2px 7px);}
+.gate-card{background:var(--card);border-radius:var(--r);padding:32px;width:100%;max-width:370px;
+  box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.gate-logo{width:96px;height:auto;display:block;margin-bottom:18px}
+.gate-card h1{font-size:20px;font-weight:600;margin-bottom:4px}
+.gate-card p.sub{color:var(--muted);font-size:13.5px;margin-bottom:22px}
+
+label.lbl{display:block;font-size:12.5px;font-weight:500;color:var(--muted);margin:0 0 6px}
+.inp{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r);
+  background:#FBFCFD;transition:.15s}
+.inp:focus{outline:none;border-color:var(--ink);background:#fff}
+textarea.inp{min-height:64px;resize:vertical;line-height:1.5}
+.stack>*+*{margin-top:14px}
+
+.btn{padding:10px 18px;border:none;border-radius:var(--r);cursor:pointer;font-weight:600;
+  background:var(--ink);color:#fff;transition:.15s}
+.btn:hover{background:var(--ink-deep)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.wide{width:100%}
+.btn.amber{background:var(--amber);color:var(--ink-deep)}
+.btn.amber:hover{background:#DB9630}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn.ghost:hover{background:#F4F6F9}
+.btn.danger{background:transparent;color:var(--hold);border:1px solid #E8C4BF;font-weight:500}
+.btn.danger:hover{background:#FDF4F3}
+.btn.sm{padding:7px 13px;font-size:13px}
+
+.err{background:#FDF4F3;color:var(--hold);border:1px solid #F3D9D5;border-radius:var(--r);
+  padding:10px 12px;font-size:13.5px;margin-top:14px}
+
+/* ---------- app shell ---------- */
+.app{display:none;min-height:100vh;flex-direction:column}
+.app.on{display:flex}
+
+.topbar{background:var(--ink-deep);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.035) 0 2px,transparent 2px 7px);
+  color:#fff;border-bottom:3px solid var(--amber);padding:11px 18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tb-brand{display:flex;align-items:center;gap:10px;margin-inline-end:auto}
+.tb-logo{width:46px;height:auto;flex:none;display:block}
+.tb-title{font-size:13.5px;font-weight:600;letter-spacing:.12em}
+.tb-sub{font-size:10.5px;color:var(--gold);letter-spacing:.05em}
+.tb-user{font-size:12.5px;color:rgba(255,255,255,.7)}
+.tb-btn{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;
+  padding:6px 12px;border-radius:var(--r);cursor:pointer;font-size:12.5px;transition:.15s}
+.tb-btn:hover{background:rgba(255,255,255,.1);border-color:var(--gold)}
+
+.toolbar{background:var(--card);border-bottom:1px solid var(--line);padding:12px 18px;
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+#q{flex:1 1 220px;min-width:0;padding:9px 12px;border:1.5px solid var(--line);
+  border-radius:var(--r);background:#FBFCFD}
+#q:focus{outline:none;border-color:var(--ink);background:#fff}
+.sel{padding:9px 10px;border:1.5px solid var(--line);border-radius:var(--r);background:#FBFCFD;cursor:pointer}
+.count{font-size:12.5px;color:var(--muted-2);font-family:"IBM Plex Mono",monospace}
+
+.content{flex:1;padding:18px}
+
+/* ---------- table ---------- */
+.tablewrap{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+thead th{
+  text-align:start;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:500;
+  padding:11px 13px;border-bottom:1px solid var(--line);background:#FAFBFC;white-space:nowrap}
+tbody td{padding:11px 13px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+tbody tr{cursor:pointer;transition:background .1s}
+tbody tr:hover{background:#F6F8FB}
+tbody tr:last-child td{border-bottom:none}
+.c-code{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:13.5px;white-space:nowrap}
+.c-sub{font-size:12px;color:var(--muted-2);margin-top:2px}
+.chip{display:inline-block;padding:3px 9px;border-radius:11px;font-size:12px;font-weight:500;white-space:nowrap}
+.chip.stage{background:#E9EEF5;color:var(--ink)}
+.chip.stage.cur{background:var(--gold);color:var(--ink-deep)}
+.chip.active{background:#E9EEF5;color:var(--ink)}
+.chip.on_hold{background:#FBE6E3;color:var(--hold)}
+.chip.completed{background:#DFEEE7;color:var(--done)}
+.chip.cancelled{background:#EDEFF2;color:var(--muted-2)}
+.swatch-sm{width:15px;height:15px;border-radius:2px;border:1px solid rgba(0,0,0,.18);
+  display:inline-block;vertical-align:-3px;margin-inline-end:6px;
+  background-image:repeating-linear-gradient(45deg,#D5DCE6 0 3px,#E7ECF2 3px 6px)}
+.late{color:var(--hold);font-weight:500}
+
+.empty{padding:52px 20px;text-align:center;color:var(--muted)}
+.empty strong{display:block;font-size:16px;color:var(--ink);margin-bottom:5px;font-weight:600}
+
+/* ---------- drawer / modal ---------- */
+.scrim{position:fixed;inset:0;background:rgba(14,23,41,.5);z-index:20;display:none}
+.scrim.on{display:block}
+.panel{position:fixed;inset-block:0;inset-inline-end:0;width:min(560px,100%);
+  background:var(--surface);z-index:21;overflow-y:auto;display:none;
+  box-shadow:-8px 0 32px rgba(0,0,0,.2)}
+.panel.on{display:block;animation:slide .25s cubic-bezier(.2,.7,.3,1) both}
+@keyframes slide{from{transform:translateX(var(--from,100%))}to{transform:none}}
+html[dir="rtl"] .panel.on{--from:-100%}
+
+.p-head{background:var(--ink-deep);color:#fff;padding:16px 18px;position:sticky;top:0;z-index:2;
+  display:flex;align-items:flex-start;gap:12px}
+.p-code{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;letter-spacing:.06em}
+.p-cust{font-size:13px;color:rgba(255,255,255,.7);margin-top:2px}
+.x{margin-inline-start:auto;background:transparent;border:none;color:#fff;font-size:22px;
+  cursor:pointer;line-height:1;padding:2px 6px;opacity:.8}
+.x:hover{opacity:1}
+
+.block{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  margin:14px 14px 0;padding:16px}
+.block h3{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted-2);font-weight:500;margin-bottom:12px}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.grid2{grid-template-columns:1fr}}
+
+.tl{list-style:none;position:relative}
+.tl li{position:relative;padding-inline-start:22px;padding-bottom:14px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;inset-inline-start:4px;top:14px;bottom:-2px;
+  border-inline-start:1px solid var(--line)}
+.tl li:last-child::before{display:none}
+.tl .d{position:absolute;inset-inline-start:0;top:5px;width:9px;height:9px;border-radius:50%;
+  background:var(--ink)}
+.tl .d.note{background:var(--amber)}
+.tl .d.status{background:var(--muted-2)}
+.tl-t{font-size:14px;font-weight:500}
+.tl-w{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted-2);margin-top:1px}
+.tl-n{font-size:13px;color:var(--muted);margin-top:3px}
+
+#qrbox{text-align:center;padding-top:4px}
+#qrbox canvas{border:1px solid var(--line);border-radius:var(--r);background:#fff;padding:8px}
+.linkline{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
+  word-break:break-all;margin-top:8px}
+
+.toast{position:fixed;inset-block-end:20px;inset-inline-start:50%;transform:translateX(-50%);
+  background:var(--ink-deep);color:#fff;padding:11px 20px;border-radius:var(--r);
+  font-size:13.5px;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ================= SIGN IN ================= -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <svg class="gate-logo" viewBox="0 0 1121 590" width="96" height="51" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="El Shams"><path fill="#EC8332" fill-rule="evenodd" d="M285 486.3C265.9 483.3 262.1 482.5 259.2 480.8C257.5 479.7 255.8 477.9 255.5 476.7C252.8 463.5 251.8 457.4 250.5 444.8C247.8 418.6 249.2 380.9 253.4 365.6C254.2 362.8 255.1 358.7 255.5 356.5C256.3 351.6 262.4 331.7 265.6 323.5C268 317.7 268.9 315.5 274.3 304C278.6 294.9 287.1 279.7 290 276C291.5 274.1 293.5 271.1 294.4 269.5C296.3 266.1 300.7 259.8 301.8 259C302.4 258.6 306.6 253.6 313.5 245.3C315.6 242.8 326.9 231.4 329.6 229.1C342.6 218 350.9 211.2 353 209.8C354.4 208.8 357.3 206.8 359.5 205.2C361.7 203.7 364.2 202.1 365 201.7C365.8 201.3 368.5 199.7 371 198.1C378.1 193.4 399.9 182.6 407 180.1C410.6 178.9 414.6 177.3 416 176.6C442 163.3 514 159.2 555 168.6C563.3 170.6 585.5 177.7 590 180C593.8 181.8 596.3 183 608.2 188.3C612.4 190.3 618.3 193.4 621.3 195.4C624.3 197.4 627.1 199 627.7 199C628.9 199 653.4 216.6 659 221.5C665.8 227.6 679.1 241 682.8 245.5C684.6 247.7 687.9 251.8 690.3 254.6C695.4 260.8 696.7 262.5 700 267C703.4 271.6 712 285.6 712 286.5C712 286.8 713.3 289 714.8 291.3C716.4 293.6 718.3 297.1 719 299C719.8 300.9 721.4 304.5 722.7 306.9C727 315 726.1 317.2 717.1 320.8C708.2 324.4 706.7 323.5 702 311.7C700.8 308.5 699 304.9 698 303.7C697.1 302.5 694.9 298.9 693.1 295.7C691.4 292.5 689.3 289.2 688.5 288.3C687.7 287.5 687 286.4 687 285.9C687 283.6 666.9 259.6 657.4 250.5C646.7 240.2 624.1 223 621.4 223C621.1 223 618.3 221.2 615.1 219C612 216.8 609 215 608.5 215C607.9 215 605 213.7 602 212.1C596.3 209.1 578.6 202 576.8 202C576.3 202 574.4 201.4 572.7 200.6C568.9 198.9 550.2 194.2 544.5 193.6C513.4 189.8 459.8 193.7 451 200.5C450.2 201.1 447.5 202.2 445 202.9C434.8 205.7 409.9 217.1 405.5 221C404.4 221.9 400.1 224.7 396 227C391.9 229.4 387.8 232.1 387 233C386.2 233.9 383 236.5 379.9 238.9C371.1 245.4 352.8 263.9 345.4 273.6C341.8 278.5 338.2 282.9 337.4 283.5C336.7 284 335.6 285.6 335 287C334.4 288.4 332.4 292 330.5 295C328.6 298 326.1 302.5 325 305C323.8 307.4 322.3 310.1 321.6 311C319.8 313.1 312.6 330.2 310 338.5C308.8 342.4 306.9 348 305.9 351C304.9 354 303.6 359.6 303 363.4C302.4 367.2 301.7 370.7 301.4 371.2C299 375.1 297.1 423 298.9 432.7C299.4 435.3 300.3 441.5 301 446.5C302.3 457 303.3 461.7 306.6 471.9C309.3 480 309.6 484 307.8 485.8C306.7 486.9 291.2 487.3 285 486.3ZM208 417.7C203.3 415.3 198.6 412.9 197.5 412.2C196.4 411.5 194.4 410.6 193 410C191.6 409.5 189.8 408.6 189 408.1C188.2 407.6 176.9 402 164 395.7C131.7 379.9 125.9 377 123 375.4C121.6 374.7 117.5 372.7 113.8 371C101.9 365.5 102.9 363.3 121 356.7C143.8 348.3 153.5 344.8 158 343.3C160.5 342.5 164.5 341 167 340C172.5 337.8 180.3 334.9 198 328.5C202.1 327.1 206.3 325.5 207.2 324.9C208.2 324.4 209.7 324 210.5 324C211.4 324 213.1 323.3 214.3 322.6C217.8 320.3 235.2 314.9 238 315.2C241 315.6 241.1 321.7 238.4 334.5C236.5 343.1 235.2 351.4 234 360.5C232.8 369.7 231.3 379.3 229.9 385.5C229.4 388.2 228.5 393.6 228 397.5C224.5 424.4 223.4 425.5 208 417.7ZM726.8 283.2C724.8 280.6 721.3 275.4 719 271.5C716.7 267.6 713.8 263.4 712.5 262C711.3 260.6 707.2 254.8 703.4 249.1C699.6 243.4 695.7 237.5 694.7 236.1C689.9 229.1 691.6 227.7 712.5 221C721.3 218.3 730.5 215.3 733 214.4C735.5 213.5 740.2 212 743.5 211.1C746.8 210.1 750.6 208.9 752 208.2C753.4 207.6 760.6 205.3 768 203C775.4 200.7 783.8 198 786.5 196.9C804.8 190 813.9 190 806.5 197C805.1 198.3 804 200 804 200.8C804 201.7 802.9 203.5 801.6 204.9C796.1 210.8 792 215.8 792 216.7C792 217.3 791.1 218.5 790 219.5C788.9 220.5 788 221.9 788 222.6C788 223.3 786.9 224.7 785.6 225.7C784.3 226.7 780.4 231.3 777 235.8C773.5 240.4 770.1 244.4 769.4 244.7C768.7 245 767.8 246 767.5 247.1C767.1 248.1 766.3 249.6 765.6 250.2C765 250.9 760.8 256.2 756.5 262C752.1 267.7 747.2 274 745.4 276C743.7 277.9 742 280.5 741.6 281.7C740.9 284 734.9 288 732.1 288C731.2 288 728.8 285.9 726.8 283.2ZM263.2 251.8C254.1 240.2 241.3 223.5 238.5 219.4C236.9 217.1 234.5 214 233.3 212.6C232 211.2 229.4 207.8 227.5 205C222.6 198 211 183 209 181C208.7 180.7 207.1 178.5 205.5 176C202.2 171.1 201.9 170.7 196.1 163.5C193.8 160.8 192 158.2 192 157.8C192 157.4 190.2 155 188 152.5C178.6 141.7 180.3 134.7 190.8 140.4C194.3 142.3 201.2 145.3 212.5 149.6C217.4 151.5 223.9 154.2 226.8 155.6C229.7 156.9 232.5 158 233 158C233.5 158 237 159.4 240.7 161.1C244.5 162.9 250.2 165.3 253.5 166.5C263.7 170.3 277.2 175.9 283.5 178.9C286.8 180.5 292.2 182.8 295.5 184C298.8 185.2 303.3 187 305.5 188C307.7 188.9 310.6 190.1 312 190.5C316.2 191.8 319 194.1 319 196.2C319 198.6 311.4 209.6 306.2 214.5C305 215.7 304 217.1 304 217.5C304 217.9 302.5 219.9 300.8 221.9C299 224 296.3 227.2 294.8 229.1C293.2 231 290 235 287.5 238C285.1 241 281.4 246 279.3 249.2C272.9 258.6 269.1 259.3 263.2 251.8ZM603.5 165.5C600.2 164.2 590.3 160.8 581.5 158C572.7 155.1 565 152.4 564.5 152C564 151.6 561.9 150.9 560 150.5C558.1 150.1 555.7 149.3 554.5 148.7C553.4 148.2 551.8 147.4 551 147C547.8 145.5 548.7 141.5 553 138C555.3 136.1 559 132.6 561.3 130.2C568.6 122.5 569.5 121.7 578.6 113.4C583.5 108.9 593.4 99.4 600.7 92.4C607.9 85.3 618 75.5 623.2 70.7C628.3 65.8 635.5 58.9 639.2 55.3C642.9 51.7 646.5 49 647.2 49.3C649.3 50 648.6 59.6 645.6 69.5C641.3 83.8 640.2 87.7 636.5 102C634.6 109.4 632.5 116.9 631.9 118.5C631.3 120.1 629.9 124.9 628.9 129C627.9 133.1 626.4 138.1 625.6 140C624.8 141.9 623 148.4 621.6 154.5C618.2 169.1 616.2 170.4 603.5 165.5ZM393.1 164.6C391.6 162.8 392.1 156.7 395.2 139.5C396.3 133.4 397.8 124.9 398.5 120.5C399.2 116.1 400.6 108.7 401.4 104C402.3 99.3 403.7 91 404.5 85.5C405.4 80 407.4 69 409 61C410.6 53 412.6 42.4 413.5 37.5C420.8 -3.1 422.1 -5.9 427.6 5.8C431.1 13.3 439 32 439.6 34.5C439.9 35.6 441.7 39.7 443.6 43.6C445.5 47.6 447 51.3 447 51.9C447 52.5 448.8 56.7 450.9 61.3C453.1 65.8 456.3 73.1 458.1 77.5C459.9 81.9 461.6 85.9 462 86.5C462.4 87.1 463.1 89.1 463.5 91C463.9 92.9 464.8 95.2 465.5 96C466.8 97.5 468.7 101.7 470.9 108C473.4 114.9 479.4 129.5 483.2 137.8C487.2 146.7 484.9 151 475.9 151C473.5 151 469.7 151.5 467.5 152.1C465.3 152.7 460.6 153.6 457 154.2C453.4 154.7 446.7 156 442 157C437.3 158 432.4 159.1 431 159.3C429.6 159.6 422.9 160.9 416 162.3C397.4 166.1 394.5 166.3 393.1 164.6Z"/><path fill="#B8DB67" fill-rule="evenodd" d="M283 589.8C263.3 588 238.2 582.3 224 576.6C222.1 575.8 217.4 574 213.5 572.5C195.8 565.8 171.4 551.7 153.9 538.1C150.9 535.8 147.2 532.9 145.6 531.7C139.8 527.3 131.3 519.4 121.1 509.1C102.5 490.1 102.9 490.6 87.8 470.7C85.2 467.3 82.5 463.8 81.8 463.1C81.1 462.3 78 457.8 74.9 453.1C69.6 445 67.4 441.3 64.1 435.1C63.3 433.7 61.6 431.2 60.3 429.7C59.1 428.1 58 426.4 58 425.8C58 425.2 57.4 423.9 56.6 423.1C55.8 422.2 54 419.2 52.5 416.5C49.4 410.5 47.7 407.7 42.8 399.3C40.7 395.8 39 392.7 39 392.3C39 392 35.4 384.4 31.1 375.6C26.7 366.7 21.3 355.2 19 350C16.7 344.8 13.3 337.2 11.4 333.2C9.5 329.2 8 325.5 8 325C8 324.5 6.9 321.7 5.6 318.8C0.5 307.5 -0.4 305 0.7 303.9C2.3 302.3 3.3 303.2 8.7 311.1C11.3 315.1 14.5 319.7 15.8 321.4C17 323.1 19.1 326.1 20.5 328.1C21.8 330.2 24.8 334.2 27.2 337.2C29.6 340.1 33.7 345.5 36.5 349C133.1 475.1 251.5 534.2 354.5 507.9C386.5 499.7 432.1 482.3 480 460C502.1 449.7 524.2 439.4 536 433.7C542.3 430.7 555.4 424.5 565 420C574.6 415.5 585.2 410.5 588.5 409C608.4 399.6 615.2 396.5 621 393.8C624.6 392.2 628.9 390.3 630.5 389.5C641 384.4 695.8 361.1 714.5 353.8C763 334.8 797.2 324 841 313.9C890 302.5 950.6 299.2 987 306.1C1025.1 313.2 1057.2 326.5 1085.8 347C1090.4 350.3 1095.2 353 1096.4 353C1099 353 1102 355.8 1102 358.3C1102 360.1 1112.1 369 1114.2 369C1116.2 369 1122.3 376.8 1121.6 378.6C1120.8 380.8 1118.9 380.3 1113 376.5C1107.2 372.7 1077.9 358 1076.2 358C1075.7 358 1074.2 357.2 1072.9 356.2C1071.6 355.1 1069.2 353.8 1067.5 353.2C1065.8 352.6 1061.3 350.9 1057.5 349.5C1047.4 345.6 1040.3 343.3 1033.5 341.7C1030.2 340.8 1023.9 339.3 1019.5 338.2C1012.4 336.4 1006.8 335.4 985.5 332C967.2 329.1 925.5 330.1 900 334.1C883.9 336.6 856.1 342.9 850.6 345.3C848.4 346.3 844.1 347.8 841.1 348.6C833.4 350.9 809.5 360 806 362.1C805.2 362.6 803.2 363.5 801.6 364.2C799.1 365.1 791.2 369.1 784.5 372.8C783.4 373.4 779.6 375.3 776 377C772.4 378.8 768.8 380.9 767.9 381.6C767.1 382.4 765.9 383 765.3 383C764.7 383 761.9 384.6 759.1 386.5C756.3 388.4 753.8 390 753.6 390C753.3 390 751.1 391.3 748.8 392.9C745.1 395.3 736.4 401 720 411.5C714.9 414.8 703 422.7 699 425.5C697.1 426.9 692.6 430 689 432.6C685.4 435.1 677.5 440.4 671.5 444.3C665.5 448.2 660.3 451.7 660 452.1C659.7 452.5 657.9 453.6 655.9 454.6C651.9 456.7 639.9 464.4 633.5 469.1C631.3 470.7 627.2 473.2 624.5 474.5C621.8 475.8 617.4 478.4 614.8 480.2C608.6 484.6 599.7 490.1 592.9 493.9C589.8 495.6 584.4 498.8 580.9 501C577.4 503.2 572.5 506 570 507.2C567.5 508.3 563.6 510.6 561.3 512.1C559 513.7 556.5 515 555.8 515C555 515 553.9 515.5 553.3 516.1C552.1 517.3 548.5 519.3 536.5 525.6C531.5 528.1 526.4 530.8 525 531.5C514.6 537 484.7 551 481.5 551.9C479.3 552.6 474.1 554.6 470 556.4C460 560.9 446.9 566 442.8 567C441 567.5 436.4 569 432.5 570.5C418 575.9 376.5 586.4 363.4 587.9C334.4 591.2 305 591.9 283 589.8Z"/><path fill="#36793B" fill-rule="evenodd" d="M273.9 512.5C190.1 500.3 105.1 439.6 26.6 336C23 331.3 19.1 326.2 17.9 324.7C16.5 322.8 16.1 321.5 16.7 320.9C17.4 320.2 26.4 328.5 43.6 345.7C70.6 372.7 73.4 375.3 89 388.5C94.2 392.9 99.4 397.3 100.5 398.3C103.2 400.8 120.1 413.7 126.4 418.1C129.2 420 133.7 423.2 136.4 425.1C139 427 141.9 429 142.8 429.5C143.7 430 147 432.1 150 434.1C161.3 441.6 166.4 444.6 179.5 451.6C200.7 463.1 229.9 475.4 246 479.7C249 480.5 252.9 481.6 254.5 482.1C256.1 482.5 259.3 483.4 261.5 484C276.5 488.2 304.6 490.3 307 487.5C308.1 486.1 308.5 486.1 310.2 487.7C318 494.7 385.8 477.5 433 456.5C438.8 453.9 445.1 451.2 447.1 450.4C449.1 449.7 454.1 447.6 458.1 445.7C462.2 443.8 468.4 440.9 472 439.3C481.4 434.9 491 430.4 503 424.7C508.8 422 517.3 418 522 415.8C526.7 413.6 537.7 408.3 546.5 404C586.9 384.4 593.9 381 600 378.2C603.6 376.6 614.6 371.3 624.5 366.5C634.4 361.7 645.2 356.5 648.5 355C651.8 353.5 659.2 350 665 347.2C670.8 344.5 677.8 341.2 680.5 340C683.2 338.8 690 335.6 695.5 333C701 330.4 706.5 328 707.7 327.6C708.8 327.2 710.4 326.3 711 325.5C711.7 324.7 713.2 324 714.3 324C715.4 324 720 322.3 724.4 320.1C736.6 314.3 738.8 313.4 753.2 307.9C773.6 300.2 802.2 290.9 810 289.5C811.9 289.2 817.1 288 821.5 287C825.9 285.9 833.8 284.4 839 283.5C844.2 282.6 851 281.5 854 281C873.3 277.7 918.2 277.5 941.5 280.5C965.6 283.7 1000.5 293 1012.5 299.4C1014.2 300.3 1016.1 301 1016.8 301C1017.5 301 1018.8 301.4 1019.8 302C1020.7 302.5 1027.1 305.7 1034 309C1051.9 317.8 1070.3 329.4 1083 339.8C1098.6 352.7 1098.6 356 1083 344.8C1070.4 335.8 1048.6 324.3 1033.5 318.8C1018.3 313.1 1012.6 311.6 988 306.1C967.4 301.6 901.6 301.5 884 306C882.1 306.4 876.7 307.4 872 308C836.1 313 784 327.5 732.5 346.8C718.5 352.1 697 360.4 693.5 362C687.3 364.8 668.2 373 661 376C637.4 386 594.6 405.7 536 433.7C518.1 442.3 471.1 464.2 463.5 467.5C461.9 468.2 454.8 471.3 447.8 474.4C419.7 486.7 402.9 493 370 503.4C339.7 513 301.8 516.6 273.9 512.5Z"/></svg>
+    <h1 id="gt1">Production desk</h1>
+    <p class="sub" id="gt2">Staff sign-in for El Shams order tracking.</p>
+    <div class="stack">
+      <div>
+        <label class="lbl" for="email" id="gt3">Work email</label>
+        <input class="inp" id="email" type="email" autocomplete="username">
+      </div>
+      <div>
+        <label class="lbl" for="pw" id="gt4">Password</label>
+        <input class="inp" id="pw" type="password" autocomplete="current-password">
+      </div>
+      <button class="btn wide" id="signin" type="button">Sign in</button>
+    </div>
+    <div id="gateErr"></div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="tb-brand">
+      <svg class="tb-logo" viewBox="0 0 1121 590" width="46" height="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path fill="#EC8332" fill-rule="evenodd" d="M285 486.3C265.9 483.3 262.1 482.5 259.2 480.8C257.5 479.7 255.8 477.9 255.5 476.7C252.8 463.5 251.8 457.4 250.5 444.8C247.8 418.6 249.2 380.9 253.4 365.6C254.2 362.8 255.1 358.7 255.5 356.5C256.3 351.6 262.4 331.7 265.6 323.5C268 317.7 268.9 315.5 274.3 304C278.6 294.9 287.1 279.7 290 276C291.5 274.1 293.5 271.1 294.4 269.5C296.3 266.1 300.7 259.8 301.8 259C302.4 258.6 306.6 253.6 313.5 245.3C315.6 242.8 326.9 231.4 329.6 229.1C342.6 218 350.9 211.2 353 209.8C354.4 208.8 357.3 206.8 359.5 205.2C361.7 203.7 364.2 202.1 365 201.7C365.8 201.3 368.5 199.7 371 198.1C378.1 193.4 399.9 182.6 407 180.1C410.6 178.9 414.6 177.3 416 176.6C442 163.3 514 159.2 555 168.6C563.3 170.6 585.5 177.7 590 180C593.8 181.8 596.3 183 608.2 188.3C612.4 190.3 618.3 193.4 621.3 195.4C624.3 197.4 627.1 199 627.7 199C628.9 199 653.4 216.6 659 221.5C665.8 227.6 679.1 241 682.8 245.5C684.6 247.7 687.9 251.8 690.3 254.6C695.4 260.8 696.7 262.5 700 267C703.4 271.6 712 285.6 712 286.5C712 286.8 713.3 289 714.8 291.3C716.4 293.6 718.3 297.1 719 299C719.8 300.9 721.4 304.5 722.7 306.9C727 315 726.1 317.2 717.1 320.8C708.2 324.4 706.7 323.5 702 311.7C700.8 308.5 699 304.9 698 303.7C697.1 302.5 694.9 298.9 693.1 295.7C691.4 292.5 689.3 289.2 688.5 288.3C687.7 287.5 687 286.4 687 285.9C687 283.6 666.9 259.6 657.4 250.5C646.7 240.2 624.1 223 621.4 223C621.1 223 618.3 221.2 615.1 219C612 216.8 609 215 608.5 215C607.9 215 605 213.7 602 212.1C596.3 209.1 578.6 202 576.8 202C576.3 202 574.4 201.4 572.7 200.6C568.9 198.9 550.2 194.2 544.5 193.6C513.4 189.8 459.8 193.7 451 200.5C450.2 201.1 447.5 202.2 445 202.9C434.8 205.7 409.9 217.1 405.5 221C404.4 221.9 400.1 224.7 396 227C391.9 229.4 387.8 232.1 387 233C386.2 233.9 383 236.5 379.9 238.9C371.1 245.4 352.8 263.9 345.4 273.6C341.8 278.5 338.2 282.9 337.4 283.5C336.7 284 335.6 285.6 335 287C334.4 288.4 332.4 292 330.5 295C328.6 298 326.1 302.5 325 305C323.8 307.4 322.3 310.1 321.6 311C319.8 313.1 312.6 330.2 310 338.5C308.8 342.4 306.9 348 305.9 351C304.9 354 303.6 359.6 303 363.4C302.4 367.2 301.7 370.7 301.4 371.2C299 375.1 297.1 423 298.9 432.7C299.4 435.3 300.3 441.5 301 446.5C302.3 457 303.3 461.7 306.6 471.9C309.3 480 309.6 484 307.8 485.8C306.7 486.9 291.2 487.3 285 486.3ZM208 417.7C203.3 415.3 198.6 412.9 197.5 412.2C196.4 411.5 194.4 410.6 193 410C191.6 409.5 189.8 408.6 189 408.1C188.2 407.6 176.9 402 164 395.7C131.7 379.9 125.9 377 123 375.4C121.6 374.7 117.5 372.7 113.8 371C101.9 365.5 102.9 363.3 121 356.7C143.8 348.3 153.5 344.8 158 343.3C160.5 342.5 164.5 341 167 340C172.5 337.8 180.3 334.9 198 328.5C202.1 327.1 206.3 325.5 207.2 324.9C208.2 324.4 209.7 324 210.5 324C211.4 324 213.1 323.3 214.3 322.6C217.8 320.3 235.2 314.9 238 315.2C241 315.6 241.1 321.7 238.4 334.5C236.5 343.1 235.2 351.4 234 360.5C232.8 369.7 231.3 379.3 229.9 385.5C229.4 388.2 228.5 393.6 228 397.5C224.5 424.4 223.4 425.5 208 417.7ZM726.8 283.2C724.8 280.6 721.3 275.4 719 271.5C716.7 267.6 713.8 263.4 712.5 262C711.3 260.6 707.2 254.8 703.4 249.1C699.6 243.4 695.7 237.5 694.7 236.1C689.9 229.1 691.6 227.7 712.5 221C721.3 218.3 730.5 215.3 733 214.4C735.5 213.5 740.2 212 743.5 211.1C746.8 210.1 750.6 208.9 752 208.2C753.4 207.6 760.6 205.3 768 203C775.4 200.7 783.8 198 786.5 196.9C804.8 190 813.9 190 806.5 197C805.1 198.3 804 200 804 200.8C804 201.7 802.9 203.5 801.6 204.9C796.1 210.8 792 215.8 792 216.7C792 217.3 791.1 218.5 790 219.5C788.9 220.5 788 221.9 788 222.6C788 223.3 786.9 224.7 785.6 225.7C784.3 226.7 780.4 231.3 777 235.8C773.5 240.4 770.1 244.4 769.4 244.7C768.7 245 767.8 246 767.5 247.1C767.1 248.1 766.3 249.6 765.6 250.2C765 250.9 760.8 256.2 756.5 262C752.1 267.7 747.2 274 745.4 276C743.7 277.9 742 280.5 741.6 281.7C740.9 284 734.9 288 732.1 288C731.2 288 728.8 285.9 726.8 283.2ZM263.2 251.8C254.1 240.2 241.3 223.5 238.5 219.4C236.9 217.1 234.5 214 233.3 212.6C232 211.2 229.4 207.8 227.5 205C222.6 198 211 183 209 181C208.7 180.7 207.1 178.5 205.5 176C202.2 171.1 201.9 170.7 196.1 163.5C193.8 160.8 192 158.2 192 157.8C192 157.4 190.2 155 188 152.5C178.6 141.7 180.3 134.7 190.8 140.4C194.3 142.3 201.2 145.3 212.5 149.6C217.4 151.5 223.9 154.2 226.8 155.6C229.7 156.9 232.5 158 233 158C233.5 158 237 159.4 240.7 161.1C244.5 162.9 250.2 165.3 253.5 166.5C263.7 170.3 277.2 175.9 283.5 178.9C286.8 180.5 292.2 182.8 295.5 184C298.8 185.2 303.3 187 305.5 188C307.7 188.9 310.6 190.1 312 190.5C316.2 191.8 319 194.1 319 196.2C319 198.6 311.4 209.6 306.2 214.5C305 215.7 304 217.1 304 217.5C304 217.9 302.5 219.9 300.8 221.9C299 224 296.3 227.2 294.8 229.1C293.2 231 290 235 287.5 238C285.1 241 281.4 246 279.3 249.2C272.9 258.6 269.1 259.3 263.2 251.8ZM603.5 165.5C600.2 164.2 590.3 160.8 581.5 158C572.7 155.1 565 152.4 564.5 152C564 151.6 561.9 150.9 560 150.5C558.1 150.1 555.7 149.3 554.5 148.7C553.4 148.2 551.8 147.4 551 147C547.8 145.5 548.7 141.5 553 138C555.3 136.1 559 132.6 561.3 130.2C568.6 122.5 569.5 121.7 578.6 113.4C583.5 108.9 593.4 99.4 600.7 92.4C607.9 85.3 618 75.5 623.2 70.7C628.3 65.8 635.5 58.9 639.2 55.3C642.9 51.7 646.5 49 647.2 49.3C649.3 50 648.6 59.6 645.6 69.5C641.3 83.8 640.2 87.7 636.5 102C634.6 109.4 632.5 116.9 631.9 118.5C631.3 120.1 629.9 124.9 628.9 129C627.9 133.1 626.4 138.1 625.6 140C624.8 141.9 623 148.4 621.6 154.5C618.2 169.1 616.2 170.4 603.5 165.5ZM393.1 164.6C391.6 162.8 392.1 156.7 395.2 139.5C396.3 133.4 397.8 124.9 398.5 120.5C399.2 116.1 400.6 108.7 401.4 104C402.3 99.3 403.7 91 404.5 85.5C405.4 80 407.4 69 409 61C410.6 53 412.6 42.4 413.5 37.5C420.8 -3.1 422.1 -5.9 427.6 5.8C431.1 13.3 439 32 439.6 34.5C439.9 35.6 441.7 39.7 443.6 43.6C445.5 47.6 447 51.3 447 51.9C447 52.5 448.8 56.7 450.9 61.3C453.1 65.8 456.3 73.1 458.1 77.5C459.9 81.9 461.6 85.9 462 86.5C462.4 87.1 463.1 89.1 463.5 91C463.9 92.9 464.8 95.2 465.5 96C466.8 97.5 468.7 101.7 470.9 108C473.4 114.9 479.4 129.5 483.2 137.8C487.2 146.7 484.9 151 475.9 151C473.5 151 469.7 151.5 467.5 152.1C465.3 152.7 460.6 153.6 457 154.2C453.4 154.7 446.7 156 442 157C437.3 158 432.4 159.1 431 159.3C429.6 159.6 422.9 160.9 416 162.3C397.4 166.1 394.5 166.3 393.1 164.6Z"/><path fill="#B8DB67" fill-rule="evenodd" d="M283 589.8C263.3 588 238.2 582.3 224 576.6C222.1 575.8 217.4 574 213.5 572.5C195.8 565.8 171.4 551.7 153.9 538.1C150.9 535.8 147.2 532.9 145.6 531.7C139.8 527.3 131.3 519.4 121.1 509.1C102.5 490.1 102.9 490.6 87.8 470.7C85.2 467.3 82.5 463.8 81.8 463.1C81.1 462.3 78 457.8 74.9 453.1C69.6 445 67.4 441.3 64.1 435.1C63.3 433.7 61.6 431.2 60.3 429.7C59.1 428.1 58 426.4 58 425.8C58 425.2 57.4 423.9 56.6 423.1C55.8 422.2 54 419.2 52.5 416.5C49.4 410.5 47.7 407.7 42.8 399.3C40.7 395.8 39 392.7 39 392.3C39 392 35.4 384.4 31.1 375.6C26.7 366.7 21.3 355.2 19 350C16.7 344.8 13.3 337.2 11.4 333.2C9.5 329.2 8 325.5 8 325C8 324.5 6.9 321.7 5.6 318.8C0.5 307.5 -0.4 305 0.7 303.9C2.3 302.3 3.3 303.2 8.7 311.1C11.3 315.1 14.5 319.7 15.8 321.4C17 323.1 19.1 326.1 20.5 328.1C21.8 330.2 24.8 334.2 27.2 337.2C29.6 340.1 33.7 345.5 36.5 349C133.1 475.1 251.5 534.2 354.5 507.9C386.5 499.7 432.1 482.3 480 460C502.1 449.7 524.2 439.4 536 433.7C542.3 430.7 555.4 424.5 565 420C574.6 415.5 585.2 410.5 588.5 409C608.4 399.6 615.2 396.5 621 393.8C624.6 392.2 628.9 390.3 630.5 389.5C641 384.4 695.8 361.1 714.5 353.8C763 334.8 797.2 324 841 313.9C890 302.5 950.6 299.2 987 306.1C1025.1 313.2 1057.2 326.5 1085.8 347C1090.4 350.3 1095.2 353 1096.4 353C1099 353 1102 355.8 1102 358.3C1102 360.1 1112.1 369 1114.2 369C1116.2 369 1122.3 376.8 1121.6 378.6C1120.8 380.8 1118.9 380.3 1113 376.5C1107.2 372.7 1077.9 358 1076.2 358C1075.7 358 1074.2 357.2 1072.9 356.2C1071.6 355.1 1069.2 353.8 1067.5 353.2C1065.8 352.6 1061.3 350.9 1057.5 349.5C1047.4 345.6 1040.3 343.3 1033.5 341.7C1030.2 340.8 1023.9 339.3 1019.5 338.2C1012.4 336.4 1006.8 335.4 985.5 332C967.2 329.1 925.5 330.1 900 334.1C883.9 336.6 856.1 342.9 850.6 345.3C848.4 346.3 844.1 347.8 841.1 348.6C833.4 350.9 809.5 360 806 362.1C805.2 362.6 803.2 363.5 801.6 364.2C799.1 365.1 791.2 369.1 784.5 372.8C783.4 373.4 779.6 375.3 776 377C772.4 378.8 768.8 380.9 767.9 381.6C767.1 382.4 765.9 383 765.3 383C764.7 383 761.9 384.6 759.1 386.5C756.3 388.4 753.8 390 753.6 390C753.3 390 751.1 391.3 748.8 392.9C745.1 395.3 736.4 401 720 411.5C714.9 414.8 703 422.7 699 425.5C697.1 426.9 692.6 430 689 432.6C685.4 435.1 677.5 440.4 671.5 444.3C665.5 448.2 660.3 451.7 660 452.1C659.7 452.5 657.9 453.6 655.9 454.6C651.9 456.7 639.9 464.4 633.5 469.1C631.3 470.7 627.2 473.2 624.5 474.5C621.8 475.8 617.4 478.4 614.8 480.2C608.6 484.6 599.7 490.1 592.9 493.9C589.8 495.6 584.4 498.8 580.9 501C577.4 503.2 572.5 506 570 507.2C567.5 508.3 563.6 510.6 561.3 512.1C559 513.7 556.5 515 555.8 515C555 515 553.9 515.5 553.3 516.1C552.1 517.3 548.5 519.3 536.5 525.6C531.5 528.1 526.4 530.8 525 531.5C514.6 537 484.7 551 481.5 551.9C479.3 552.6 474.1 554.6 470 556.4C460 560.9 446.9 566 442.8 567C441 567.5 436.4 569 432.5 570.5C418 575.9 376.5 586.4 363.4 587.9C334.4 591.2 305 591.9 283 589.8Z"/><path fill="#36793B" fill-rule="evenodd" d="M273.9 512.5C190.1 500.3 105.1 439.6 26.6 336C23 331.3 19.1 326.2 17.9 324.7C16.5 322.8 16.1 321.5 16.7 320.9C17.4 320.2 26.4 328.5 43.6 345.7C70.6 372.7 73.4 375.3 89 388.5C94.2 392.9 99.4 397.3 100.5 398.3C103.2 400.8 120.1 413.7 126.4 418.1C129.2 420 133.7 423.2 136.4 425.1C139 427 141.9 429 142.8 429.5C143.7 430 147 432.1 150 434.1C161.3 441.6 166.4 444.6 179.5 451.6C200.7 463.1 229.9 475.4 246 479.7C249 480.5 252.9 481.6 254.5 482.1C256.1 482.5 259.3 483.4 261.5 484C276.5 488.2 304.6 490.3 307 487.5C308.1 486.1 308.5 486.1 310.2 487.7C318 494.7 385.8 477.5 433 456.5C438.8 453.9 445.1 451.2 447.1 450.4C449.1 449.7 454.1 447.6 458.1 445.7C462.2 443.8 468.4 440.9 472 439.3C481.4 434.9 491 430.4 503 424.7C508.8 422 517.3 418 522 415.8C526.7 413.6 537.7 408.3 546.5 404C586.9 384.4 593.9 381 600 378.2C603.6 376.6 614.6 371.3 624.5 366.5C634.4 361.7 645.2 356.5 648.5 355C651.8 353.5 659.2 350 665 347.2C670.8 344.5 677.8 341.2 680.5 340C683.2 338.8 690 335.6 695.5 333C701 330.4 706.5 328 707.7 327.6C708.8 327.2 710.4 326.3 711 325.5C711.7 324.7 713.2 324 714.3 324C715.4 324 720 322.3 724.4 320.1C736.6 314.3 738.8 313.4 753.2 307.9C773.6 300.2 802.2 290.9 810 289.5C811.9 289.2 817.1 288 821.5 287C825.9 285.9 833.8 284.4 839 283.5C844.2 282.6 851 281.5 854 281C873.3 277.7 918.2 277.5 941.5 280.5C965.6 283.7 1000.5 293 1012.5 299.4C1014.2 300.3 1016.1 301 1016.8 301C1017.5 301 1018.8 301.4 1019.8 302C1020.7 302.5 1027.1 305.7 1034 309C1051.9 317.8 1070.3 329.4 1083 339.8C1098.6 352.7 1098.6 356 1083 344.8C1070.4 335.8 1048.6 324.3 1033.5 318.8C1018.3 313.1 1012.6 311.6 988 306.1C967.4 301.6 901.6 301.5 884 306C882.1 306.4 876.7 307.4 872 308C836.1 313 784 327.5 732.5 346.8C718.5 352.1 697 360.4 693.5 362C687.3 364.8 668.2 373 661 376C637.4 386 594.6 405.7 536 433.7C518.1 442.3 471.1 464.2 463.5 467.5C461.9 468.2 454.8 471.3 447.8 474.4C419.7 486.7 402.9 493 370 503.4C339.7 513 301.8 516.6 273.9 512.5Z"/></svg>
+      <span>
+        <span class="tb-title">EL SHAMS</span><br>
+        <span class="tb-sub" id="tbSub">Production desk</span>
+      </span>
+    </div>
+    <span class="tb-user" id="who"></span>
+    <button class="tb-btn" id="langBtn" type="button">العربية</button>
+    <button class="tb-btn" id="signout" type="button">Sign out</button>
+  </div>
+
+  <div class="toolbar">
+    <input id="q" type="search" placeholder="Search code, customer, reference, fabric…">
+    <select class="sel" id="fStatus"></select>
+    <select class="sel" id="fStage"></select>
+    <span class="count" id="count"></span>
+    <button class="btn sm amber" id="newBtn" type="button">+ New order</button>
+    <button class="btn sm ghost" id="refresh" type="button">Refresh</button>
+  </div>
+
+  <div class="content">
+    <div class="tablewrap">
+      <table>
+        <thead><tr id="thead"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty" id="empty" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true"></aside>
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+var CFG = window.ELSHAMS || {};
+
+function halt(title, body){
+  document.getElementById("gateErr").innerHTML =
+    '<div class="err"><strong>'+title+'</strong><br>'+body+'</div>';
+  document.getElementById("signin").disabled = true;
+}
+if(!window.supabase || !window.supabase.createClient){
+  halt("Could not load the tracking library",
+       "This page needs cdn.jsdelivr.net. Check the connection or network filtering, then reload.");
+  return;
+}
+if(!CFG.SUPABASE_URL || !CFG.SUPABASE_ANON_KEY ||
+   CFG.SUPABASE_URL.indexOf("YOUR-PROJECT-REF") > -1 ||
+   CFG.SUPABASE_ANON_KEY.indexOf("PASTE-YOUR") > -1){
+  halt("Not configured yet",
+       "Open track/config.js and fill in SUPABASE_URL and SUPABASE_ANON_KEY from Supabase &rarr; Project Settings &rarr; API.");
+  return;
+}
+
+var sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY);
+
+/* ================= i18n ================= */
+var T = {
+en:{
+  desk:"Production desk", signin:"Sign in", signinT:"Production desk",
+  signinS:"Staff sign-in for El Shams order tracking.",
+  email:"Work email", pw:"Password", signout:"Sign out",
+  noAccess:"This account is not on the staff list. Ask an administrator to add you.",
+  badLogin:"Email or password is wrong.",
+  search:"Search code, customer, reference, fabric…",
+  allStatus:"All statuses", allStage:"All stages",
+  newOrder:"+ New order", refresh:"Refresh",
+  thCode:"Code", thCustomer:"Customer", thFabric:"Fabric & shade", thQty:"Quantity",
+  thStage:"Stage", thStatus:"Status", thDue:"Due", thUpdated:"Updated",
+  emptyT:"No orders match", emptyB:"Clear the filters, or open a new order.",
+  noneT:"No orders yet", noneB:"Open the first order and the code is generated for you.",
+  active:"Active", on_hold:"On hold", completed:"Completed", cancelled:"Cancelled",
+  dyeing:"Dyeing", printing:"Printing", both:"Dyeing + printing",
+  quick:"Move this order", advance:"Advance to", atEnd:"Final stage reached",
+  jump:"Or set stage directly", hold:"Put on hold", resume:"Resume", complete:"Mark completed",
+  reopen:"Reopen", cancel:"Cancel order",
+  addNote:"Add a note to the timeline",
+  noteEn:"Note (English)", noteAr:"Note (Arabic)", postNote:"Add note",
+  timeline:"Timeline", details:"Order details", save:"Save changes",
+  customer:"Customer name", ref:"Customer reference", route:"Process route",
+  fabric:"Fabric type", colorName:"Shade name", colorHex:"Shade colour",
+  kg:"Quantity (kg)", m:"Quantity (m)", odate:"Order date", pdate:"Promised date",
+  pubEn:"Message to customer (English)", pubAr:"Message to customer (Arabic)",
+  internal:"Internal note (never shown to customer)",
+  share:"Customer link", copy:"Copy link", copied:"Link copied",
+  print:"Print QR", danger:"Delete this order", confirmDel:"Delete this order and its whole timeline? This cannot be undone.",
+  created:"Order opened", stageTo:"Moved to", noteEv:"Note", statusEv:"Status set to",
+  saved:"Saved", created2:"Order created", needCustomer:"Enter a customer name.",
+  newT:"New order", create:"Create order", close:"Close", overdue:"overdue",
+  noShade:"no shade set", noQr:"QR library did not load — check the connection."
+},
+ar:{
+  desk:"مكتب الإنتاج", signin:"تسجيل الدخول", signinT:"مكتب الإنتاج",
+  signinS:"دخول موظفي الشمس إلى نظام تتبع الطلبات.",
+  email:"البريد الإلكتروني", pw:"كلمة المرور", signout:"خروج",
+  noAccess:"هذا الحساب غير مسجل ضمن الموظفين. اطلب من المسؤول إضافتك.",
+  badLogin:"البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+  search:"ابحث بالكود أو العميل أو المرجع أو نوع القماش…",
+  allStatus:"كل الحالات", allStage:"كل المراحل",
+  newOrder:"+ طلب جديد", refresh:"تحديث",
+  thCode:"الكود", thCustomer:"العميل", thFabric:"القماش واللون", thQty:"الكمية",
+  thStage:"المرحلة", thStatus:"الحالة", thDue:"التسليم", thUpdated:"آخر تحديث",
+  emptyT:"لا توجد طلبات مطابقة", emptyB:"امسح عوامل التصفية أو افتح طلبًا جديدًا.",
+  noneT:"لا توجد طلبات بعد", noneB:"افتح أول طلب وسيتم توليد الكود تلقائيًا.",
+  active:"جارٍ التنفيذ", on_hold:"متوقف", completed:"مكتمل", cancelled:"ملغي",
+  dyeing:"صباغة", printing:"طباعة", both:"صباغة وطباعة",
+  quick:"تحريك الطلب", advance:"انتقل إلى", atEnd:"تم الوصول للمرحلة الأخيرة",
+  jump:"أو حدد المرحلة مباشرة", hold:"إيقاف مؤقت", resume:"استئناف", complete:"إنهاء الطلب",
+  reopen:"إعادة فتح", cancel:"إلغاء الطلب",
+  addNote:"أضف ملاحظة إلى المسار",
+  noteEn:"ملاحظة (إنجليزي)", noteAr:"ملاحظة (عربي)", postNote:"إضافة الملاحظة",
+  timeline:"المسار الزمني", details:"بيانات الطلب", save:"حفظ التعديلات",
+  customer:"اسم العميل", ref:"مرجع العميل", route:"مسار التشغيل",
+  fabric:"نوع القماش", colorName:"اسم اللون", colorHex:"درجة اللون",
+  kg:"الكمية (كجم)", m:"الكمية (متر)", odate:"تاريخ الطلب", pdate:"موعد التسليم",
+  pubEn:"رسالة للعميل (إنجليزي)", pubAr:"رسالة للعميل (عربي)",
+  internal:"ملاحظة داخلية (لا تظهر للعميل)",
+  share:"رابط العميل", copy:"نسخ الرابط", copied:"تم نسخ الرابط",
+  print:"طباعة الكود", danger:"حذف هذا الطلب", confirmDel:"حذف هذا الطلب وكل مساره الزمني؟ لا يمكن التراجع.",
+  created:"تم فتح الطلب", stageTo:"انتقل إلى", noteEv:"ملاحظة", statusEv:"تم ضبط الحالة على",
+  saved:"تم الحفظ", created2:"تم إنشاء الطلب", needCustomer:"أدخل اسم العميل.",
+  newT:"طلب جديد", create:"إنشاء الطلب", close:"إغلاق", overdue:"متأخر",
+  noShade:"بدون لون محدد", noQr:"تعذر تحميل مكتبة الكود — تحقق من الاتصال."
+}};
+var lang = (localStorage.getItem("els_lang")==="ar") ? "ar" : "en";
+function t(k){ return (T[lang]&&T[lang][k]) || T.en[k] || k; }
+function loc(){ return lang==="ar" ? "ar-EG-u-nu-latn" : "en-GB"; }
+
+/* ================= helpers ================= */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function fdate(v){ if(!v)return""; var d=new Date(v); if(isNaN(d))return"";
+  return new Intl.DateTimeFormat(loc(),{day:"2-digit",month:"short",year:"numeric"}).format(d);}
+function fdt(v){ if(!v)return""; var d=new Date(v); if(isNaN(d))return"";
+  return new Intl.DateTimeFormat(loc(),{day:"2-digit",month:"short",year:"numeric",
+    hour:"2-digit",minute:"2-digit"}).format(d);}
+function fnum(v){ if(v===null||v===undefined||v==="")return"";
+  var n=Number(v); if(isNaN(n))return""; return new Intl.NumberFormat(loc(),{maximumFractionDigits:2}).format(n);}
+function el(id){return document.getElementById(id);}
+function toast(m){ var x=el("toast"); x.textContent=m; x.classList.add("on");
+  clearTimeout(x._t); x._t=setTimeout(function(){x.classList.remove("on");},2200);}
+function isHex(h){return /^#[0-9A-Fa-f]{6}$/.test(String(h||"").trim());}
+
+/* ================= state ================= */
+var STAGES = [], ORDERS = [], ME = null, IS_ADMIN = false, OPEN = null;
+
+function routeStages(route){
+  return STAGES.filter(function(s){
+    if(route==="dyeing")   return s.in_dyeing;
+    if(route==="printing") return s.in_printing;
+    return s.in_dyeing || s.in_printing;
+  });
+}
+function stageName(id){
+  var s = STAGES.filter(function(x){return x.id===id;})[0];
+  return s ? (lang==="ar"?s.name_ar:s.name_en) : "—";
+}
+
+/* ================= sign in ================= */
+async function trySession(){
+  var s = await sb.auth.getSession();
+  if(s.data.session) await enter(s.data.session.user);
+}
+async function enter(user){
+  var r = await sb.from("staff").select("full_name, role, is_active").eq("id", user.id).maybeSingle();
+  if(r.error || !r.data || !r.data.is_active){
+    el("gateErr").innerHTML = '<div class="err">'+esc(t("noAccess"))+'</div>';
+    await sb.auth.signOut();
+    return;
+  }
+  ME = { id:user.id, email:user.email, name:r.data.full_name || user.email, role:r.data.role };
+  IS_ADMIN = r.data.role === "admin";
+  el("gate").style.display = "none";
+  el("app").classList.add("on");
+  el("who").textContent = ME.name;
+  await loadStages();
+  await loadOrders();
+}
+
+el("signin").addEventListener("click", async function(){
+  var b=this; b.disabled=true; el("gateErr").innerHTML="";
+  var r = await sb.auth.signInWithPassword({ email: el("email").value.trim(), password: el("pw").value });
+  b.disabled=false;
+  if(r.error){ el("gateErr").innerHTML='<div class="err">'+esc(t("badLogin"))+'</div>'; return; }
+  await enter(r.data.user);
+});
+el("pw").addEventListener("keydown",function(e){ if(e.key==="Enter") el("signin").click(); });
+el("signout").addEventListener("click", async function(){ await sb.auth.signOut(); location.reload(); });
+
+/* ================= data ================= */
+async function loadStages(){
+  var r = await sb.from("stages").select("*").order("sort_order");
+  if(!r.error) STAGES = r.data || [];
+  buildFilters();
+}
+async function loadOrders(){
+  var r = await sb.from("orders").select("*").order("updated_at",{ascending:false});
+  if(r.error){ toast(r.error.message); return; }
+  ORDERS = r.data || [];
+  draw();
+}
+
+/* ================= filters + table ================= */
+function buildFilters(){
+  var fs = el("fStatus");
+  fs.innerHTML = '<option value="">'+esc(t("allStatus"))+'</option>' +
+    ["active","on_hold","completed","cancelled"].map(function(s){
+      return '<option value="'+s+'">'+esc(t(s))+'</option>'; }).join("");
+  var fg = el("fStage");
+  fg.innerHTML = '<option value="">'+esc(t("allStage"))+'</option>' +
+    STAGES.map(function(s){
+      return '<option value="'+s.id+'">'+esc(lang==="ar"?s.name_ar:s.name_en)+'</option>'; }).join("");
+}
+
+function filtered(){
+  var q  = el("q").value.trim().toLowerCase();
+  var st = el("fStatus").value, sg = el("fStage").value;
+  return ORDERS.filter(function(o){
+    if(st && o.status!==st) return false;
+    if(sg && String(o.current_stage_id)!==sg) return false;
+    if(!q) return true;
+    return [o.tracking_code,o.customer_name,o.customer_ref,o.fabric_type,o.color_name]
+      .filter(Boolean).join(" ").toLowerCase().indexOf(q) > -1;
+  });
+}
+
+function draw(){
+  el("thead").innerHTML = ["thCode","thCustomer","thFabric","thQty","thStage","thStatus","thDue","thUpdated"]
+    .map(function(k){ return "<th>"+esc(t(k))+"</th>"; }).join("");
+
+  var rows = filtered();
+  el("count").textContent = rows.length + " / " + ORDERS.length;
+  var tb = el("tbody"), emp = el("empty");
+
+  if(!rows.length){
+    tb.innerHTML = "";
+    emp.style.display = "block";
+    var none = ORDERS.length === 0;
+    emp.innerHTML = "<strong>"+esc(t(none?"noneT":"emptyT"))+"</strong>"+esc(t(none?"noneB":"emptyB"));
+    return;
+  }
+  emp.style.display = "none";
+
+  var today = new Date(new Date().toDateString());
+  tb.innerHTML = rows.map(function(o){
+    var qty = [ fnum(o.quantity_kg)?fnum(o.quantity_kg)+" kg":"", fnum(o.quantity_m)?fnum(o.quantity_m)+" m":"" ]
+                .filter(Boolean).join(" / ");
+    var overdue = o.promised_date && o.status!=="completed" && o.status!=="cancelled" &&
+                  new Date(o.promised_date) < today;
+    var sw = isHex(o.color_hex)
+      ? '<span class="swatch-sm" style="background-image:none;background-color:'+esc(o.color_hex)+'"></span>'
+      : '<span class="swatch-sm"></span>';
+    return '<tr data-id="'+esc(o.id)+'">'+
+      '<td><div class="c-code">'+esc(o.tracking_code)+'</div>'+
+        '<div class="c-sub">'+esc(t(o.route))+'</div></td>'+
+      '<td>'+esc(o.customer_name)+
+        (o.customer_ref?'<div class="c-sub mono">'+esc(o.customer_ref)+'</div>':'')+'</td>'+
+      '<td>'+sw+esc(o.fabric_type||"—")+
+        (o.color_name?'<div class="c-sub">'+esc(o.color_name)+'</div>':'')+'</td>'+
+      '<td class="mono" style="font-size:13px">'+esc(qty||"—")+'</td>'+
+      '<td><span class="chip stage cur">'+esc(stageName(o.current_stage_id))+'</span></td>'+
+      '<td><span class="chip '+esc(o.status)+'">'+esc(t(o.status))+'</span></td>'+
+      '<td class="mono '+(overdue?"late":"")+'" style="font-size:13px;white-space:nowrap">'+
+        esc(fdate(o.promised_date)||"—")+'</td>'+
+      '<td class="mono" style="font-size:12px;color:var(--muted);white-space:nowrap">'+
+        esc(fdt(o.updated_at))+'</td>'+
+    '</tr>';
+  }).join("");
+
+  Array.prototype.forEach.call(tb.querySelectorAll("tr"), function(tr){
+    tr.addEventListener("click", function(){ openOrder(tr.getAttribute("data-id")); });
+  });
+}
+
+["q","fStatus","fStage"].forEach(function(id){
+  el(id).addEventListener("input", draw);
+  el(id).addEventListener("change", draw);
+});
+el("refresh").addEventListener("click", loadOrders);
+
+/* ================= panel ================= */
+function closePanel(){
+  el("panel").classList.remove("on");
+  el("scrim").classList.remove("on");
+  OPEN = null;
+}
+el("scrim").addEventListener("click", closePanel);
+document.addEventListener("keydown", function(e){ if(e.key==="Escape") closePanel(); });
+
+function field(id,label,value,type,extra){
+  return '<div><label class="lbl" for="'+id+'">'+esc(label)+'</label>'+
+    '<input class="inp" id="'+id+'" type="'+(type||"text")+'" value="'+esc(value==null?"":value)+'" '+(extra||"")+'></div>';
+}
+function hexField(id,label,value){
+  var v = isHex(value) ? value.toUpperCase() : "";
+  return '<div><label class="lbl" for="'+id+'">'+esc(label)+'</label>'+
+    '<div style="display:flex;gap:6px">'+
+      '<input class="inp" id="'+id+'" type="text" maxlength="7" placeholder="'+esc(t("noShade"))+'" value="'+esc(v)+'">'+
+      '<input id="'+id+'P" type="color" value="'+(v||"#CCCCCC")+'" aria-label="'+esc(label)+'" '+
+        'style="width:44px;flex:none;padding:2px;border:1.5px solid var(--line);border-radius:var(--r);background:#FBFCFD;cursor:pointer">'+
+    '</div></div>';
+}
+function wireHex(id){
+  var txt = el(id), pick = el(id+"P");
+  if(!txt || !pick) return;
+  pick.addEventListener("input", function(){ txt.value = pick.value.toUpperCase(); });
+  txt.addEventListener("input", function(){ if(isHex(txt.value.trim())) pick.value = txt.value.trim(); });
+}
+function hexVal(id){ var v = (el(id).value||"").trim(); return isHex(v) ? v.toUpperCase() : null; }
+
+function area(id,label,value){
+  return '<div><label class="lbl" for="'+id+'">'+esc(label)+'</label>'+
+    '<textarea class="inp" id="'+id+'">'+esc(value==null?"":value)+'</textarea></div>';
+}
+
+async function openOrder(id){
+  var o = ORDERS.filter(function(x){return x.id===id;})[0];
+  if(!o) return;
+  OPEN = o;
+  el("scrim").classList.add("on");
+  var p = el("panel");
+  p.classList.add("on");
+  p.scrollTop = 0;
+
+  var rs = routeStages(o.route);
+  var idx = -1; rs.forEach(function(s,i){ if(s.id===o.current_stage_id) idx=i; });
+  var next = (idx>-1 && idx < rs.length-1) ? rs[idx+1] : null;
+  var link = (CFG.TRACK_URL||"") + "?code=" + encodeURIComponent(o.tracking_code);
+
+  p.innerHTML =
+  '<div class="p-head">'+
+    '<div><div class="p-code">'+esc(o.tracking_code)+'</div>'+
+    '<div class="p-cust">'+esc(o.customer_name)+' · '+esc(t(o.route))+'</div></div>'+
+    '<button class="x" id="pClose" aria-label="'+esc(t("close"))+'">&times;</button>'+
+  '</div>'+
+
+  /* --- move --- */
+  '<div class="block"><h3>'+esc(t("quick"))+'</h3>'+
+    '<div class="row">'+
+      (next
+        ? '<button class="btn amber" id="adv">'+esc(t("advance"))+' → '+esc(lang==="ar"?next.name_ar:next.name_en)+'</button>'
+        : '<span style="color:var(--muted);font-size:13.5px;align-self:center">'+esc(t("atEnd"))+'</span>')+
+      (o.status==="on_hold"
+        ? '<button class="btn ghost" id="resume">'+esc(t("resume"))+'</button>'
+        : '<button class="btn ghost" id="hold">'+esc(t("hold"))+'</button>')+
+      (o.status==="completed"
+        ? '<button class="btn ghost" id="reopen">'+esc(t("reopen"))+'</button>'
+        : '<button class="btn ghost" id="done">'+esc(t("complete"))+'</button>')+
+      (o.status!=="cancelled" ? '<button class="btn ghost" id="cancel">'+esc(t("cancel"))+'</button>' : "")+
+    '</div>'+
+    '<div style="margin-top:14px">'+
+      '<label class="lbl" for="jump">'+esc(t("jump"))+'</label>'+
+      '<select class="sel" id="jump" style="width:100%">'+
+        rs.map(function(s){
+          return '<option value="'+s.id+'"'+(s.id===o.current_stage_id?" selected":"")+'>'+
+                 esc(lang==="ar"?s.name_ar:s.name_en)+'</option>'; }).join("")+
+      '</select>'+
+    '</div>'+
+  '</div>'+
+
+  /* --- note --- */
+  '<div class="block"><h3>'+esc(t("addNote"))+'</h3>'+
+    '<div class="grid2">'+
+      area("nEn", t("noteEn"), "")+
+      area("nAr", t("noteAr"), "")+
+    '</div>'+
+    '<div class="row" style="margin-top:12px"><button class="btn sm" id="postNote">'+esc(t("postNote"))+'</button></div>'+
+  '</div>'+
+
+  /* --- timeline --- */
+  '<div class="block"><h3>'+esc(t("timeline"))+'</h3><div id="tlBox">…</div></div>'+
+
+  /* --- details --- */
+  '<div class="block"><h3>'+esc(t("details"))+'</h3>'+
+    '<div class="grid2">'+
+      field("fCust", t("customer"), o.customer_name)+
+      field("fRef",  t("ref"), o.customer_ref)+
+      '<div><label class="lbl" for="fRoute">'+esc(t("route"))+'</label>'+
+        '<select class="inp" id="fRoute">'+
+          ["dyeing","printing","both"].map(function(r){
+            return '<option value="'+r+'"'+(o.route===r?" selected":"")+'>'+esc(t(r))+'</option>'; }).join("")+
+        '</select></div>'+
+      field("fFab",  t("fabric"), o.fabric_type)+
+      field("fCol",  t("colorName"), o.color_name)+
+      hexField("fHex", t("colorHex"), o.color_hex)+
+      field("fKg",   t("kg"), o.quantity_kg, "number", 'step="0.01" min="0"')+
+      field("fM",    t("m"),  o.quantity_m,  "number", 'step="0.01" min="0"')+
+      field("fOd",   t("odate"), o.order_date, "date")+
+      field("fPd",   t("pdate"), o.promised_date, "date")+
+    '</div>'+
+    '<div class="grid2" style="margin-top:12px">'+
+      area("fPubEn", t("pubEn"), o.public_note_en)+
+      area("fPubAr", t("pubAr"), o.public_note_ar)+
+    '</div>'+
+    '<div style="margin-top:12px">'+area("fInt", t("internal"), o.internal_note)+'</div>'+
+    '<div class="row" style="margin-top:14px"><button class="btn" id="save">'+esc(t("save"))+'</button></div>'+
+  '</div>'+
+
+  /* --- share --- */
+  '<div class="block"><h3>'+esc(t("share"))+'</h3>'+
+    '<div id="qrbox"></div>'+
+    '<div class="linkline">'+esc(link)+'</div>'+
+    '<div class="row" style="margin-top:12px">'+
+      '<button class="btn sm ghost" id="copy">'+esc(t("copy"))+'</button>'+
+      '<button class="btn sm ghost" id="printQr">'+esc(t("print"))+'</button>'+
+    '</div>'+
+  '</div>'+
+
+  (IS_ADMIN
+    ? '<div class="block" style="margin-bottom:20px"><h3>'+esc(t("danger"))+'</h3>'+
+      '<button class="btn danger sm" id="del">'+esc(t("danger"))+'</button></div>'
+    : '<div style="height:20px"></div>');
+
+  el("pClose").addEventListener("click", closePanel);
+  wireHex("fHex");
+
+  /* actions */
+  if(next) el("adv").addEventListener("click", function(){ patch(o.id,{current_stage_id: next.id, status: o.status==="on_hold"?"active":o.status}); });
+  el("jump").addEventListener("change", function(){ patch(o.id,{current_stage_id: Number(this.value)}); });
+  if(el("hold"))   el("hold").addEventListener("click",   function(){ patch(o.id,{status:"on_hold"}); });
+  if(el("resume")) el("resume").addEventListener("click", function(){ patch(o.id,{status:"active"}); });
+  if(el("done"))   el("done").addEventListener("click",   function(){ patch(o.id,{status:"completed"}); });
+  if(el("reopen")) el("reopen").addEventListener("click", function(){ patch(o.id,{status:"active"}); });
+  if(el("cancel")) el("cancel").addEventListener("click", function(){ patch(o.id,{status:"cancelled"}); });
+
+  el("postNote").addEventListener("click", async function(){
+    var en = el("nEn").value.trim(), ar = el("nAr").value.trim();
+    if(!en && !ar) return;
+    var r = await sb.from("order_events").insert({
+      order_id:o.id, stage_id:o.current_stage_id, event_type:"note",
+      note_en:en||null, note_ar:ar||null, created_by:ME.id });
+    if(r.error){ toast(r.error.message); return; }
+    toast(t("saved")); openOrder(o.id);
+  });
+
+  el("save").addEventListener("click", async function(){
+    var name = el("fCust").value.trim();
+    if(!name){ toast(t("needCustomer")); return; }
+    patch(o.id,{
+      customer_name:name,
+      customer_ref: el("fRef").value.trim() || null,
+      route: el("fRoute").value,
+      fabric_type: el("fFab").value.trim() || null,
+      color_name: el("fCol").value.trim() || null,
+      color_hex: hexVal("fHex"),
+      quantity_kg: el("fKg").value === "" ? null : Number(el("fKg").value),
+      quantity_m:  el("fM").value  === "" ? null : Number(el("fM").value),
+      order_date: el("fOd").value || null,
+      promised_date: el("fPd").value || null,
+      public_note_en: el("fPubEn").value.trim() || null,
+      public_note_ar: el("fPubAr").value.trim() || null,
+      internal_note: el("fInt").value.trim() || null
+    });
+  });
+
+  el("copy").addEventListener("click", function(){
+    navigator.clipboard.writeText(link).then(function(){ toast(t("copied")); });
+  });
+  el("printQr").addEventListener("click", function(){ printQr(o, link); });
+
+  if(el("del")) el("del").addEventListener("click", async function(){
+    if(!confirm(t("confirmDel"))) return;
+    var r = await sb.from("orders").delete().eq("id", o.id);
+    if(r.error){ toast(r.error.message); return; }
+    closePanel(); loadOrders();
+  });
+
+  if(window.QRCode) QRCode.toCanvas(link,{width:150,margin:1,color:{dark:"#16233D",light:"#ffffff"}},
+    function(e,c){ if(!e) el("qrbox").appendChild(c); });
+
+  loadTimeline(o.id);
+}
+
+async function loadTimeline(id){
+  var r = await sb.from("order_events").select("*").eq("order_id",id).order("happened_at",{ascending:false});
+  var box = el("tlBox"); if(!box) return;
+  if(r.error){ box.textContent = r.error.message; return; }
+  box.innerHTML = '<ul class="tl">' + (r.data||[]).map(function(e){
+    var title, cls="";
+    if(e.event_type==="created")      title = t("created");
+    else if(e.event_type==="stage")   title = t("stageTo")+" "+stageName(e.stage_id);
+    else if(e.event_type==="status"){ title = t("statusEv")+" "+t(e.note_en||""); cls="status"; }
+    else { title = t("noteEv"); cls="note"; }
+    var n = (lang==="ar"?e.note_ar:e.note_en) || (e.event_type==="note" ? (e.note_ar||e.note_en) : "");
+    return '<li><span class="d '+cls+'"></span>'+
+      '<div class="tl-t">'+esc(title)+'</div>'+
+      '<div class="tl-w">'+esc(fdt(e.happened_at))+'</div>'+
+      (e.event_type==="note" && n ? '<div class="tl-n">'+esc(n)+'</div>' : "")+
+    '</li>';
+  }).join("") + '</ul>';
+}
+
+async function patch(id, obj){
+  var r = await sb.from("orders").update(obj).eq("id",id).select().single();
+  if(r.error){ toast(r.error.message); return; }
+  ORDERS = ORDERS.map(function(o){ return o.id===id ? r.data : o; });
+  draw();
+  toast(t("saved"));
+  openOrder(id);
+}
+
+/* ================= new order ================= */
+el("newBtn").addEventListener("click", function(){
+  el("scrim").classList.add("on");
+  var p = el("panel"); p.classList.add("on"); p.scrollTop = 0;
+  var today = new Date().toISOString().slice(0,10);
+
+  p.innerHTML =
+  '<div class="p-head"><div><div class="p-code">'+esc(t("newT"))+'</div>'+
+  '<div class="p-cust">'+esc(t("noneB"))+'</div></div>'+
+  '<button class="x" id="pClose">&times;</button></div>'+
+  '<div class="block" style="margin-bottom:20px">'+
+    '<div class="grid2">'+
+      field("nCust", t("customer"), "")+
+      field("nRef",  t("ref"), "")+
+      '<div><label class="lbl" for="nRoute">'+esc(t("route"))+'</label>'+
+        '<select class="inp" id="nRoute">'+
+          ["dyeing","printing","both"].map(function(r){
+            return '<option value="'+r+'">'+esc(t(r))+'</option>'; }).join("")+
+        '</select></div>'+
+      field("nFab", t("fabric"), "")+
+      field("nCol", t("colorName"), "")+
+      hexField("nHex", t("colorHex"), "")+
+      field("nKg",  t("kg"), "", "number", 'step="0.01" min="0"')+
+      field("nM",   t("m"),  "", "number", 'step="0.01" min="0"')+
+      field("nOd",  t("odate"), today, "date")+
+      field("nPd",  t("pdate"), "", "date")+
+    '</div>'+
+    '<div class="row" style="margin-top:16px"><button class="btn amber" id="create">'+esc(t("create"))+'</button></div>'+
+  '</div>';
+
+  el("pClose").addEventListener("click", closePanel);
+  wireHex("nHex");
+  el("create").addEventListener("click", async function(){
+    var name = el("nCust").value.trim();
+    if(!name){ toast(t("needCustomer")); el("nCust").focus(); return; }
+    this.disabled = true;
+    var r = await sb.from("orders").insert({
+      customer_name:name,
+      customer_ref: el("nRef").value.trim() || null,
+      route: el("nRoute").value,
+      fabric_type: el("nFab").value.trim() || null,
+      color_name: el("nCol").value.trim() || null,
+      color_hex: hexVal("nHex"),
+      quantity_kg: el("nKg").value === "" ? null : Number(el("nKg").value),
+      quantity_m:  el("nM").value  === "" ? null : Number(el("nM").value),
+      order_date: el("nOd").value || null,
+      promised_date: el("nPd").value || null,
+      created_by: ME.id
+    }).select().single();
+    this.disabled = false;
+    if(r.error){ toast(r.error.message); return; }
+    ORDERS.unshift(r.data); draw();
+    toast(t("created2") + " · " + r.data.tracking_code);
+    openOrder(r.data.id);
+  });
+  el("nCust").focus();
+});
+
+/* ================= QR print sheet ================= */
+function logoMarkup(){
+  var n = document.querySelector(".tb-logo");
+  return n ? n.outerHTML.replace('class="tb-logo"','class="lg"') : "";
+}
+function printQr(o, link){
+  if(!window.QRCode){ toast(t("noQr")); return; }
+  QRCode.toDataURL(link,{width:520,margin:1,color:{dark:"#16233D",light:"#ffffff"}},function(err,url){
+    if(err){ toast(String(err)); return; }
+    var w = window.open("","_blank");
+    if(!w){ toast("Allow pop-ups to print."); return; }
+    w.document.write(
+      '<!doctype html><html><head><meta charset="utf-8"><title>'+esc(o.tracking_code)+'</title>'+
+      '<style>@page{size:A6;margin:8mm}'+
+      'body{font-family:system-ui,sans-serif;text-align:center;color:#16233D;margin:0}'+
+      '.lg{width:104px;height:auto;display:block;margin:0 auto 6px}'+
+      'h1{font-size:15px;letter-spacing:.15em;margin:0 0 2px}'+
+      '.s{font-size:9px;color:#5C6B85;margin-bottom:10px}'+
+      'img{width:150px;height:150px}'+
+      '.c{font-family:ui-monospace,monospace;font-size:19px;font-weight:700;letter-spacing:.08em;margin-top:8px}'+
+      '.n{font-size:11px;color:#5C6B85;margin-top:4px}'+
+      '.u{font-family:ui-monospace,monospace;font-size:8px;color:#8494AC;margin-top:8px;word-break:break-all}'+
+      '</style></head><body>'+
+      logoMarkup()+
+      '<h1>EL SHAMS</h1><div class="s">Scan to track your order · امسح لتتبع طلبك</div>'+
+      '<img src="'+url+'" alt="">'+
+      '<div class="c">'+esc(o.tracking_code)+'</div>'+
+      '<div class="n">'+esc(o.customer_name)+(o.customer_ref?" · "+esc(o.customer_ref):"")+'</div>'+
+      '<div class="u">'+esc(link)+'</div>'+
+      '</body></html>');
+    w.document.close();
+    setTimeout(function(){ w.print(); }, 350);
+  });
+}
+
+/* ================= language ================= */
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir  = lang==="ar" ? "rtl" : "ltr";
+  el("langBtn").textContent = lang==="ar" ? "English" : "العربية";
+  el("gt1").textContent = t("signinT");  el("gt2").textContent = t("signinS");
+  el("gt3").textContent = t("email");    el("gt4").textContent = t("pw");
+  el("signin").textContent = t("signin");
+  el("signout").textContent = t("signout");
+  el("tbSub").textContent = t("desk");
+  el("q").placeholder = t("search");
+  el("newBtn").textContent = t("newOrder");
+  el("refresh").textContent = t("refresh");
+  if(STAGES.length){
+    var keepS = el("fStatus").value, keepG = el("fStage").value;
+    buildFilters();
+    el("fStatus").value = keepS; el("fStage").value = keepG;
+    draw();
+  }
+  if(OPEN) openOrder(OPEN.id);
+}
+el("langBtn").addEventListener("click", function(){
+  lang = lang==="ar" ? "en" : "ar";
+  localStorage.setItem("els_lang", lang);
+  applyLang();
+});
+
+/* ================= boot ================= */
+applyLang();
+trySession();
+
+})();
+</script>
+</body>
+</html>
