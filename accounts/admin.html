@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Finance Dashboard · El Shams</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA/1BMVEUAAACmo6Op0ln9/f15eXfyhjXlml5paWiWmZHzhS7//wBapk8mJibuhzqZtmj5cw4qKyrkikb/AAAZfyUIcmwhh1D/oxQ2kEtmZ2absnT/f3TC4l4WflUA/wBurl+oqF6hrHvqi0AKGWgcaZlqAP9aqFS0ah+NbZ+wzGSs1Y4AAP8AZv8zmTMYkVUchFcA//9/fwB5fjx/f795VcJVqlV//wCQWHmic8W/vz+QnICkymHtfy3qfSrEnJzQ42rDw7QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADmr6rlAAAAQHRSTlMAEfsCDKYcZ1fjAextYOADlVsBAx6aA9mIYgP/ZgFvBJiVCAsFvAMVigkFBQUVdQEC5gQVAwIXFgSPa77gDTcRiPFgngAAAaJJREFUeNp9U+d6gzAMlGdsA2GGrGa1Tbr33u//VpUgIVD4qh/Y1p3OkpEAKmM1E9Cymlt0UNAj62fi/MFpSZKWa3eokRPX8m53E9AaXNKOo9VhWAgqgJxYoskol3ySg/q8DzWydJWqKHFHYRAKazUoq5MwrEsgy4XaKlReWaVUTMhOA4svSJgfRlsVaB2vAh2oON24x3RGKDuh0iYQxzYoowIU2gosJBLOBNzQAb25lmKzgCDOBoOht55f4R1ImB86ErVfuYRZCnB0MPQ475PNiQDv62dlrfqAMKvgpXmhFMcGCTPBvSzA9C+xuOza8/i0X7xMWtbJHHxz7+BCYWLZAIM5fzuHJ2JI0fMpiwWcTr2hdzco4b4B98N8P/KjKOoJJLhXZHBeoLy/fKDIKCKG71OZqOVgzPm0gPFVbtHjV3+0eEnM45iNMeXj4mbYtwcpMGaMNIwdAm6MlMYw02gJ1hv1djYyo5HBdU+QBQmF5FaXOkA0e0rQt9nkoi5QSlRe2Wz2jqaGrmbvZjQHQ/6FRedo/eMoBrYx560rZX389/AvOxoUh6DIgCgAAAAASUVORK5CYII=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16233D; --ink-2:#24354F; --ink-3:#3B4E6D;
+  --paper:#F7F6F3; --card:#FFFFFF; --line:#E4E0D8; --line-2:#EFEBE3;
+  --slate:#5A6478; --slate-2:#8A93A3;
+  --amber:#E8A33D; --gold:#F4C16B; --warm:#C46A22;
+  --due:#A6321F; --due-soft:#FBEEEA;
+  --credit:#1F6B4F; --credit-soft:#EAF3EF;
+  --r:9px; --shadow:0 1px 2px rgba(22,35,61,.05),0 8px 24px -14px rgba(22,35,61,.2);
+  --logo:url("data:image/png;base64,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");
+  --sans:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --serif:"IBM Plex Serif",Georgia,serif;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+body{ margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+h1,h2,h3{ margin:0; font-weight:600; letter-spacing:-.01em; }
+button{ font:inherit; cursor:pointer; }
+:focus-visible{ outline:2px solid var(--amber); outline-offset:2px; border-radius:4px; }
+.hidden{ display:none !important; }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+.num{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.wrap{ max-width:1240px; margin:0 auto; padding:0 20px; }
+
+/* topbar */
+.topbar{ background:var(--ink); color:#fff; position:sticky; top:0; z-index:30; }
+.topbar .wrap{ display:flex; align-items:center; gap:12px; min-height:64px; }
+.brand{ display:flex; align-items:center; gap:10px; color:#fff; text-decoration:none; }
+.brand__mark{ width:38px; height:38px; flex:none;
+  background:var(--logo) center/contain no-repeat;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.brand__name{ font-weight:600; }
+.brand__sub{ display:block; font-size:10.5px; color:#A9B6CC; letter-spacing:.09em; text-transform:uppercase; }
+.spacer{ flex:1; }
+.who{ font-size:12.5px; color:#A9B6CC; }
+.tbtn{ background:transparent; border:1px solid rgba(255,255,255,.24); color:#fff;
+  padding:5px 11px; border-radius:999px; font-size:12.5px; }
+.tbtn:hover{ background:rgba(255,255,255,.1); }
+
+/* login */
+.login{ display:grid; place-items:center; min-height:calc(100vh - 58px); padding:40px 20px; }
+.login__card{ width:100%; max-width:390px; background:var(--card); border:1px solid var(--line);
+  border-radius:var(--r); padding:32px; box-shadow:var(--shadow); }
+.login__logo{
+  display:block; width:104px; height:104px; margin:0 auto 16px;
+  background:var(--logo) center/contain no-repeat;
+}
+.login__title{ font-family:var(--serif); font-size:24px; margin-bottom:6px; }
+.login__note{ color:var(--slate); margin:0 0 22px; font-size:13.5px; }
+
+label{ display:block; font-size:12.5px; font-weight:500; color:var(--ink-3); margin-bottom:5px; }
+input,select,textarea{ width:100%; padding:9px 11px; border:1px solid var(--line);
+  border-radius:7px; background:#fff; color:var(--ink); font:inherit; }
+input:focus,select:focus,textarea:focus{ border-color:var(--ink-3); outline:none;
+  box-shadow:0 0 0 3px rgba(36,53,79,.09); }
+textarea{ min-height:64px; resize:vertical; }
+.field{ margin-bottom:14px; }
+.btn{ padding:9px 16px; border:none; border-radius:7px; background:var(--ink);
+  color:#fff; font-weight:600; }
+.btn:hover{ background:var(--ink-2); }
+.btn:disabled{ opacity:.55; cursor:not-allowed; }
+.btn--wide{ width:100%; }
+.btn--ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); font-weight:500; }
+.btn--ghost:hover{ background:var(--line-2); }
+.btn--sm{ padding:5px 11px; font-size:12.5px; }
+.btn--danger{ background:#fff; color:var(--due); border:1px solid #EFD5CE; font-weight:500; }
+.btn--danger:hover{ background:var(--due-soft); }
+.linkish{ background:none; border:none; padding:0; color:var(--slate);
+  font-size:13px; text-decoration:underline; }
+.alert{ padding:9px 12px; border-radius:7px; font-size:13px; margin-bottom:14px; }
+.alert--bad{ background:var(--due-soft); color:var(--due); border:1px solid #EFD5CE; }
+.alert--ok{ background:var(--credit-soft); color:var(--credit); border:1px solid #CFE3D9; }
+
+/* tabs */
+.tabs{ display:flex; gap:2px; border-bottom:1px solid var(--line); margin:26px 0 22px; flex-wrap:wrap; }
+.tab{ background:none; border:none; padding:9px 15px; color:var(--slate);
+  font-weight:500; border-bottom:2px solid transparent; margin-bottom:-1px; }
+.tab:hover{ color:var(--ink); }
+.tab.is-on{ color:var(--ink); border-bottom-color:var(--amber); font-weight:600; }
+
+/* kpis */
+.kpis{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); }
+.kpi{ background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+  padding:16px 18px; box-shadow:var(--shadow); }
+.kpi__label{ font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--slate-2); font-weight:600; margin:0 0 8px; }
+.kpi__value{ font-family:var(--mono); font-variant-numeric:tabular-nums;
+  font-size:23px; font-weight:600; letter-spacing:-.02em; margin:0; }
+.kpi__sub{ font-size:12px; color:var(--slate); margin:5px 0 0; }
+.kpi--due .kpi__value{ color:var(--due); }
+.kpi--credit .kpi__value{ color:var(--credit); }
+
+/* toolbar */
+.toolbar{ display:flex; gap:9px; flex-wrap:wrap; align-items:center; margin:22px 0 12px; }
+.toolbar input,.toolbar select{ width:auto; padding:7px 10px; font-size:13px; }
+.toolbar__end{ margin-inline-start:auto; display:flex; gap:8px; }
+
+/* tables */
+.panel{ background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow); overflow-x:auto; }
+table{ width:100%; border-collapse:collapse; font-size:13px; }
+th{ text-align:start; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--slate-2); font-weight:600; padding:10px 13px; white-space:nowrap;
+  border-bottom:1px solid var(--line); background:#FCFBF9; position:sticky; top:64px; }
+th.sortable{ cursor:pointer; user-select:none; }
+th.sortable:hover{ color:var(--ink); }
+td{ padding:10px 13px; border-bottom:1px solid var(--line-2); vertical-align:middle; }
+tbody tr:last-child td{ border-bottom:none; }
+tbody tr.clickable{ cursor:pointer; }
+tbody tr.clickable:hover{ background:#FCFBF8; }
+.t-num{ text-align:end; font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.t-doc{ font-family:var(--mono); font-weight:500; white-space:nowrap; }
+.t-muted{ color:var(--slate-2); }
+.pos{ color:var(--ink); font-weight:600; }
+.neg{ color:var(--credit); font-weight:600; }
+.zero{ color:var(--slate-2); }
+tfoot td{ border-top:2px solid var(--ink); font-weight:600; background:#FCFBF9; }
+
+.tag{ display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px;
+  font-weight:600; border:1px solid transparent; white-space:nowrap; }
+.tag--debit{ background:#F2F4F8; color:var(--ink-3); border-color:#E1E6ED; }
+.tag--credit{ background:var(--credit-soft); color:var(--credit); border-color:#CFE3D9; }
+.tag--due{ background:var(--due-soft); color:var(--due); border-color:#EFD5CE; }
+.tag--ok{ background:#F5F3ED; color:var(--slate); border-color:var(--line); }
+.tag--void{ background:#F1F1F1; color:var(--slate-2); border-color:#DDD; text-decoration:line-through; }
+
+.empty{ padding:44px 20px; text-align:center; color:var(--slate); }
+.empty strong{ display:block; color:var(--ink); margin-bottom:4px; }
+
+/* customer detail */
+.detail__head{ display:flex; flex-wrap:wrap; gap:14px; align-items:flex-start; margin-bottom:18px; }
+.detail__name{ font-family:var(--serif); font-size:21px; }
+.detail__meta{ font-size:12.5px; color:var(--slate); margin-top:3px; }
+.detail__actions{ margin-inline-start:auto; display:flex; gap:8px; flex-wrap:wrap; }
+.backlink{ background:none; border:none; padding:0; color:var(--slate);
+  font-size:13px; margin-bottom:14px; }
+.backlink:hover{ color:var(--ink); text-decoration:underline; }
+.subhead{ font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--slate-2); font-weight:600; margin:26px 0 10px; }
+
+/* modal */
+.modal{ position:fixed; inset:0; background:rgba(22,35,61,.42); display:grid;
+  place-items:center; padding:20px; z-index:50; overflow-y:auto; }
+.modal__box{ background:#fff; border-radius:12px; width:100%; max-width:560px;
+  padding:26px 26px 22px; box-shadow:0 24px 60px -20px rgba(22,35,61,.5); margin:auto; }
+.modal__title{ font-size:18px; margin-bottom:4px; }
+.modal__note{ font-size:13px; color:var(--slate); margin:0 0 20px; }
+.row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+.modal__foot{ display:flex; gap:9px; justify-content:flex-end; margin-top:20px;
+  padding-top:16px; border-top:1px solid var(--line-2); }
+.hint{ font-size:12px; color:var(--slate-2); margin:5px 0 0; }
+
+@media (max-width:640px){
+  .row2,.row3{ grid-template-columns:1fr; }
+  th{ position:static; }
+}
+
+/* ---------- demo mode ---------- */
+.demobar{
+  background:linear-gradient(90deg,#F4C16B,#E8A33D);
+  color:#3B2A08; font-size:13px; font-weight:500;
+}
+.demobar .wrap{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding-block:9px; }
+.demobar strong{ font-weight:700; }
+.demobar select{
+  width:auto; padding:4px 8px; font-size:12.5px; border-radius:6px;
+  border:1px solid rgba(59,42,8,.32); background:rgba(255,255,255,.7); color:#3B2A08;
+}
+.demobar a{ color:#3B2A08; }
+@media print{ .demobar{ display:none !important; } }
+
+@media print{
+  .topbar,.tabs,.toolbar,.detail__actions,.backlink,.no-print{ display:none !important; }
+  body{ background:#fff; } .panel{ box-shadow:none; border-color:#ccc; }
+  th{ position:static; background:#F4F4F4 !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  @page{ margin:14mm; }
+}
+</style>
+</head>
+<body>
+
+<div id="fatal" role="alert" style="display:none;position:fixed;inset:0;z-index:9999;
+     background:#FBFAF7;padding:28px 20px;overflow:auto;
+     font:15px/1.55 'IBM Plex Sans',system-ui,sans-serif;color:#16233D">
+  <div style="max-width:620px;margin:6vh auto;background:#fff;border:1px solid #E4E0D8;
+       border-radius:10px;padding:28px 26px">
+    <h1 style="margin:0 0 6px;font-size:19px">This page needs to be set up</h1>
+    <p id="fatalMsg" style="margin:0 0 14px;color:#5A6478"></p>
+    <pre id="fatalDetail" style="display:none;margin:0 0 14px;padding:11px 12px;
+         background:#F7F6F3;border:1px solid #EFEBE3;border-radius:7px;font-size:12.5px;
+         white-space:pre-wrap;word-break:break-word;color:#A6321F"></pre>
+    <p style="margin:0;font-size:13px;color:#8A93A3">
+      Once the two Supabase values are filled in near the bottom of this file, reload the page.
+    </p>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span><span class="brand__name">El Shams</span>
+      <span class="brand__sub">Finance Dashboard</span></span>
+    </a>
+    <span class="spacer"></span>
+    <span class="who hidden" id="who"></span>
+    <button class="tbtn hidden" id="signOutBtn" type="button">Sign out</button>
+  </div>
+</header>
+
+<!-- ============================ LOGIN ============================ -->
+<main class="login" id="loginView">
+  <div class="login__card">
+    <span class="login__logo" role="img" aria-label="El Shams"></span>
+    <h1 class="login__title">Finance sign in</h1>
+    <p class="login__note">This dashboard is for El Shams finance staff. Customers sign in at
+      <a href="./">the customer portal</a>.</p>
+    <div class="alert alert--bad hidden" id="loginError" role="alert"></div>
+    <div id="signInBox">
+    <div class="field"><label for="email">Email address</label>
+      <input id="email" type="email" autocomplete="username" dir="ltr"></div>
+    <div class="field"><label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" dir="ltr"></div>
+    <button class="btn btn--wide" id="signInBtn" type="button">Sign in</button>
+    <p style="text-align:center;margin:16px 0 0">
+      <button class="linkish" id="resetBtn" type="button">Forgot your password?</button>
+    </p>
+    </div>
+
+    <div id="resetBox" class="hidden">
+      <p class="login__note" id="resetFor" style="margin-bottom:18px"></p>
+      <div class="field"><label for="newPw">New password</label>
+        <input id="newPw" type="password" autocomplete="new-password" dir="ltr"></div>
+      <div class="field"><label for="newPw2">Confirm new password</label>
+        <input id="newPw2" type="password" autocomplete="new-password" dir="ltr"></div>
+      <p style="text-align:center;margin:0 0 14px">
+        <button class="linkish" id="togglePw" type="button">Show</button>
+      </p>
+      <button class="btn btn--wide" id="savePwBtn" type="button">Save new password</button>
+    </div>
+  </div>
+</main>
+
+<!-- ============================ APP ============================== -->
+<main class="wrap hidden" id="appView" style="padding-bottom:80px">
+
+  <div id="bootMsg" class="empty">Loading…</div>
+
+  <div id="app" class="hidden">
+    <nav class="tabs" role="tablist">
+      <button class="tab is-on" data-view="customers" role="tab">Customers</button>
+      <button class="tab" data-view="ageing"   role="tab">Ageing report</button>
+      <button class="tab" data-view="activity" role="tab">Recent activity</button>
+      <button class="tab" data-view="logins"   role="tab">Logins</button>
+    </nav>
+
+    <!-- ---------- CUSTOMERS ---------- -->
+    <section id="view-customers">
+      <div class="kpis" id="kpis"></div>
+
+      <div class="toolbar">
+        <input type="search" id="custSearch" placeholder="Search name, code or contact" style="min-width:250px">
+        <select id="curFilter"><option value="">All currencies</option></select>
+        <select id="balFilter">
+          <option value="">All balances</option>
+          <option value="owing">They owe us</option>
+          <option value="overdue">Has overdue</option>
+          <option value="credit">We owe them</option>
+          <option value="clear">Settled</option>
+        </select>
+        <div class="toolbar__end">
+          <button class="btn btn--ghost btn--sm" id="exportBtn" type="button">Export CSV</button>
+          <button class="btn btn--sm" id="newCustBtn" type="button">Add customer</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <table>
+          <thead><tr>
+            <th class="sortable" data-sort="code">Code</th>
+            <th class="sortable" data-sort="name_en">Customer</th>
+            <th class="sortable" data-sort="last_activity">Last movement</th>
+            <th class="t-num sortable" data-sort="total_open">Open</th>
+            <th class="t-num sortable" data-sort="total_overdue">Overdue</th>
+            <th class="t-num sortable" data-sort="balance">Balance</th>
+            <th></th>
+          </tr></thead>
+          <tbody id="custBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- AGEING ---------- -->
+    <section id="view-ageing" class="hidden">
+      <div class="toolbar">
+        <select id="ageCurFilter"><option value="">All currencies</option></select>
+        <div class="toolbar__end">
+          <button class="btn btn--ghost btn--sm" id="printAgeBtn" type="button">Print</button>
+        </div>
+      </div>
+      <div class="panel">
+        <table>
+          <thead><tr>
+            <th>Customer</th><th>Cur</th>
+            <th class="t-num">Not due</th><th class="t-num">1–30</th><th class="t-num">31–60</th>
+            <th class="t-num">61–90</th><th class="t-num">90+</th><th class="t-num">Total open</th>
+          </tr></thead>
+          <tbody id="ageBody"></tbody>
+          <tfoot id="ageFoot"></tfoot>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- ACTIVITY ---------- -->
+    <section id="view-activity" class="hidden">
+      <div class="toolbar">
+        <input type="date" id="actFrom"><input type="date" id="actTo">
+        <select id="actKind"></select>
+      </div>
+      <div class="panel">
+        <table>
+          <thead><tr>
+            <th>Date</th><th>Customer</th><th>Document</th><th>Type</th>
+            <th>Details</th><th class="t-num">Amount</th><th></th>
+          </tr></thead>
+          <tbody id="actBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- LOGINS ---------- -->
+    <section id="view-logins" class="hidden">
+      <p style="color:var(--slate);max-width:640px">
+        Create the login in Supabase → Authentication → Users, then link it to a customer here.
+        Anyone unlinked sees a "not linked yet" message instead of a statement.
+      </p>
+      <div class="panel" style="margin-top:16px">
+        <table>
+          <thead><tr>
+            <th>Email</th><th>Name</th><th>Role</th><th>Linked to</th><th></th>
+          </tr></thead>
+          <tbody id="loginBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- CUSTOMER DETAIL ---------- -->
+    <section id="view-detail" class="hidden">
+      <button class="backlink" id="backBtn" type="button">← All customers</button>
+      <div class="detail__head">
+        <div>
+          <h2 class="detail__name" id="dName">—</h2>
+          <p class="detail__meta" id="dMeta">—</p>
+        </div>
+        <div class="detail__actions">
+          <button class="btn btn--ghost btn--sm" id="editCustBtn" type="button">Edit details</button>
+          <button class="btn btn--ghost btn--sm" id="printStmtBtn" type="button">Print statement</button>
+          <button class="btn btn--sm" id="addEntryBtn" type="button">Record transaction</button>
+        </div>
+      </div>
+
+      <div class="kpis" id="dKpis"></div>
+
+      <h3 class="subhead">Open documents</h3>
+      <div class="panel">
+        <table>
+          <thead><tr>
+            <th>Document</th><th>Issued</th><th>Due</th><th>Status</th><th>Order</th>
+            <th class="t-num">Invoiced</th><th class="t-num">Outstanding</th>
+          </tr></thead>
+          <tbody id="dOpenBody"></tbody>
+        </table>
+      </div>
+
+      <h3 class="subhead">Full ledger</h3>
+      <div class="panel">
+        <table>
+          <thead><tr>
+            <th>Date</th><th>Document</th><th>Type</th><th>Details</th>
+            <th class="t-num">Debit</th><th class="t-num">Credit</th>
+            <th class="t-num">Balance</th><th class="no-print"></th>
+          </tr></thead>
+          <tbody id="dLedgerBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- ============================ MODALS =========================== -->
+<div class="modal hidden" id="entryModal">
+  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="entryTitle">
+    <h2 class="modal__title" id="entryTitle">Record a transaction</h2>
+    <p class="modal__note" id="entryFor">—</p>
+    <div class="alert alert--bad hidden" id="entryError"></div>
+
+    <div class="row2">
+      <div class="field"><label for="eKind">What happened</label>
+        <select id="eKind">
+          <option value="invoice">Invoice — we billed them</option>
+          <option value="payment">Payment — they paid us</option>
+          <option value="credit_note">Credit note — rejected goods or discount</option>
+          <option value="debit_note">Debit note — extra charge</option>
+          <option value="advance">Advance — deposit on account</option>
+          <option value="refund">Refund — we paid them back</option>
+          <option value="adjustment">Adjustment — opening balance or correction</option>
+        </select>
+      </div>
+      <div class="field"><label for="eDoc">Document number</label>
+        <input id="eDoc" type="text" dir="ltr" placeholder="INV-2026-0148"></div>
+    </div>
+
+    <div class="row3">
+      <div class="field"><label for="eAmount">Amount</label>
+        <input id="eAmount" type="number" step="0.01" dir="ltr" placeholder="0.00"></div>
+      <div class="field"><label for="eDate">Date</label>
+        <input id="eDate" type="date"></div>
+      <div class="field" id="eDueWrap"><label for="eDue">Due date</label>
+        <input id="eDue" type="date"></div>
+    </div>
+
+    <div class="row2">
+      <div class="field"><label for="eOrder">Order reference</label>
+        <input id="eOrder" type="text" dir="ltr" placeholder="ELS-26-004821"></div>
+      <div class="field" id="eMethodWrap"><label for="eMethod">Method</label>
+        <select id="eMethod">
+          <option value="">—</option>
+          <option value="bank_transfer">Bank transfer</option>
+          <option value="cheque">Cheque</option>
+          <option value="cash">Cash</option>
+          <option value="letter_of_credit">Letter of credit</option>
+          <option value="offset">Offset against invoice</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field"><label for="eRef">Reference</label>
+      <input id="eRef" type="text" dir="ltr" placeholder="Cheque no. / transfer ref">
+      <p class="hint" id="eHint">Amounts are always entered as positive numbers. Only an adjustment may be negative, which credits the customer.</p>
+    </div>
+    <div class="field"><label for="eDesc">Description</label>
+      <textarea id="eDesc" placeholder="Reactive dyeing, 4,200 kg cotton jersey — lot 118"></textarea></div>
+
+    <div class="modal__foot">
+      <button class="btn btn--ghost" data-close type="button">Cancel</button>
+      <button class="btn" id="saveEntryBtn" type="button">Save transaction</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="custModal">
+  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="custTitle">
+    <h2 class="modal__title" id="custTitle">Add customer</h2>
+    <p class="modal__note">The code is what appears on their statement. It can't be changed later.</p>
+    <div class="alert alert--bad hidden" id="custError"></div>
+
+    <div class="row2">
+      <div class="field"><label for="cCode">Account code</label>
+        <input id="cCode" type="text" dir="ltr" placeholder="ELS-C-0042"></div>
+      <div class="field"><label for="cCur">Currency</label>
+        <select id="cCur"><option>EGP</option><option>USD</option><option>EUR</option></select></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="cNameEn">Name (English)</label>
+        <input id="cNameEn" type="text" dir="ltr"></div>
+      <div class="field"><label for="cNameAr">Name (Arabic)</label>
+        <input id="cNameAr" type="text" dir="rtl"></div>
+    </div>
+    <div class="row3">
+      <div class="field"><label for="cLimit">Credit limit</label>
+        <input id="cLimit" type="number" step="0.01" dir="ltr" value="0"></div>
+      <div class="field"><label for="cTerms">Payment terms (days)</label>
+        <input id="cTerms" type="number" dir="ltr" value="30"></div>
+      <div class="field"><label for="cTax">Tax ID</label>
+        <input id="cTax" type="text" dir="ltr"></div>
+    </div>
+    <div class="row3">
+      <div class="field"><label for="cContact">Contact name</label>
+        <input id="cContact" type="text"></div>
+      <div class="field"><label for="cEmail">Contact email</label>
+        <input id="cEmail" type="email" dir="ltr"></div>
+      <div class="field"><label for="cPhone">Contact phone</label>
+        <input id="cPhone" type="tel" dir="ltr"></div>
+    </div>
+    <div class="field"><label for="cAddr">Address</label><textarea id="cAddr"></textarea></div>
+    <div class="field" id="cActiveWrap" style="display:flex;gap:8px;align-items:center">
+      <input id="cActive" type="checkbox" checked style="width:auto">
+      <label for="cActive" style="margin:0">Account is active</label>
+    </div>
+
+    <div class="modal__foot">
+      <button class="btn btn--ghost" data-close type="button">Cancel</button>
+      <button class="btn" id="saveCustBtn" type="button">Save customer</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="voidModal">
+  <div class="modal__box" style="max-width:420px" role="dialog" aria-modal="true">
+    <h2 class="modal__title">Void this transaction</h2>
+    <p class="modal__note">It stays in the audit log but stops affecting the balance. The customer will no longer see it.</p>
+    <div class="field"><label for="vReason">Why are you voiding it?</label>
+      <input id="vReason" type="text" placeholder="Duplicate entry"></div>
+    <div class="modal__foot">
+      <button class="btn btn--ghost" data-close type="button">Keep it</button>
+      <button class="btn btn--danger" id="confirmVoidBtn" type="button">Void transaction</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal hidden" id="linkModal">
+  <div class="modal__box" style="max-width:420px" role="dialog" aria-modal="true">
+    <h2 class="modal__title">Link this login</h2>
+    <p class="modal__note" id="linkFor">—</p>
+    <div class="field"><label for="lRole">Role</label>
+      <select id="lRole">
+        <option value="customer">Customer — sees only their own statement</option>
+        <option value="staff">Finance staff — can post transactions</option>
+        <option value="admin">Admin — can also manage logins</option>
+      </select></div>
+    <div class="field" id="lCustWrap"><label for="lCust">Customer account</label>
+      <select id="lCust"></select></div>
+    <div class="modal__foot">
+      <button class="btn btn--ghost" data-close type="button">Cancel</button>
+      <button class="btn" id="saveLinkBtn" type="button">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"
+        crossorigin="anonymous"
+        onerror="window.__sbLoadFailed = true;"></script>
+<script>
+/* ==================================================================
+   CONFIG — same two values as index.html
+   ================================================================== */
+const SUPABASE_URL      = "https://abpvcfbajvjoekxnyuhr.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_R_v1z9ORL2NFIWgdsXdaAw_TVdPrExt";
+/* ================================================================== */
+
+/* ------------------------------------------------------------------
+   Start-up guard.
+
+   supabase.createClient() throws if the URL is malformed, and because the
+   library is served cross-origin the browser reports only the useless
+   "Script error." So validate first, and surface anything that does go
+   wrong on screen instead of dying silently.
+   ------------------------------------------------------------------ */
+/* ══════════════════════════════════════════════════════════════════
+   DEMO BACKEND
+   Runs the whole system on sample data when Supabase isn't configured
+   yet. It reimplements the SQL views (running balance, FIFO settlement,
+   ageing buckets) in JavaScript, so what you see here matches what the
+   database will produce once you connect it.
+   Delete this block once you're live if you want a smaller file.
+   ══════════════════════════════════════════════════════════════════ */
+function makeDemoBackend(mode){
+  const DAY = 86400000;
+  const day = n => new Date(Date.now() + n*DAY).toISOString().slice(0,10);
+  const stamp = n => new Date(Date.now() + n*DAY).toISOString();
+
+  const store = {
+    session: null,
+    customers: [
+      { id:'c1', code:'ELS-C-0001', name_en:'Defacto Sourcing Egypt', name_ar:'ديفاكتو للتوريدات مصر',
+        contact_name:'Ahmed Kadi', contact_email:'ap@defacto.example', contact_phone:'+20 2 2480 0000',
+        tax_id:'318-402-119', address:'New Cairo, Cairo', currency:'USD', credit_limit:250000,
+        payment_terms_days:45, is_active:true, notes:null, created_at:stamp(-400) },
+      { id:'c2', code:'ELS-C-0002', name_en:'Nile Garments Co.', name_ar:'النيل للملابس الجاهزة',
+        contact_name:'Mona Fahmy', contact_email:'finance@nilegarments.example', contact_phone:'+20 55 234 1120',
+        tax_id:'204-771-330', address:'10th of Ramadan City, Sharkia', currency:'EGP', credit_limit:2000000,
+        payment_terms_days:30, is_active:true, notes:null, created_at:stamp(-380) },
+      { id:'c3', code:'ELS-C-0003', name_en:'Delta Knitwear', name_ar:'دلتا للتريكو',
+        contact_name:'Sherif Adel', contact_email:'accounts@deltaknit.example', contact_phone:'+20 40 331 8890',
+        tax_id:'552-118-704', address:'Mahalla al-Kubra, Gharbia', currency:'EGP', credit_limit:500000,
+        payment_terms_days:30, is_active:true, notes:null, created_at:stamp(-260) },
+      { id:'c4', code:'ELS-C-0004', name_en:'Cairo Cotton Mills', name_ar:'مطاحن القطن القاهرة',
+        contact_name:'Hoda Nasr', contact_email:'ap@cairocotton.example', contact_phone:'+20 2 2735 4410',
+        tax_id:'119-903-556', address:'Shubra al-Khaymah, Qalyubia', currency:'EGP', credit_limit:0,
+        payment_terms_days:60, is_active:true, notes:null, created_at:stamp(-500) },
+      { id:'c5', code:'ELS-C-0005', name_en:'Alexandria Apparel', name_ar:'الإسكندرية للملابس',
+        contact_name:'Karim Louka', contact_email:'karim@alexapparel.example', contact_phone:'+20 3 484 7712',
+        tax_id:'770-224-881', address:'Borg al-Arab, Alexandria', currency:'USD', credit_limit:100000,
+        payment_terms_days:30, is_active:true, notes:null, created_at:stamp(-300) }
+    ],
+    entries: [
+      // ── c1 Defacto (USD) — owing, one bucket overdue
+      { id:'e01', customer_id:'c1', kind:'invoice', doc_no:'INV-2026-0412', entry_date:day(-70),
+        due_date:day(-25), description:'Reactive dyeing & finishing — 12,000 kg cotton jersey, lot 4412',
+        order_ref:'ELS-26-004412', currency:'USD', amount:86400, method:null, reference:null,
+        is_void:false, created_at:stamp(-70) },
+      { id:'e02', customer_id:'c1', kind:'invoice', doc_no:'INV-2026-0455', entry_date:day(-40),
+        due_date:day(5), description:'Pigment printing — 6,500 m cotton poplin, lot 4455',
+        order_ref:'ELS-26-004455', currency:'USD', amount:52300, method:null, reference:null,
+        is_void:false, created_at:stamp(-40) },
+      { id:'e03', customer_id:'c1', kind:'payment', doc_no:'RCP-1180', entry_date:day(-20),
+        due_date:null, description:'Part payment against INV-2026-0412', order_ref:null,
+        currency:'USD', amount:60000, method:'bank_transfer', reference:'TT-884209',
+        is_void:false, created_at:stamp(-20) },
+
+      // ── c2 Nile Garments (EGP) — owing, with a credit note
+      { id:'e04', customer_id:'c2', kind:'invoice', doc_no:'INV-2026-0430', entry_date:day(-50),
+        due_date:day(-20), description:'Mercerizing + sanforizing — 18,000 kg combed cotton, lot 4430',
+        order_ref:'ELS-26-004430', currency:'EGP', amount:640000, method:null, reference:null,
+        is_void:false, created_at:stamp(-50) },
+      { id:'e05', customer_id:'c2', kind:'invoice', doc_no:'INV-2026-0471', entry_date:day(-12),
+        due_date:day(18), description:'Reactive dyeing navy — 9,800 kg single jersey, lot 4471',
+        order_ref:'ELS-26-004471', currency:'EGP', amount:415000, method:null, reference:null,
+        is_void:false, created_at:stamp(-12) },
+      { id:'e06', customer_id:'c2', kind:'payment', doc_no:'RCP-1192', entry_date:day(-8),
+        due_date:null, description:'Payment on account', order_ref:null, currency:'EGP',
+        amount:400000, method:'cheque', reference:'CBE 0043117', is_void:false, created_at:stamp(-8) },
+      { id:'e07', customer_id:'c2', kind:'credit_note', doc_no:'CRN-0031', entry_date:day(-6),
+        due_date:null, description:'Shade variance claim settled — lot 4430, 900 kg',
+        order_ref:'ELS-26-004430', currency:'EGP', amount:35000, method:null, reference:null,
+        is_void:false, created_at:stamp(-6) },
+
+      // ── c3 Delta Knitwear (EGP) — in credit, El Shams owes them
+      { id:'e08', customer_id:'c3', kind:'advance', doc_no:'ADV-0044', entry_date:day(-15),
+        due_date:null, description:'Deposit against Q4 knit programme', order_ref:null,
+        currency:'EGP', amount:180000, method:'bank_transfer', reference:'TT-771905',
+        is_void:false, created_at:stamp(-15) },
+      { id:'e09', customer_id:'c3', kind:'invoice', doc_no:'INV-2026-0468', entry_date:day(-10),
+        due_date:day(20), description:'Compacting + heat setting — 4,100 kg interlock, lot 4468',
+        order_ref:'ELS-26-004468', currency:'EGP', amount:122000, method:null, reference:null,
+        is_void:false, created_at:stamp(-10) },
+
+      // ── c4 Cairo Cotton Mills (EGP) — fully settled
+      { id:'e10', customer_id:'c4', kind:'invoice', doc_no:'INV-2026-0398', entry_date:day(-95),
+        due_date:day(-35), description:'Bleaching + optical whitening — 21,000 kg, lot 4398',
+        order_ref:'ELS-26-004398', currency:'EGP', amount:288000, method:null, reference:null,
+        is_void:false, created_at:stamp(-95) },
+      { id:'e11', customer_id:'c4', kind:'payment', doc_no:'RCP-1150', entry_date:day(-30),
+        due_date:null, description:'Settled in full', order_ref:null, currency:'EGP',
+        amount:288000, method:'bank_transfer', reference:'TT-660024', is_void:false, created_at:stamp(-30) },
+
+      // ── c5 Alexandria Apparel (USD) — seriously overdue
+      { id:'e12', customer_id:'c5', kind:'invoice', doc_no:'INV-2026-0301', entry_date:day(-140),
+        due_date:day(-110), description:'Peroxide bleaching — 9,000 kg cotton twill, lot 4301',
+        order_ref:'ELS-26-004301', currency:'USD', amount:34800, method:null, reference:null,
+        is_void:false, created_at:stamp(-140) },
+      { id:'e13', customer_id:'c5', kind:'invoice', doc_no:'INV-2026-0349', entry_date:day(-100),
+        due_date:day(-70), description:'Reactive dyeing black — 5,200 kg fleece, lot 4349',
+        order_ref:'ELS-26-004349', currency:'USD', amount:21500, method:null, reference:null,
+        is_void:false, created_at:stamp(-100) },
+      { id:'e14', customer_id:'c5', kind:'payment', doc_no:'RCP-1101', entry_date:day(-85),
+        due_date:null, description:'Part payment', order_ref:null, currency:'USD',
+        amount:15000, method:'cash', reference:null, is_void:false, created_at:stamp(-85) }
+    ],
+    profiles: [
+      { id:'u-admin', role:'admin', customer_id:null, full_name:'Gergis Shawky', email:'gergis@elshams.org', created_at:stamp(-400) },
+      { id:'u-staff', role:'staff', customer_id:null, full_name:'Finance Desk',  email:'accounts@elshams.org', created_at:stamp(-200) },
+      { id:'u-c1', role:'customer', customer_id:'c1', full_name:'Accounts Payable', email:'ap@defacto.example', created_at:stamp(-390) },
+      { id:'u-c2', role:'customer', customer_id:'c2', full_name:'Mona Fahmy', email:'finance@nilegarments.example', created_at:stamp(-370) },
+      { id:'u-c3', role:'customer', customer_id:'c3', full_name:'Sherif Adel', email:'accounts@deltaknit.example', created_at:stamp(-250) },
+      { id:'u-c4', role:'customer', customer_id:'c4', full_name:'Hoda Nasr', email:'ap@cairocotton.example', created_at:stamp(-480) },
+      { id:'u-new', role:'customer', customer_id:null, full_name:'Karim Louka', email:'karim@alexapparel.example', created_at:stamp(-3) }
+    ]
+  };
+
+  /* which customer the demo customer-portal is signed in as */
+  store.demoCustomer = 'c1';
+
+  const DEBIT = ['invoice','debit_note','refund'];
+  const CREDIT = ['payment','credit_note','advance'];
+  const dir = k => DEBIT.includes(k) ? 1 : (CREDIT.includes(k) ? -1 : 1);
+  const live = () => store.entries.filter(e => !e.is_void);
+  const num = v => Number(v) || 0;
+
+  /* ---- v_ledger : signed amounts + running balance ---- */
+  function v_ledger(){
+    const out = [];
+    for (const c of store.customers){
+      const rows = live().filter(e => e.customer_id === c.id).sort((a,b) =>
+        a.entry_date.localeCompare(b.entry_date) || a.created_at.localeCompare(b.created_at) ||
+        a.id.localeCompare(b.id));
+      let run = 0;
+      for (const e of rows){
+        const signed = num(e.amount) * dir(e.kind);
+        run += signed;
+        out.push({ ...e, signed_amount:signed, debit: signed > 0 ? Math.abs(signed) : null,
+                   credit: signed < 0 ? Math.abs(signed) : null, running_balance:run });
+      }
+    }
+    return out;
+  }
+
+  /* ---- v_customer_balances ---- */
+  function v_customer_balances(){
+    return store.customers.map(c => {
+      const rows = live().filter(e => e.customer_id === c.id);
+      const debit  = rows.filter(e => dir(e.kind) ===  1).reduce((s,e) => s + num(e.amount), 0);
+      const credit = rows.filter(e => dir(e.kind) === -1).reduce((s,e) => s + num(e.amount), 0);
+      const dates  = rows.map(e => e.entry_date).sort();
+      return { customer_id:c.id, code:c.code, name_en:c.name_en, name_ar:c.name_ar,
+               currency:c.currency, credit_limit:c.credit_limit,
+               payment_terms_days:c.payment_terms_days, is_active:c.is_active,
+               contact_name:c.contact_name, contact_email:c.contact_email,
+               contact_phone:c.contact_phone, total_debit:debit, total_credit:credit,
+               balance:debit - credit, last_activity:dates.length ? dates[dates.length-1] : null,
+               entry_count:rows.length };
+    });
+  }
+
+  /* ---- v_open_invoices : oldest-due settled first ---- */
+  function v_open_invoices(){
+    const today = new Date(day(0)+'T00:00:00');
+    const out = [];
+    for (const c of store.customers){
+      const rows = live().filter(e => e.customer_id === c.id);
+      const charges = rows.filter(e => dir(e.kind) === 1).sort((a,b) =>
+        (a.due_date||a.entry_date).localeCompare(b.due_date||b.entry_date) ||
+        a.entry_date.localeCompare(b.entry_date) || a.id.localeCompare(b.id));
+      const credits = rows.filter(e => dir(e.kind) === -1).reduce((s,e) => s + num(e.amount), 0);
+      let cum = 0;
+      for (const e of charges){
+        cum += num(e.amount);
+        const outstanding = Math.max(0, Math.min(num(e.amount), cum - credits));
+        if (outstanding <= 0.004) continue;
+        const overdue = e.due_date
+          ? Math.max(0, Math.round((today - new Date(e.due_date+'T00:00:00')) / DAY)) : 0;
+        out.push({ id:e.id, customer_id:c.id, kind:e.kind, doc_no:e.doc_no,
+          entry_date:e.entry_date, due_date:e.due_date, description:e.description,
+          order_ref:e.order_ref, currency:e.currency, original_amount:num(e.amount),
+          outstanding, days_overdue:overdue,
+          ageing_bucket: !e.due_date || overdue === 0 ? 'current'
+            : overdue <= 30 ? 'd1_30' : overdue <= 60 ? 'd31_60'
+            : overdue <= 90 ? 'd61_90' : 'd90_plus' });
+      }
+    }
+    return out;
+  }
+
+  /* ---- v_ageing_summary ---- */
+  function v_ageing_summary(){
+    const by = {};
+    for (const o of v_open_invoices()){
+      const k = o.customer_id + '|' + o.currency;
+      by[k] = by[k] || { customer_id:o.customer_id, currency:o.currency, current_amt:0,
+                         d1_30:0, d31_60:0, d61_90:0, d90_plus:0, total_open:0, total_overdue:0 };
+      const b = by[k];
+      b[o.ageing_bucket === 'current' ? 'current_amt' : o.ageing_bucket] += o.outstanding;
+      b.total_open += o.outstanding;
+      if (o.days_overdue > 0) b.total_overdue += o.outstanding;
+    }
+    return Object.values(by);
+  }
+
+  const VIEWS = { v_ledger, v_customer_balances, v_open_invoices, v_ageing_summary,
+                  profiles: () => store.profiles.slice(),
+                  customers: () => store.customers.slice(),
+                  ledger_entries: () => live().slice() };
+
+  /* ---- minimal PostgREST-shaped query builder ---- */
+  function from(table){
+    const q = { filters:[], orders:[], limitN:null, op:null, payload:null };
+    const rowsOf = () => (VIEWS[table] ? VIEWS[table]() : []);
+
+    function resolve(){
+      if (q.op === 'insert'){
+        const p = { ...q.payload };
+        p.id = p.id || ('n' + Math.random().toString(36).slice(2,9));
+        p.created_at = p.created_at || new Date().toISOString();
+        if (p.is_void === undefined) p.is_void = false;
+        if (table === 'ledger_entries'){
+          const clash = live().some(e => e.customer_id === p.customer_id &&
+            e.kind === p.kind && e.doc_no === p.doc_no);
+          if (clash) return { data:null, error:{ code:'23505', message:'duplicate document number' } };
+          store.entries.push(p);
+        } else if (table === 'customers'){
+          if (store.customers.some(c => c.code === p.code))
+            return { data:null, error:{ code:'23505', message:'duplicate code' } };
+          store.customers.push(p);
+        }
+        return { data:[p], error:null };
+      }
+      if (q.op === 'update'){
+        const target = table === 'customers' ? store.customers
+                     : table === 'profiles'  ? store.profiles : store.entries;
+        target.filter(r => q.filters.every(([c,v]) => r[c] === v))
+              .forEach(r => Object.assign(r, q.payload));
+        return { data:null, error:null };
+      }
+      let rows = rowsOf().filter(r => q.filters.every(([c,v]) => r[c] === v));
+      for (const [col, asc] of [...q.orders].reverse()){
+        rows.sort((a,b) => {
+          const x = a[col], y = b[col];
+          if (x === y) return 0;
+          if (x === null || x === undefined) return 1;
+          if (y === null || y === undefined) return -1;
+          const r = x > y ? 1 : -1;
+          return asc ? r : -r;
+        });
+      }
+      if (q.limitN) rows = rows.slice(0, q.limitN);
+      return { data:rows, error:null };
+    }
+
+    const b = {
+      select(){ return b; },
+      eq(col, val){ q.filters.push([col, val]); return b; },
+      order(col, o){ q.orders.push([col, !o || o.ascending !== false]); return b; },
+      limit(n){ q.limitN = n; return b; },
+      insert(p){ q.op = 'insert'; q.payload = p; return b; },
+      update(p){ q.op = 'update'; q.payload = p; return b; },
+      delete(){ q.op = 'delete'; return b; },
+      maybeSingle(){ const r = resolve(); return Promise.resolve({ data:(r.data && r.data[0]) || null, error:r.error }); },
+      single(){ return b.maybeSingle(); },
+      then(res, rej){ return Promise.resolve(resolve()).then(res, rej); }
+    };
+    return b;
+  }
+
+  const auth = {
+    getSession: () => Promise.resolve({ data:{ session: store.session } }),
+    signInWithPassword: () => {
+      store.session = { user:{ id: mode === 'admin' ? 'u-admin' : 'u-demo' } };
+      return Promise.resolve({ error:null });
+    },
+    resetPasswordForEmail: () => Promise.resolve({ data:{}, error:null }),
+    signOut: () => { store.session = null; return Promise.resolve({ error:null }); },
+    onAuthStateChange: () => ({ data:{ subscription:{ unsubscribe(){} } } })
+  };
+
+  /* the customer portal's demo login resolves to whichever account is selected */
+  store.profiles.push({ id:'u-demo', role:'customer', customer_id:store.demoCustomer,
+                        full_name:'Demo Customer', email:'demo@customer.example',
+                        created_at:stamp(-30) });
+  const setDemoCustomer = (id) => {
+    store.demoCustomer = id;
+    const p = store.profiles.find(x => x.id === 'u-demo');
+    if (p) p.customer_id = id;
+  };
+
+  return { from, auth, __demo:true, __store:store, __setDemoCustomer:setDemoCustomer };
+}
+
+function showDemoBar(){
+  const bar = document.createElement("div");
+  bar.className = "demobar";
+  bar.innerHTML = `<div class="wrap">
+    <strong>Demo data.</strong>
+    <span>Supabase isn't connected yet, so this is running on five sample accounts.
+      Everything works — post a transaction and the balances move. Nothing is saved when you reload.</span>
+  </div>`;
+  document.body.insertBefore(bar, document.querySelector(".topbar").nextSibling);
+  const em = document.getElementById("email"), pw = document.getElementById("password");
+  if (em) em.value = "gergis@elshams.org";
+  if (pw) pw.value = "demo1234";
+}
+
+function showFatal(message, detail){
+  const box = document.getElementById("fatal");
+  const msg = document.getElementById("fatalMsg");
+  const det = document.getElementById("fatalDetail");
+  if (!box || !msg) { console.error(message, detail || ""); return; }
+  msg.textContent = message;
+  if (detail){ det.textContent = String(detail); det.style.display = "block"; }
+  box.style.display = "block";
+}
+
+/* Anything unhandled from here on becomes visible rather than a blank page. */
+window.addEventListener("error", (e) => {
+  showFatal("Something went wrong while loading this page.",
+            e.message === "Script error." || !e.message
+              ? "An external script failed. Check your connection or any script blocker, then reload."
+              : e.message + (e.filename ? `\n${e.filename}:${e.lineno}` : ""));
+});
+window.addEventListener("unhandledrejection", (e) => {
+  showFatal("A request to the server failed.",
+            (e.reason && (e.reason.message || e.reason.error_description)) || e.reason);
+});
+
+/* URL placeholder can also be the sample host; a real key never counts as one. */
+const URL_PLACEHOLDER = /\[FILL|xxxxxxxxxxxx\.supabase\.co/i;
+const KEY_PLACEHOLDER = /\[FILL/i;
+
+function configProblem(){
+  if (!SUPABASE_URL || URL_PLACEHOLDER.test(SUPABASE_URL))
+    return ["SUPABASE_URL has not been filled in yet.", "setup",
+            "Open this file, find SUPABASE_URL near the bottom, and replace the "
+            + "placeholder with your project URL from Supabase \u2192 Project Settings \u2192 API. "
+            + "It looks like https://abcdefghijkl.supabase.co"];
+
+  if (!SUPABASE_ANON_KEY || KEY_PLACEHOLDER.test(SUPABASE_ANON_KEY))
+    return ["SUPABASE_ANON_KEY has not been filled in yet.", "setup",
+            "Open this file, find SUPABASE_ANON_KEY near the bottom, and paste the "
+            + "Publishable key from Supabase \u2192 Project Settings \u2192 API. "
+            + "Use the Publishable key (sb_publishable_...), never a Secret key."];
+
+  if (window.__sbLoadFailed)
+    return ["The Supabase library could not be downloaded.",
+            "Check the internet connection on this device, and whether an ad blocker or "
+            + "firewall is blocking cdn.jsdelivr.net. Then reload."];
+
+  if (typeof supabase === "undefined" || typeof supabase.createClient !== "function")
+    return ["The Supabase library did not load.",
+            "cdn.jsdelivr.net was reachable but the script did not run. Reload the page; "
+            + "if it keeps happening, a browser extension is likely blocking it."];
+
+  try {
+    const u = new URL(SUPABASE_URL.trim());
+    if (u.protocol !== "https:" && u.hostname !== "localhost")
+      return ["SUPABASE_URL must start with https://", "Currently: " + SUPABASE_URL];
+  } catch (err) {
+    return ["SUPABASE_URL is not a valid web address.",
+            "Currently: " + SUPABASE_URL + "\nExpected something like https://abcdefghijkl.supabase.co"];
+  }
+
+  if (/^sb_secret_/i.test(SUPABASE_ANON_KEY.trim()) || /service_role/i.test(SUPABASE_ANON_KEY))
+    return ["That is a secret key. It must never go in a web page.",
+            "You have pasted a secret key (sb_secret_...). It bypasses every security rule "
+            + "and would expose all customer data to anyone who views this page's source. "
+            + "Go back to Supabase \u2192 Settings \u2192 API Keys and copy the "
+            + "Publishable key (sb_publishable_...) instead. If this key was ever published, "
+            + "revoke it in the dashboard."];
+
+  if (SUPABASE_ANON_KEY.trim().length < 30)
+    return ["SUPABASE_ANON_KEY looks too short to be a real key.",
+            "Copy the full Publishable key from Supabase \u2192 Project Settings \u2192 API."];
+
+  return null;
+}
+
+let sb = null;
+let DEMO_MODE = false;
+const CONFIG_ERROR = configProblem();
+
+if (CONFIG_ERROR && CONFIG_ERROR[1] === "setup"){
+  /* Not configured yet — run on sample data so the system is usable now. */
+  DEMO_MODE = true;
+  sb = makeDemoBackend("admin");
+  showDemoBar();
+} else if (CONFIG_ERROR){
+  showFatal(CONFIG_ERROR[0], CONFIG_ERROR[2] || CONFIG_ERROR[1]);
+} else {
+  try {
+    sb = supabase.createClient(SUPABASE_URL.trim(), SUPABASE_ANON_KEY.trim());
+  } catch (err){
+    showFatal("Could not connect to the database.", err && err.message);
+  }
+}
+
+const $ = id => document.getElementById(id);
+
+const KINDS = {
+  invoice:"Invoice", debit_note:"Debit note", refund:"Refund",
+  payment:"Payment", credit_note:"Credit note", advance:"Advance", adjustment:"Adjustment"
+};
+const DEBIT_KINDS = ["invoice","debit_note","refund"];
+
+let ME = null, CUSTOMERS = [], AGEING = [], ACTIVITY = [], PROFILES = [];
+let CUR = null, CUR_LEDGER = [], CUR_OPEN = [];
+let sortKey = "balance", sortDir = -1, voidTarget = null, linkTarget = null, editing = false;
+
+/* ---------------- helpers ---------------- */
+const money = (v,c) => new Intl.NumberFormat("en-US",
+  {style:"currency",currency:c||"EGP",minimumFractionDigits:2}).format(Number(v)||0);
+const compact = (v,c) => new Intl.NumberFormat("en-US",
+  {style:"currency",currency:c||"EGP",notation:"compact",maximumFractionDigits:1}).format(Number(v)||0);
+const dt = d => d ? new Date(d+"T00:00:00").toLocaleDateString("en-GB",
+  {day:"2-digit",month:"short",year:"numeric"}) : "—";
+const esc = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today = () => new Date().toISOString().slice(0,10);
+const ageOf = id => AGEING.find(a => a.customer_id === id) || {};
+
+/* ---------------- auth ---------------- */
+$("signInBtn").onclick = async () => {
+  if (!sb) return;
+  const e = $("email").value.trim(), p = $("password").value;
+  const fail = m => { $("loginError").textContent = m; $("loginError").classList.remove("hidden"); };
+  $("signInBtn").disabled = true;
+  try {
+    const { error } = await sb.auth.signInWithPassword({ email:e, password:p });
+    if (error){
+      const m = (error.message || "").toLowerCase();
+      if (m.includes("not confirmed"))
+        return fail("This email has not been confirmed. In Supabase open Authentication \u2192 Users, "
+          + "click this user and confirm it \u2014 or delete it and re-add with \"Auto Confirm User\" ticked.");
+      if (m.includes("rate limit") || m.includes("too many"))
+        return fail("Too many sign-in attempts. Wait a minute, then try again.");
+      if (m.includes("disabled"))
+        return fail("Email sign-in is switched off for this project. Enable it in "
+          + "Supabase \u2192 Authentication \u2192 Providers.");
+      return fail("That email and password don't match a finance account.");
+    }
+    await boot();
+  } catch (err) {
+    fail("Couldn't reach the server. Check your connection and try again.");
+  } finally {
+    $("signInBtn").disabled = false;
+  }
+};
+$("password").addEventListener("keydown", e => { if (e.key==="Enter") $("signInBtn").click(); });
+
+/* ---- what kind of link brought the person here? ----
+   Supabase returns either  #access_token=...&type=recovery   (implicit flow)
+   or  ?code=...  (PKCE), and on failure  #error=...&error_code=otp_expired  */
+function recoveryFromUrl(){
+  const h = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+  const q = new URLSearchParams(location.search || "");
+  const err = h.get("error_code") || h.get("error") || q.get("error_code") || q.get("error");
+  if (err) return { failed: true, code: String(err) };
+  if (/type=recovery/.test(location.hash || "")) return { ok: true };
+  if (q.get("code")) return { ok: true };
+  return null;
+}
+function clearUrlTokens(){
+  try { history.replaceState(null, "", location.pathname); } catch (e) {}
+}
+
+$("resetBtn").onclick = async () => {
+  if (!sb) return;
+  const e = $("email").value.trim();
+  const say = (m, ok) => { const el = $("loginError");
+    el.textContent = m; el.className = "alert " + (ok ? "alert--ok" : "alert--bad"); };
+  if (!e) return say("Enter your email address first, then choose \"Forgot your password?\".");
+  $("resetBtn").disabled = true;
+  try {
+    const { error } = await sb.auth.resetPasswordForEmail(e, {
+      redirectTo: location.origin + location.pathname
+    });
+    if (error){
+      const m = (error.message || "").toLowerCase();
+      if (m.includes("rate") || m.includes("too many") || m.includes("seconds"))
+        return say("A reset email was just sent. Wait a minute before asking for another.");
+    }
+    say("If that address has an account, a reset link is on its way. It works once and "
+        + "expires in an hour \u2014 check your spam folder too.", true);
+  } catch (err){
+    say("Couldn't reach the server. Check your connection and try again.");
+  } finally { $("resetBtn").disabled = false; }
+};
+
+$("togglePw").onclick = () => {
+  const show = $("newPw").type === "password";
+  $("newPw").type = $("newPw2").type = show ? "text" : "password";
+  $("togglePw").textContent = show ? "Hide" : "Show";
+};
+
+async function showResetScreen(){
+  $("signInBox").classList.add("hidden");
+  $("resetBox").classList.remove("hidden");
+  $("loginView").classList.remove("hidden");
+  $("appView").classList.add("hidden");
+  document.querySelector(".login__title").textContent = "Choose a new password";
+  document.querySelector(".login__note").textContent  = "Enter a new password for your finance account.";
+  $("loginError").classList.add("hidden");
+  $("newPw").focus();
+  try {
+    const { data } = await sb.auth.getUser();
+    $("resetFor").textContent = data && data.user
+      ? `Setting a new password for ${data.user.email}` : "";
+  } catch (e) { $("resetFor").textContent = ""; }
+}
+
+$("savePwBtn").onclick = async () => {
+  const a = $("newPw").value, b = $("newPw2").value;
+  const fail = m => { $("loginError").textContent = m; $("loginError").classList.remove("hidden"); };
+  if (a.length < 8) return fail("Use at least 8 characters.");
+  if (a !== b)      return fail("The two passwords don't match.");
+  $("savePwBtn").disabled = true;
+  try {
+    const { error } = await sb.auth.updateUser({ password: a });
+    if (error){ $("savePwBtn").disabled = false;
+      return fail("That link has expired. Request a new reset email."); }
+    history.replaceState(null, "", location.pathname + location.search);
+    $("resetBox").classList.add("hidden");
+    $("signInBox").classList.remove("hidden");
+    await boot();
+  } catch (err){
+    $("savePwBtn").disabled = false;
+    fail("Couldn't reach the server. Check your connection and try again.");
+  }
+};
+$("newPw2").addEventListener("keydown", e => { if (e.key === "Enter") $("savePwBtn").click(); });
+
+$("signOutBtn").onclick = async () => { try { if (sb) await sb.auth.signOut(); } finally { location.reload(); } };
+
+async function boot(){
+  if (!sb) return;
+  const { data:{ session } } = await sb.auth.getSession();
+  if (!session){
+    $("loginView").classList.remove("hidden");
+    $("appView").classList.add("hidden");
+    return;
+  }
+  $("loginView").classList.add("hidden");
+  $("appView").classList.remove("hidden");
+
+  const { data: p } = await sb.from("profiles")
+    .select("role, full_name, email").eq("id", session.user.id).maybeSingle();
+
+  if (!p || (p.role !== "admin" && p.role !== "staff")){
+    $("bootMsg").innerHTML = `This login isn't a finance account.
+      <a href="./">Open the customer portal</a> instead.`;
+    $("signOutBtn").classList.remove("hidden");
+    return;
+  }
+  ME = { ...p, id: session.user.id, email: p.email || session.user.email };
+  $("who").textContent = `${ME.full_name || ME.email} · ${ME.role}`;
+  $("who").classList.remove("hidden");
+  $("signOutBtn").classList.remove("hidden");
+  if (ME.role !== "admin") document.querySelector('[data-view="logins"]').classList.add("hidden");
+
+  $("bootMsg").classList.add("hidden");
+  $("app").classList.remove("hidden");
+  await loadAll();
+}
+
+async function loadAll(){
+  const [bal, age, act] = await Promise.all([
+    sb.from("v_customer_balances").select("*").order("name_en"),
+    sb.from("v_ageing_summary").select("*"),
+    sb.from("v_ledger").select("*").order("entry_date",{ascending:false})
+      .order("created_at",{ascending:false}).limit(300)
+  ]);
+  CUSTOMERS = bal.data || []; AGEING = age.data || []; ACTIVITY = act.data || [];
+
+  const currencies = [...new Set(CUSTOMERS.map(c => c.currency))];
+  [$("curFilter"), $("ageCurFilter")].forEach(sel => {
+    const keep = sel.value;
+    sel.innerHTML = `<option value="">All currencies</option>` +
+      currencies.map(c => `<option>${c}</option>`).join("");
+    sel.value = keep;
+  });
+  $("actKind").innerHTML = `<option value="">All types</option>` +
+    Object.entries(KINDS).map(([k,v]) => `<option value="${k}">${v}</option>`).join("");
+
+  renderKpis(); renderCustomers(); renderAgeing(); renderActivity();
+  if (ME.role === "admin") loadProfiles();
+}
+
+/* ---------------- tabs ---------------- */
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.onclick = () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.toggle("is-on", t === tab));
+    ["customers","ageing","activity","logins","detail"].forEach(v =>
+      $("view-"+v).classList.toggle("hidden", v !== tab.dataset.view));
+  };
+});
+$("backBtn").onclick = () => {
+  $("view-detail").classList.add("hidden");
+  $("view-customers").classList.remove("hidden");
+  document.querySelector('[data-view="customers"]').classList.add("is-on");
+};
+
+/* ---------------- KPIs ---------------- */
+function renderKpis(){
+  const byCur = {};
+  CUSTOMERS.forEach(c => {
+    const k = c.currency; byCur[k] = byCur[k] || { rec:0, pay:0, over:0, n:0 };
+    const b = Number(c.balance) || 0;
+    if (b > 0.004){ byCur[k].rec += b; byCur[k].n++; }
+    if (b < -0.004) byCur[k].pay += -b;
+    byCur[k].over += Number(ageOf(c.customer_id).total_overdue) || 0;
+  });
+  const cards = [];
+  for (const [cur, v] of Object.entries(byCur)){
+    cards.push(`<div class="kpi"><p class="kpi__label">Owed to El Shams · ${cur}</p>
+      <p class="kpi__value">${esc(money(v.rec, cur))}</p>
+      <p class="kpi__sub">across ${v.n} account${v.n===1?"":"s"}</p></div>`);
+    cards.push(`<div class="kpi kpi--due"><p class="kpi__label">Overdue · ${cur}</p>
+      <p class="kpi__value">${esc(money(v.over, cur))}</p>
+      <p class="kpi__sub">${v.rec > 0 ? Math.round(v.over / v.rec * 100) : 0}% of open balance</p></div>`);
+    if (v.pay > 0) cards.push(`<div class="kpi kpi--credit"><p class="kpi__label">We owe customers · ${cur}</p>
+      <p class="kpi__value">${esc(money(v.pay, cur))}</p>
+      <p class="kpi__sub">credits and advances held</p></div>`);
+  }
+  $("kpis").innerHTML = cards.join("") ||
+    `<div class="kpi"><p class="kpi__label">No accounts yet</p>
+     <p class="kpi__value" style="font-size:16px">Add your first customer</p></div>`;
+}
+
+/* ---------------- customers table ---------------- */
+document.querySelectorAll("th.sortable").forEach(th => {
+  th.onclick = () => {
+    const k = th.dataset.sort;
+    if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = -1; }
+    renderCustomers();
+  };
+});
+["custSearch","curFilter","balFilter"].forEach(id => {
+  $(id).addEventListener("input", renderCustomers);
+  $(id).addEventListener("change", renderCustomers);
+});
+
+function filteredCustomers(){
+  const q = $("custSearch").value.trim().toLowerCase();
+  const cur = $("curFilter").value, bf = $("balFilter").value;
+  return CUSTOMERS.filter(c => {
+    const bal = Number(c.balance) || 0;
+    const over = Number(ageOf(c.customer_id).total_overdue) || 0;
+    if (cur && c.currency !== cur) return false;
+    if (bf === "owing"   && bal <= 0.004) return false;
+    if (bf === "credit"  && bal >= -0.004) return false;
+    if (bf === "clear"   && Math.abs(bal) > 0.004) return false;
+    if (bf === "overdue" && over <= 0.004) return false;
+    if (q){
+      const hay = [c.code, c.name_en, c.name_ar, c.contact_name, c.contact_email]
+        .filter(Boolean).join(" ").toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a,b) => {
+    const get = r => {
+      if (sortKey === "total_open")    return Number(ageOf(r.customer_id).total_open) || 0;
+      if (sortKey === "total_overdue") return Number(ageOf(r.customer_id).total_overdue) || 0;
+      const v = r[sortKey];
+      return typeof v === "string" ? v.toLowerCase() : (Number(v) || 0);
+    };
+    const x = get(a), y = get(b);
+    if (x === y) return 0;
+    return (x > y ? 1 : -1) * sortDir;
+  });
+}
+
+function balCell(bal, cur){
+  const b = Number(bal) || 0;
+  if (Math.abs(b) < 0.005) return `<span class="zero">${esc(money(0, cur))}</span>`;
+  return b > 0
+    ? `<span class="pos">${esc(money(b, cur))}</span>`
+    : `<span class="neg">${esc(money(-b, cur))} <span style="font-weight:400;font-size:11px">we owe</span></span>`;
+}
+
+function renderCustomers(){
+  const rows = filteredCustomers();
+  if (!rows.length){
+    $("custBody").innerHTML = `<tr><td colspan="7"><div class="empty">
+      <strong>Nothing matches</strong>Adjust the search or filters above.</div></td></tr>`;
+    return;
+  }
+  $("custBody").innerHTML = rows.map(c => {
+    const a = ageOf(c.customer_id);
+    const over = Number(a.total_overdue) || 0;
+    return `<tr class="clickable" data-id="${c.customer_id}">
+      <td class="t-doc">${esc(c.code)}</td>
+      <td><strong>${esc(c.name_en)}</strong>${c.is_active === false
+        ? ' <span class="tag tag--void">inactive</span>' : ""}
+        ${c.name_ar ? `<div class="t-muted" dir="rtl">${esc(c.name_ar)}</div>` : ""}</td>
+      <td class="t-muted">${esc(dt(c.last_activity))}</td>
+      <td class="t-num">${esc(money(a.total_open || 0, c.currency))}</td>
+      <td class="t-num">${over > 0.004
+        ? `<span class="tag tag--due">${esc(money(over, c.currency))}</span>`
+        : `<span class="zero">—</span>`}</td>
+      <td class="t-num">${balCell(c.balance, c.currency)}</td>
+      <td class="t-num"><span class="t-muted">›</span></td>
+    </tr>`;
+  }).join("");
+  $("custBody").querySelectorAll("tr[data-id]").forEach(tr =>
+    tr.onclick = () => openCustomer(tr.dataset.id));
+}
+
+/* ---------------- CSV export ---------------- */
+$("exportBtn").onclick = () => {
+  const rows = filteredCustomers();
+  const head = ["Code","Name","Arabic name","Currency","Contact","Email","Phone",
+    "Credit limit","Terms (days)","Not due","1-30","31-60","61-90","90+",
+    "Total open","Overdue","Balance","Last movement"];
+  const body = rows.map(c => {
+    const a = ageOf(c.customer_id);
+    return [c.code, c.name_en, c.name_ar, c.currency, c.contact_name, c.contact_email,
+      c.contact_phone, c.credit_limit, c.payment_terms_days,
+      a.current_amt||0, a.d1_30||0, a.d31_60||0, a.d61_90||0, a.d90_plus||0,
+      a.total_open||0, a.total_overdue||0, c.balance, c.last_activity||""];
+  });
+  const csv = [head, ...body].map(r => r.map(v =>
+    `"${String(v ?? "").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  try {
+    const url = URL.createObjectURL(new Blob(["\uFEFF"+csv], {type:"text/csv;charset=utf-8"}));
+    const a = document.createElement("a");
+    a.href = url; a.download = `elshams-receivables-${today()}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert("This browser blocked the download. Open the dashboard in Chrome, Edge or Safari and try again.");
+  }
+};
+
+/* ---------------- ageing report ---------------- */
+$("ageCurFilter").onchange = renderAgeing;
+$("printAgeBtn").onclick = () => window.print();
+
+function renderAgeing(){
+  const cur = $("ageCurFilter").value;
+  const rows = AGEING
+    .map(a => ({ ...a, cust: CUSTOMERS.find(c => c.customer_id === a.customer_id) }))
+    .filter(a => a.cust && (!cur || a.currency === cur) && Number(a.total_open) > 0.004)
+    .sort((a,b) => Number(b.total_overdue) - Number(a.total_overdue));
+
+  if (!rows.length){
+    $("ageBody").innerHTML = `<tr><td colspan="8"><div class="empty">
+      <strong>Nothing outstanding</strong>Every invoice on the books has been settled.</div></td></tr>`;
+    $("ageFoot").innerHTML = "";
+    return;
+  }
+  $("ageBody").innerHTML = rows.map(a => `
+    <tr class="clickable" data-id="${a.customer_id}">
+      <td><strong>${esc(a.cust.name_en)}</strong>
+        <div class="t-muted t-doc">${esc(a.cust.code)}</div></td>
+      <td class="t-muted">${esc(a.currency)}</td>
+      <td class="t-num t-muted">${esc(money(a.current_amt, a.currency))}</td>
+      <td class="t-num">${esc(money(a.d1_30, a.currency))}</td>
+      <td class="t-num">${esc(money(a.d31_60, a.currency))}</td>
+      <td class="t-num" style="color:var(--warm)">${esc(money(a.d61_90, a.currency))}</td>
+      <td class="t-num" style="color:var(--due);font-weight:600">${esc(money(a.d90_plus, a.currency))}</td>
+      <td class="t-num"><strong>${esc(money(a.total_open, a.currency))}</strong></td>
+    </tr>`).join("");
+  $("ageBody").querySelectorAll("tr[data-id]").forEach(tr =>
+    tr.onclick = () => { document.querySelector('[data-view="customers"]').click();
+                         openCustomer(tr.dataset.id); });
+
+  const byCur = {};
+  rows.forEach(a => {
+    const k = a.currency; byCur[k] = byCur[k] ||
+      {current_amt:0,d1_30:0,d31_60:0,d61_90:0,d90_plus:0,total_open:0};
+    ["current_amt","d1_30","d31_60","d61_90","d90_plus","total_open"]
+      .forEach(f => byCur[k][f] += Number(a[f]) || 0);
+  });
+  $("ageFoot").innerHTML = Object.entries(byCur).map(([c,v]) => `
+    <tr><td colspan="2">Total ${esc(c)}</td>
+      <td class="t-num">${esc(money(v.current_amt,c))}</td>
+      <td class="t-num">${esc(money(v.d1_30,c))}</td>
+      <td class="t-num">${esc(money(v.d31_60,c))}</td>
+      <td class="t-num">${esc(money(v.d61_90,c))}</td>
+      <td class="t-num">${esc(money(v.d90_plus,c))}</td>
+      <td class="t-num">${esc(money(v.total_open,c))}</td></tr>`).join("");
+}
+
+/* ---------------- activity ---------------- */
+["actFrom","actTo","actKind"].forEach(id => $(id).addEventListener("change", renderActivity));
+
+function renderActivity(){
+  const from = $("actFrom").value, to = $("actTo").value, kind = $("actKind").value;
+  const rows = ACTIVITY.filter(r =>
+    (!from || r.entry_date >= from) && (!to || r.entry_date <= to) &&
+    (!kind || r.kind === kind));
+
+  if (!rows.length){
+    $("actBody").innerHTML = `<tr><td colspan="7"><div class="empty">
+      <strong>No transactions here</strong>Widen the dates or clear the type filter.</div></td></tr>`;
+    return;
+  }
+  $("actBody").innerHTML = rows.map(r => {
+    const c = CUSTOMERS.find(x => x.customer_id === r.customer_id);
+    const isDebit = Number(r.signed_amount) > 0;
+    return `<tr>
+      <td class="t-muted">${esc(dt(r.entry_date))}</td>
+      <td><a href="#" data-open="${r.customer_id}">${esc(c ? c.name_en : "—")}</a></td>
+      <td class="t-doc">${esc(r.doc_no)}</td>
+      <td><span class="tag ${isDebit?"tag--debit":"tag--credit"}">${esc(KINDS[r.kind])}</span></td>
+      <td class="t-muted">${esc([r.description, r.reference, r.order_ref].filter(Boolean).join(" · ") || "—")}</td>
+      <td class="t-num" style="${isDebit?"":"color:var(--credit)"}">
+        ${isDebit?"":"−"}${esc(money(Math.abs(r.signed_amount), r.currency))}</td>
+      <td class="t-num no-print">
+        <button class="btn btn--danger btn--sm" data-void="${r.id}">Void</button></td>
+    </tr>`;
+  }).join("");
+  $("actBody").querySelectorAll("[data-open]").forEach(a =>
+    a.onclick = e => { e.preventDefault();
+      document.querySelector('[data-view="customers"]').click();
+      openCustomer(a.dataset.open); });
+  $("actBody").querySelectorAll("[data-void]").forEach(b =>
+    b.onclick = () => askVoid(b.dataset.void));
+}
+
+/* ---------------- customer detail ---------------- */
+async function openCustomer(id){
+  CUR = CUSTOMERS.find(c => c.customer_id === id);
+  if (!CUR) return;
+  ["customers","ageing","activity","logins"].forEach(v => $("view-"+v).classList.add("hidden"));
+  $("view-detail").classList.remove("hidden");
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("is-on"));
+
+  $("dName").textContent = CUR.name_en;
+  $("dMeta").textContent = [CUR.code, CUR.currency,
+    `${CUR.payment_terms_days} day terms`, CUR.contact_email].filter(Boolean).join("  ·  ");
+
+  const [led, open] = await Promise.all([
+    sb.from("v_ledger").select("*").eq("customer_id", id)
+      .order("entry_date",{ascending:false}).order("created_at",{ascending:false}),
+    sb.from("v_open_invoices").select("*").eq("customer_id", id)
+      .order("due_date",{ascending:true, nullsFirst:false})
+  ]);
+  CUR_LEDGER = led.data || []; CUR_OPEN = open.data || [];
+  renderDetail();
+}
+
+function renderDetail(){
+  const c = CUR, cur = c.currency, a = ageOf(c.customer_id);
+  const bal = Number(c.balance) || 0;
+  const lim = Number(c.credit_limit) || 0;
+
+  $("dKpis").innerHTML = `
+    <div class="kpi ${bal < -0.004 ? "kpi--credit" : ""}">
+      <p class="kpi__label">${bal < -0.004 ? "We owe this customer" : "They owe El Shams"}</p>
+      <p class="kpi__value">${esc(money(Math.abs(bal), cur))}</p>
+      <p class="kpi__sub">${Math.abs(bal) < 0.005 ? "account fully settled" : "net position"}</p>
+    </div>
+    <div class="kpi kpi--due"><p class="kpi__label">Overdue</p>
+      <p class="kpi__value">${esc(money(a.total_overdue || 0, cur))}</p>
+      <p class="kpi__sub">${CUR_OPEN.filter(o => o.days_overdue > 0).length} document(s) past due</p></div>
+    <div class="kpi"><p class="kpi__label">Credit limit</p>
+      <p class="kpi__value">${lim > 0 ? esc(compact(lim, cur)) : "—"}</p>
+      <p class="kpi__sub">${lim > 0
+        ? `${Math.round(Math.max(0,bal)/lim*100)}% used` : "no limit set"}</p></div>
+    <div class="kpi"><p class="kpi__label">Total billed</p>
+      <p class="kpi__value">${esc(compact(c.total_debit, cur))}</p>
+      <p class="kpi__sub">${esc(compact(c.total_credit, cur))} settled</p></div>`;
+
+  $("dOpenBody").innerHTML = CUR_OPEN.length ? CUR_OPEN.map(o => {
+    const n = Number(o.days_overdue) || 0;
+    return `<tr>
+      <td class="t-doc">${esc(o.doc_no)}</td>
+      <td class="t-muted">${esc(dt(o.entry_date))}</td>
+      <td class="t-muted">${esc(dt(o.due_date))}</td>
+      <td>${n > 0 ? `<span class="tag tag--due">${n} days late</span>`
+                  : `<span class="tag tag--ok">not due</span>`}</td>
+      <td class="t-doc t-muted">${esc(o.order_ref || "—")}</td>
+      <td class="t-num t-muted">${esc(money(o.original_amount, cur))}</td>
+      <td class="t-num"><strong>${esc(money(o.outstanding, cur))}</strong></td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="7"><div class="empty">
+      <strong>Nothing outstanding</strong>All invoices for this account are settled.</div></td></tr>`;
+
+  $("dLedgerBody").innerHTML = CUR_LEDGER.length ? CUR_LEDGER.map(r => {
+    const isDebit = Number(r.signed_amount) > 0;
+    return `<tr>
+      <td class="t-muted">${esc(dt(r.entry_date))}</td>
+      <td class="t-doc">${esc(r.doc_no)}</td>
+      <td><span class="tag ${isDebit?"tag--debit":"tag--credit"}">${esc(KINDS[r.kind])}</span></td>
+      <td class="t-muted">${esc([r.description, r.reference, r.order_ref].filter(Boolean).join(" · ") || "—")}</td>
+      <td class="t-num">${isDebit ? esc(money(Math.abs(r.signed_amount), cur)) : ""}</td>
+      <td class="t-num" style="color:var(--credit)">${!isDebit ? esc(money(Math.abs(r.signed_amount), cur)) : ""}</td>
+      <td class="t-num"><strong>${esc(money(r.running_balance, cur))}</strong></td>
+      <td class="no-print"><button class="btn btn--danger btn--sm" data-void="${r.id}">Void</button></td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="8"><div class="empty">
+      <strong>No transactions yet</strong>Use "Record transaction" to post the first one.</div></td></tr>`;
+
+  $("dLedgerBody").querySelectorAll("[data-void]").forEach(b =>
+    b.onclick = () => askVoid(b.dataset.void));
+}
+$("printStmtBtn").onclick = () => window.print();
+
+/* ---------------- record a transaction ---------------- */
+const openModal  = m => $(m).classList.remove("hidden");
+const closeModal = m => $(m).classList.add("hidden");
+document.querySelectorAll("[data-close]").forEach(b =>
+  b.onclick = () => b.closest(".modal").classList.add("hidden"));
+document.querySelectorAll(".modal").forEach(m =>
+  m.addEventListener("click", e => { if (e.target === m) m.classList.add("hidden"); }));
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") document.querySelectorAll(".modal").forEach(m => m.classList.add("hidden"));
+});
+
+$("addEntryBtn").onclick = () => {
+  $("entryError").classList.add("hidden");
+  $("entryFor").textContent = `${CUR.name_en} · ${CUR.code} · amounts in ${CUR.currency}`;
+  ["eDoc","eAmount","eOrder","eRef","eDesc"].forEach(id => $(id).value = "");
+  $("eKind").value = "invoice";
+  $("eDate").value = today();
+  syncEntryForm();
+  openModal("entryModal");
+  $("eDoc").focus();
+};
+
+$("eKind").onchange = syncEntryForm;
+$("eDate").onchange = syncEntryForm;
+
+function syncEntryForm(){
+  const k = $("eKind").value;
+  const isCharge = DEBIT_KINDS.includes(k);
+  $("eDueWrap").style.visibility = (k === "invoice" || k === "debit_note") ? "visible" : "hidden";
+  $("eMethodWrap").style.visibility = isCharge && k !== "refund" ? "hidden" : "visible";
+  if (k === "invoice" || k === "debit_note"){
+    const d = new Date($("eDate").value || today());
+    d.setDate(d.getDate() + (CUR ? CUR.payment_terms_days : 30));
+    $("eDue").value = d.toISOString().slice(0,10);
+  } else $("eDue").value = "";
+  $("eHint").textContent = k === "adjustment"
+    ? "A positive adjustment increases what the customer owes. A negative one credits them."
+    : isCharge
+      ? "This increases what the customer owes El Shams."
+      : "This reduces what the customer owes, and can push the account into credit.";
+  $("eAmount").min = k === "adjustment" ? "" : "0.01";
+}
+
+$("saveEntryBtn").onclick = async () => {
+  const kind = $("eKind").value;
+  const amount = parseFloat($("eAmount").value);
+  const doc = $("eDoc").value.trim();
+  const err = m => { $("entryError").textContent = m; $("entryError").classList.remove("hidden"); };
+
+  if (!doc) return err("Give the transaction a document number so it can be traced.");
+  if (!Number.isFinite(amount) || amount === 0) return err("Enter an amount.");
+  if (kind !== "adjustment" && amount < 0)
+    return err("Only an adjustment can be negative. Pick the matching transaction type instead.");
+  if (!$("eDate").value) return err("Pick the date the transaction happened.");
+
+  $("saveEntryBtn").disabled = true;
+  const { error } = await sb.from("ledger_entries").insert({
+    customer_id: CUR.customer_id,
+    kind, doc_no: doc, amount,
+    entry_date: $("eDate").value,
+    due_date: $("eDue").value || null,
+    currency: CUR.currency,
+    order_ref: $("eOrder").value.trim() || null,
+    method: $("eMethod").value || null,
+    reference: $("eRef").value.trim() || null,
+    description: $("eDesc").value.trim() || null,
+    created_by: ME.id
+  });
+  $("saveEntryBtn").disabled = false;
+
+  if (error){
+    return err(error.code === "23505"
+      ? `Document ${doc} already exists for this customer as a ${KINDS[kind].toLowerCase()}.`
+      : error.message);
+  }
+  closeModal("entryModal");
+  const id = CUR.customer_id;
+  await loadAll();
+  await openCustomer(id);
+};
+
+/* ---------------- void ---------------- */
+function askVoid(id){ voidTarget = id; $("vReason").value = ""; openModal("voidModal"); $("vReason").focus(); }
+
+$("confirmVoidBtn").onclick = async () => {
+  const reason = $("vReason").value.trim() || "Voided by finance";
+  const { error } = await sb.from("ledger_entries")
+    .update({ is_void:true, void_reason:reason }).eq("id", voidTarget);
+  if (error){ alert(error.message); return; }
+  closeModal("voidModal");
+  const id = CUR ? CUR.customer_id : null;
+  await loadAll();
+  if (id) await openCustomer(id);
+};
+
+/* ---------------- customer create / edit ---------------- */
+$("newCustBtn").onclick = () => {
+  editing = false;
+  $("custTitle").textContent = "Add customer";
+  $("custError").classList.add("hidden");
+  ["cCode","cNameEn","cNameAr","cTax","cContact","cEmail","cPhone","cAddr"]
+    .forEach(id => $(id).value = "");
+  $("cCur").value = "EGP"; $("cLimit").value = "0"; $("cTerms").value = "30";
+  $("cActive").checked = true; $("cCode").disabled = false;
+  $("cActiveWrap").style.display = "none";
+  openModal("custModal"); $("cCode").focus();
+};
+
+$("editCustBtn").onclick = async () => {
+  editing = true;
+  const { data } = await sb.from("customers").select("*").eq("id", CUR.customer_id).maybeSingle();
+  if (!data) return;
+  $("custTitle").textContent = "Edit customer";
+  $("custError").classList.add("hidden");
+  $("cCode").value = data.code; $("cCode").disabled = true;
+  $("cNameEn").value = data.name_en || ""; $("cNameAr").value = data.name_ar || "";
+  $("cCur").value = data.currency; $("cLimit").value = data.credit_limit;
+  $("cTerms").value = data.payment_terms_days; $("cTax").value = data.tax_id || "";
+  $("cContact").value = data.contact_name || ""; $("cEmail").value = data.contact_email || "";
+  $("cPhone").value = data.contact_phone || ""; $("cAddr").value = data.address || "";
+  $("cActive").checked = data.is_active;
+  $("cActiveWrap").style.display = "flex";
+  openModal("custModal");
+};
+
+$("saveCustBtn").onclick = async () => {
+  const err = m => { $("custError").textContent = m; $("custError").classList.remove("hidden"); };
+  const code = $("cCode").value.trim(), name = $("cNameEn").value.trim();
+  if (!code) return err("Every account needs a code — it appears on the statement.");
+  if (!name) return err("Enter the customer's name in English.");
+
+  const payload = {
+    name_en:name, name_ar:$("cNameAr").value.trim() || null,
+    currency:$("cCur").value,
+    credit_limit: parseFloat($("cLimit").value) || 0,
+    payment_terms_days: parseInt($("cTerms").value, 10) || 30,
+    tax_id:$("cTax").value.trim() || null,
+    contact_name:$("cContact").value.trim() || null,
+    contact_email:$("cEmail").value.trim() || null,
+    contact_phone:$("cPhone").value.trim() || null,
+    address:$("cAddr").value.trim() || null
+  };
+
+  $("saveCustBtn").disabled = true;
+  let error;
+  if (editing){
+    payload.is_active = $("cActive").checked;
+    ({ error } = await sb.from("customers").update(payload).eq("id", CUR.customer_id));
+  } else {
+    payload.code = code;
+    ({ error } = await sb.from("customers").insert(payload));
+  }
+  $("saveCustBtn").disabled = false;
+
+  if (error) return err(error.code === "23505"
+    ? `Code ${code} is already used by another account.` : error.message);
+
+  closeModal("custModal");
+  const id = editing && CUR ? CUR.customer_id : null;
+  await loadAll();
+  if (id) await openCustomer(id);
+};
+
+/* ---------------- logins ---------------- */
+async function loadProfiles(){
+  const { data } = await sb.from("profiles")
+    .select("id, role, customer_id, full_name, email").order("created_at");
+  PROFILES = data || [];
+  renderLogins();
+}
+
+function renderLogins(){
+  if (!PROFILES.length){
+    $("loginBody").innerHTML = `<tr><td colspan="5"><div class="empty">
+      <strong>No logins yet</strong>Create one in Supabase → Authentication → Users.</div></td></tr>`;
+    return;
+  }
+  $("loginBody").innerHTML = PROFILES.map(p => {
+    const c = CUSTOMERS.find(x => x.customer_id === p.customer_id);
+    const linked = p.role === "customer"
+      ? (c ? `${esc(c.name_en)} <span class="t-muted t-doc">${esc(c.code)}</span>`
+           : `<span class="tag tag--due">not linked</span>`)
+      : `<span class="t-muted">n/a</span>`;
+    return `<tr>
+      <td class="t-doc">${esc(p.email || "—")}</td>
+      <td>${esc(p.full_name || "—")}</td>
+      <td><span class="tag ${p.role==="customer"?"tag--ok":"tag--debit"}">${esc(p.role)}</span></td>
+      <td>${linked}</td>
+      <td class="t-num"><button class="btn btn--ghost btn--sm" data-link="${p.id}">Change</button></td>
+    </tr>`;
+  }).join("");
+  $("loginBody").querySelectorAll("[data-link]").forEach(b =>
+    b.onclick = () => askLink(b.dataset.link));
+}
+
+function askLink(id){
+  linkTarget = PROFILES.find(p => p.id === id);
+  if (!linkTarget){
+    alert("That login is no longer in the list. Refreshing.");
+    return loadProfiles();
+  }
+  $("linkFor").textContent = linkTarget.email || linkTarget.id;
+  $("lRole").value = linkTarget.role;
+  $("lCust").innerHTML = `<option value="">— choose an account —</option>` +
+    CUSTOMERS.map(c => `<option value="${c.customer_id}">${esc(c.code)} · ${esc(c.name_en)}</option>`).join("");
+  $("lCust").value = linkTarget.customer_id || "";
+  syncLinkForm();
+  openModal("linkModal");
+}
+$("lRole").onchange = syncLinkForm;
+function syncLinkForm(){
+  $("lCustWrap").style.display = $("lRole").value === "customer" ? "block" : "none";
+}
+
+$("saveLinkBtn").onclick = async () => {
+  const role = $("lRole").value;
+  const cid = role === "customer" ? ($("lCust").value || null) : null;
+  if (role === "customer" && !cid) return alert("Choose which customer account this login belongs to.");
+  const { error } = await sb.from("profiles")
+    .update({ role, customer_id: cid }).eq("id", linkTarget.id);
+  if (error) return alert(error.message);
+  closeModal("linkModal");
+  await loadProfiles();
+};
+
+/* ---------------- start ---------------- */
+if (sb){
+  boot().catch(err => showFatal("Could not load the dashboard.", err && err.message));
+  sb.auth.onAuthStateChange(e => {
+    if (e === "PASSWORD_RECOVERY") showResetScreen();
+    else if (e === "SIGNED_OUT") location.reload();
+  });
+  const rec = recoveryFromUrl();
+  if (rec && rec.failed){
+    clearUrlTokens();
+    $("loginView").classList.remove("hidden");
+    $("appView").classList.add("hidden");
+    $("loginError").textContent =
+      "That password link has expired or was already used. Request a new one below.";
+    $("loginError").className = "alert alert--bad";
+  } else if (rec && rec.ok){
+    setTimeout(showResetScreen, 350);
+  }
+}
+</script>
+</body>
+</html>
