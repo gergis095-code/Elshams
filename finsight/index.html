@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinSight — financial input review</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0F1729; --ink-2:#1D2939; --body:#344054; --muted:#667085; --faint:#98A2B3;
+  --line:#E4E7EC; --line-2:#D0D5DD; --page:#F7F8FA; --card:#FFFFFF; --rail:#0F1729;
+  --accent:#145C9E; --accent-soft:#EAF2FB;
+  --crit:#B42318; --crit-bg:#FEF3F2; --crit-line:#FECDCA;
+  --warn:#B54708; --warn-bg:#FFFAEB; --warn-line:#FEDF89;
+  --ok:#067647;   --ok-bg:#ECFDF3;   --ok-line:#ABEFC6;
+  --info:#175CD3; --info-bg:#EFF8FF;
+  --r:6px;
+}
+[data-theme="dark"]{
+  --ink:#F2F4F7; --ink-2:#E4E7EC; --body:#CDD3DC; --muted:#98A2B3; --faint:#667085;
+  --line:#28303E; --line-2:#3A4454; --page:#0B111C; --card:#131A26; --rail:#080D16;
+  --accent:#5B9BE0; --accent-soft:#16283C;
+  --crit:#FDA29B; --crit-bg:#2A1516; --crit-line:#5B2120;
+  --warn:#FEC84B; --warn-bg:#291D08; --warn-line:#5A4008;
+  --ok:#6CE9A6;   --ok-bg:#0A2119;   --ok-line:#1A4231;
+  --info:#84CAFF; --info-bg:#0E2136;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,sans-serif;
+  background:var(--page); color:var(--body); font-size:14px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+html[dir="rtl"] body{font-family:"IBM Plex Sans Arabic","IBM Plex Sans",system-ui,sans-serif}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.num{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;direction:ltr;display:inline-block}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{color:var(--ink);font-weight:600;letter-spacing:-.01em}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-columns:216px 1fr;min-height:100vh}
+html[dir="rtl"] .app{grid-template-columns:216px 1fr}
+@media(max-width:860px){.app{grid-template-columns:1fr}.rail{display:none}}
+
+.rail{background:var(--rail);color:#fff;padding:18px 0;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;padding:0 18px 20px}
+.brand-mark{width:30px;height:30px;flex:none;border-radius:5px;background:var(--accent);
+  display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:13px;color:#fff}
+.brand-name{font-size:15px;font-weight:600;letter-spacing:-.01em;color:#fff;line-height:1.1}
+.brand-sub{font-size:10.5px;color:rgba(255,255,255,.5);letter-spacing:.04em}
+.nav{display:flex;flex-direction:column;gap:1px;padding:0 8px}
+.nav button{
+  display:flex;align-items:center;gap:9px;width:100%;text-align:start;
+  padding:9px 11px;border:none;border-radius:var(--r);background:transparent;
+  color:rgba(255,255,255,.68);cursor:pointer;font-size:13.5px;transition:.12s;
+}
+.nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav button.on{background:rgba(255,255,255,.11);color:#fff;font-weight:500}
+.nav .badge{margin-inline-start:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;
+  padding:1px 6px;border-radius:9px;background:var(--crit);color:#fff}
+.rail-foot{margin-top:auto;padding:16px 18px 0;border-top:1px solid rgba(255,255,255,.08);
+  font-size:11px;color:rgba(255,255,255,.4);line-height:1.5}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;gap:10px;padding:12px 22px;background:var(--card);
+  border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.top h1{font-size:17px;margin-inline-end:auto}
+.tbtn{background:transparent;border:1px solid var(--line-2);color:var(--body);
+  padding:6px 12px;border-radius:var(--r);cursor:pointer;font-size:12.5px;transition:.12s}
+.tbtn:hover{background:var(--page);border-color:var(--muted)}
+.tbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+.tbtn.primary:hover{filter:brightness(1.08)}
+
+main{padding:22px;max-width:1180px}
+
+/* ---------- cards / metrics ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px}
+.card-h{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.card-h h2{font-size:14px}
+.card-b{padding:16px}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.metric{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.metric .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  font-weight:500;margin-bottom:6px}
+.metric .v{font-family:"IBM Plex Mono",monospace;font-size:26px;font-weight:600;color:var(--ink);
+  line-height:1.1;font-variant-numeric:tabular-nums;direction:ltr}
+.metric .s{font-size:12px;color:var(--muted);margin-top:4px}
+.metric.crit .v{color:var(--crit)} .metric.warn .v{color:var(--warn)} .metric.ok .v{color:var(--ok)}
+
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:9px}
+.bar i{display:block;height:100%;background:var(--ok)}
+
+/* ---------- severity ---------- */
+.sev{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.sev.critical{background:var(--crit-bg);color:var(--crit);border:1px solid var(--crit-line)}
+.sev.warning{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-line)}
+.sev.info{background:var(--info-bg);color:var(--info)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+
+/* ---------- upload ---------- */
+.drop{border:2px dashed var(--line-2);border-radius:10px;padding:44px 24px;text-align:center;
+  background:var(--card);transition:.15s;cursor:pointer}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop h3{font-size:16px;margin-bottom:6px}
+.drop p{color:var(--muted);font-size:13px;max-width:44ch;margin:0 auto}
+.drop .ic{font-family:"IBM Plex Mono",monospace;font-size:22px;color:var(--accent);margin-bottom:10px}
+
+/* ---------- findings (audit workpaper style) ---------- */
+.finding{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:10px;
+  border-inline-start:3px solid var(--line-2);overflow:hidden}
+.finding.critical{border-inline-start-color:var(--crit)}
+.finding.warning{border-inline-start-color:var(--warn)}
+.finding.done{opacity:.55}
+.f-h{padding:13px 16px;display:flex;align-items:flex-start;gap:11px;flex-wrap:wrap}
+.f-t{flex:1;min-width:220px}
+.f-t h3{font-size:14.5px;margin-bottom:3px}
+.f-t p{font-size:13px;color:var(--body);line-height:1.55}
+.f-nums{display:flex;gap:20px;flex-wrap:wrap;padding:11px 16px;background:var(--page);
+  border-block:1px solid var(--line)}
+.f-num .k{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.f-num .v{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;color:var(--ink);
+  font-variant-numeric:tabular-nums;direction:ltr}
+.f-num .v.neg{color:var(--crit)}
+.f-calc{padding:9px 16px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
+  background:var(--page);border-bottom:1px solid var(--line);direction:ltr;text-align:start;word-break:break-word}
+.f-f{padding:11px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* the cross-reference chip — the audit tie-out */
+.xref{display:inline-flex;align-items:center;gap:5px;font-family:"IBM Plex Mono",monospace;
+  font-size:11.5px;padding:3px 8px;border-radius:4px;border:1px solid var(--line-2);
+  background:var(--card);color:var(--accent);cursor:pointer;transition:.12s;direction:ltr}
+.xref:hover{background:var(--accent-soft);border-color:var(--accent)}
+.act{margin-inline-start:auto;display:flex;gap:6px}
+.act button{border:1px solid var(--line-2);background:var(--card);color:var(--body);
+  padding:5px 11px;border-radius:var(--r);cursor:pointer;font-size:12.5px}
+.act button:hover{background:var(--page)}
+.act button.ok{border-color:var(--ok);color:var(--ok)}
+.status-tag{font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:4px}
+.status-tag.reviewed{background:var(--info-bg);color:var(--info)}
+.status-tag.approved{background:var(--ok-bg);color:var(--ok)}
+.status-tag.investigating{background:var(--warn-bg);color:var(--warn)}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:start;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--page);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;text-align:end;direction:ltr}
+
+/* ---------- report ---------- */
+.report h2{font-size:16px;margin:22px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.report h2:first-child{margin-top:0}
+.report p{margin-bottom:9px;line-height:1.68;color:var(--body)}
+.report .src{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);direction:ltr}
+.unknown{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn);
+  padding:9px 12px;border-radius:var(--r);font-size:13px;margin-bottom:9px}
+
+/* ---------- inspector ---------- */
+.scrim{position:fixed;inset:0;background:rgba(15,23,41,.55);z-index:40;display:none}
+.scrim.on{display:block}
+.insp{position:fixed;inset-block:0;inset-inline-end:0;width:min(500px,100%);background:var(--card);
+  z-index:41;overflow-y:auto;display:none;box-shadow:-10px 0 34px rgba(0,0,0,.22)}
+.insp.on{display:block}
+.insp-h{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;
+  position:sticky;top:0;background:var(--card)}
+.insp-h h2{font-size:15px;flex:1}
+.x{background:none;border:none;font-size:21px;cursor:pointer;color:var(--muted);line-height:1}
+.cellgrid{border:1px solid var(--line);border-radius:var(--r);overflow:auto}
+.cellgrid table{font-size:12px}
+.cellgrid td{padding:6px 9px;border:1px solid var(--line);white-space:nowrap}
+.cellgrid td.hit{background:var(--accent-soft);outline:2px solid var(--accent);font-weight:600;color:var(--ink)}
+.cellgrid td.rowhdr,.cellgrid th{background:var(--page);color:var(--muted);
+  font-family:"IBM Plex Mono",monospace;font-size:11px}
+
+.empty{padding:52px 20px;text-align:center;color:var(--muted)}
+.empty strong{display:block;font-size:16px;color:var(--ink);margin-bottom:5px}
+.hide{display:none!important}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6}
+.chartwrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <span class="brand-mark">FS</span>
+      <span><span class="brand-name">FinSight</span><br>
+      <span class="brand-sub" data-t="railSub">Financial input review</span></span>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="rail-foot">
+      <span data-t="privacy">Workbooks are read in your browser. No file is uploaded.</span>
+    </div>
+  </aside>
+
+  <div>
+    <div class="top">
+      <h1 id="pageTitle">Dashboard</h1>
+      <button class="tbtn" id="themeBtn">Dark</button>
+      <button class="tbtn" id="langBtn">العربية</button>
+      <button class="tbtn primary" id="demoBtn" data-t="loadDemo">Load demo workbook</button>
+    </div>
+    <main id="view"></main>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="insp" id="insp" role="dialog" aria-modal="true"></aside>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script id="demoXlsx" type="application/base64">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</script>
+<script>
+/* ===========================================================================
+   FinSight — deterministic engine
+   ---------------------------------------------------------------------------
+   Ingestion -> calculation -> validation -> anomaly detection.
+   Contains no AI and makes no network calls. Every number it reports is
+   computed here, from cells it can name. Runs in the browser and in Node.
+   =========================================================================== */
+(function (root, factory) {
+  if (typeof module === "object" && module.exports) module.exports = factory();
+  else root.FinSight = factory();
+})(typeof self !== "undefined" ? self : this, function () {
+"use strict";
+
+/* --------------------------------------------------------------------------
+   1. TEXT NORMALISATION  (Arabic + English)
+   -------------------------------------------------------------------------- */
+function norm(s) {
+  return String(s == null ? "" : s)
+    .replace(/[\u064B-\u0652\u0640]/g, "")      // strip harakat + tatweel
+    .replace(/[\u0623\u0625\u0622\u0671]/g, "\u0627") // alef variants -> alef
+    .replace(/\u0649/g, "\u064A")                // alef maqsura -> ya
+    .replace(/\u0629/g, "\u0647")                // ta marbuta -> ha
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+}
+
+/* --------------------------------------------------------------------------
+   2. FINANCIAL CATEGORY DICTIONARY
+   -------------------------------------------------------------------------- */
+var CATEGORIES = {
+  revenue:            ["revenue","sales","net sales","turnover","المبيعات","الايرادات","صافي المبيعات"],
+  cogs:               ["cost of goods sold","cogs","cost of sales","تكلفه المبيعات","تكلفه البضاعه المباعه"],
+  gross_profit:       ["gross profit","مجمل الربح","اجمالي الربح","الربح الاجمالي"],
+  payroll:            ["payroll","salaries","wages","salaries and wages","الرواتب","الاجور","المرتبات"],
+  utilities:          ["utilities","electricity","الكهرباء","المرافق","الكهرباء والمياه"],
+  maintenance:        ["maintenance","repairs","الصيانه"],
+  freight:            ["freight","logistics","shipping","freight logistics","الشحن","النقل"],
+  other_opex:         ["other operating expenses","other expenses","مصروفات اخري"],
+  total_opex:         ["total operating expenses","operating expenses","opex","المصروفات التشغيليه","اجمالي المصروفات التشغيليه"],
+  ebitda:             ["ebitda","الارباح قبل الفوائد والضرائب والاهلاك والاستهلاك"],
+  ebit:               ["ebit","operating profit","الربح التشغيلي"],
+  depreciation:       ["depreciation","depreciation amortisation","depreciation and amortization","الاهلاك","الاستهلاك"],
+  interest:           ["interest","interest expense","الفوائد","مصروف الفوائد"],
+  tax:                ["income tax","tax","taxes","الضرائب","ضريبه الدخل"],
+  net_income:         ["net income","net profit","profit for the period","صافي الربح","صافي الدخل"],
+  pbt:                ["profit before tax","pbt","الربح قبل الضرائب"],
+  cash:               ["cash","cash and equivalents","النقديه","النقديه وما في حكمها"],
+  ar:                 ["accounts receivable","receivables","trade receivables","العملاء","المدينون"],
+  inventory:          ["inventory","stock","المخزون"],
+  ppe:                ["ppe","property plant and equipment","fixed assets","الاصول الثابته"],
+  total_assets:       ["total assets","اجمالي الاصول"],
+  ap:                 ["accounts payable","payables","trade payables","الموردون","الدائنون"],
+  debt:               ["debt","loans","borrowings","القروض"],
+  total_liabilities:  ["total liabilities","اجمالي الخصوم"],
+  equity:             ["equity","shareholders equity","حقوق الملكيه","حقوق المساهمين"],
+  total_liab_equity:  ["total liabilities and equity","اجمالي الخصوم وحقوق الملكيه"],
+  capex:              ["capex","capital expenditure","الاستثمارات الراسماليه"]
+};
+
+var CAT_LOOKUP = (function () {
+  var m = {};
+  Object.keys(CATEGORIES).forEach(function (k) {
+    CATEGORIES[k].forEach(function (syn) { m[norm(syn)] = k; });
+  });
+  return m;
+})();
+
+function classify(label) {
+  var n = norm(label);
+  if (!n) return null;
+  if (CAT_LOOKUP[n]) return CAT_LOOKUP[n];
+  // longest-synonym containment, so "total operating expenses" beats "expenses"
+  var best = null, bestLen = 0;
+  Object.keys(CAT_LOOKUP).forEach(function (syn) {
+    if (syn.length > bestLen && (n === syn || n.indexOf(syn) > -1)) {
+      best = CAT_LOOKUP[syn]; bestLen = syn.length;
+    }
+  });
+  return best;
+}
+
+var TOTAL_WORDS = ["total","اجمالي","مجموع","اجمالى"];
+function looksLikeTotal(label) {
+  var n = norm(label);
+  return TOTAL_WORDS.some(function (w) { return n.indexOf(w) === 0 || n.indexOf(" " + w) > -1; });
+}
+
+/* --------------------------------------------------------------------------
+   3. PERIOD DETECTION
+   -------------------------------------------------------------------------- */
+var MONTHS = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+var MONTHS_AR = ["ينا","فبر","مار","ابر","ماي","يون","يول","اغس","سبت","اكت","نوف","ديس"];
+
+function parsePeriod(v) {
+  if (v == null || v === "") return null;
+  if (v instanceof Date) return { label: v.toISOString().slice(0, 7), sort: v.getTime(), kind: "month" };
+  var s = String(v).trim(), n = norm(s);
+  var mi = MONTHS.findIndex(function (m) { return n.indexOf(m) === 0; });
+  if (mi === -1) mi = MONTHS_AR.findIndex(function (m) { return n.indexOf(norm(m)) === 0; });
+  if (mi > -1) {
+    var yr = (s.match(/(\d{2,4})/) || [])[1];
+    var y = yr ? (yr.length === 2 ? 2000 + +yr : +yr) : 2000;
+    return { label: s, sort: y * 100 + mi + 1, kind: "month" };
+  }
+  var q = n.match(/^q([1-4])\D*(\d{2,4})?/);
+  if (q) {
+    var qy = q[2] ? (q[2].length === 2 ? 2000 + +q[2] : +q[2]) : 2000;
+    return { label: s, sort: qy * 100 + +q[1] * 3, kind: "quarter" };
+  }
+  if (/^(19|20)\d{2}$/.test(s.trim())) return { label: s, sort: +s * 100, kind: "year" };
+  return null;
+}
+
+/* --------------------------------------------------------------------------
+   4. CURRENCY DETECTION
+   -------------------------------------------------------------------------- */
+var CURRENCIES = [
+  { code: "EGP", pat: /\begp\b|جنيه|ج\.?م/i },
+  { code: "USD", pat: /\busd\b|\$|دولار/i },
+  { code: "EUR", pat: /\beur\b|€|يورو/i },
+  { code: "GBP", pat: /\bgbp\b|£|استرليني/i },
+  { code: "SAR", pat: /\bsar\b|ريال/i },
+  { code: "AED", pat: /\baed\b|درهم/i }
+];
+function detectCurrency(texts) {
+  for (var i = 0; i < CURRENCIES.length; i++)
+    if (texts.some(function (t) { return CURRENCIES[i].pat.test(t); })) return CURRENCIES[i].code;
+  return null;
+}
+
+/* --------------------------------------------------------------------------
+   5. INGESTION
+   Input: array of { name, rows: [[cell,...]] } where cell = {v, f, a}
+          v = value, f = formula string (or null), a = "A1" address
+   -------------------------------------------------------------------------- */
+function isNum(v) { return typeof v === "number" && isFinite(v); }
+
+function ingestSheet(sheet) {
+  var rows = sheet.rows, texts = [];
+  rows.forEach(function (r) {
+    r.forEach(function (c) { if (c && typeof c.v === "string") texts.push(c.v); });
+  });
+
+  // header row = the row yielding the most parsable periods
+  var headerRow = -1, periods = [], bestCount = 0;
+  for (var i = 0; i < Math.min(rows.length, 25); i++) {
+    var found = [];
+    (rows[i] || []).forEach(function (c, j) {
+      if (!c) return;
+      var p = parsePeriod(c.v);
+      if (p) { p.col = j; found.push(p); }
+    });
+    if (found.length > bestCount) { bestCount = found.length; headerRow = i; periods = found; }
+  }
+  if (bestCount < 2) return { name: sheet.name, periods: [], lineItems: [], skipped: true };
+
+  periods.sort(function (a, b) { return a.sort - b.sort; });
+
+  // label column = left-most column with the most non-numeric strings below the header
+  var labelCol = 0, bestLabels = 0;
+  for (var c0 = 0; c0 < Math.min(4, periods[0].col); c0++) {
+    var cnt = 0;
+    for (var r0 = headerRow + 1; r0 < rows.length; r0++) {
+      var cell = (rows[r0] || [])[c0];
+      if (cell && typeof cell.v === "string" && cell.v.trim()) cnt++;
+    }
+    if (cnt > bestLabels) { bestLabels = cnt; labelCol = c0; }
+  }
+
+  var lineItems = [];
+  for (var r = headerRow + 1; r < rows.length; r++) {
+    var row = rows[r] || [];
+    var lc = row[labelCol];
+    var label = lc && typeof lc.v === "string" ? lc.v.trim() : "";
+    if (!label) continue;
+
+    var values = [], cells = [], formulas = [], numCount = 0;
+    periods.forEach(function (p) {
+      var cell = row[p.col];
+      var v = cell && isNum(cell.v) ? cell.v : null;
+      if (v !== null) numCount++;
+      values.push(v);
+      cells.push(cell ? cell.a : null);
+      formulas.push(cell && cell.f ? cell.f : null);
+    });
+    if (numCount === 0) continue;
+
+    lineItems.push({
+      label: label, row: r, sheet: sheet.name,
+      category: classify(label), isTotal: looksLikeTotal(label),
+      values: values, cells: cells, formulas: formulas
+    });
+  }
+
+  return {
+    name: sheet.name, headerRow: headerRow, labelCol: labelCol,
+    periods: periods, lineItems: lineItems,
+    currency: detectCurrency(texts), skipped: false
+  };
+}
+
+function ingest(workbook) {
+  var sheets = workbook.sheets.map(ingestSheet);
+  var cur = null;
+  sheets.forEach(function (s) { if (!cur && s.currency) cur = s.currency; });
+  return {
+    sheets: sheets,
+    currency: cur || "EGP",
+    stats: {
+      sheetCount: workbook.sheets.length,
+      analysed: sheets.filter(function (s) { return !s.skipped; }).length,
+      lineItems: sheets.reduce(function (a, s) { return a + s.lineItems.length; }, 0),
+      periods: sheets.reduce(function (a, s) { return Math.max(a, s.periods.length); }, 0)
+    }
+  };
+}
+
+/* --------------------------------------------------------------------------
+   6. DETERMINISTIC ARITHMETIC
+   Money is rounded to 2dp before comparison so float noise never fires a check.
+   -------------------------------------------------------------------------- */
+function r2(x) { return Math.round((x + Number.EPSILON) * 100) / 100; }
+function sum(a) { return a.reduce(function (x, y) { return x + (isNum(y) ? y : 0); }, 0); }
+function pct(cur, prev) { return isNum(cur) && isNum(prev) && prev !== 0 ? (cur - prev) / Math.abs(prev) : null; }
+function median(a) {
+  var s = a.filter(isNum).slice().sort(function (x, y) { return x - y; });
+  if (!s.length) return null;
+  var m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+function mad(a) {
+  var m = median(a); if (m === null) return null;
+  return median(a.filter(isNum).map(function (x) { return Math.abs(x - m); }));
+}
+
+/* --------------------------------------------------------------------------
+   7. FINDINGS
+   -------------------------------------------------------------------------- */
+var SEV = { CRITICAL: "critical", WARNING: "warning", INFO: "info" };
+
+function finding(o) {
+  return {
+    id: o.id, severity: o.severity, type: o.type,
+    metric: o.metric || "", period: o.period || "",
+    sheet: o.sheet, cells: o.cells || [],
+    current: o.current == null ? null : o.current,
+    comparison: o.comparison == null ? null : o.comparison,
+    variance: o.variance == null ? null : o.variance,
+    en: o.en, ar: o.ar,
+    calc: o.calc || null,
+    suggestion: o.suggestion || null,
+    status: "open"
+  };
+}
+
+var DEFAULTS = {
+  revenueVariancePct: 0.10,
+  expenseVariancePct: 0.15,
+  balanceToleranceAbs: 1,
+  anomalyZ: 3.5,
+  marginDropPts: 3
+};
+
+/* --------------------------------------------------------------------------
+   8. VALIDATION
+   -------------------------------------------------------------------------- */
+function validate(model, cfg) {
+  cfg = Object.assign({}, DEFAULTS, cfg || {});
+  var out = [], seq = 0;
+  var id = function (p) { return p + "-" + (++seq); };
+
+  var byCat = {};
+  model.sheets.forEach(function (sh) {
+    sh.lineItems.forEach(function (li) {
+      if (li.category) (byCat[li.category] = byCat[li.category] || []).push({ sh: sh, li: li });
+    });
+  });
+  var pick = function (cat) { return (byCat[cat] || [])[0]; };
+
+  /* ---- 8a. accounting identities ---------------------------------------- */
+  function identity(lhsCat, rhsCats, labelEn, labelAr, sev) {
+    var L = pick(lhsCat); if (!L) return;
+    var Rs = rhsCats.map(pick); if (Rs.some(function (x) { return !x; })) return;
+    if (Rs.some(function (x) { return x.sh.name !== L.sh.name; })) return;
+
+    L.sh.periods.forEach(function (p, i) {
+      var lv = L.li.values[i];
+      if (!isNum(lv)) return;
+      var rv = 0, ok = true;
+      Rs.forEach(function (R, k) {
+        var v = R.li.values[i];
+        if (!isNum(v)) { ok = false; return; }
+        rv += (k === 0 ? v : (lhsCat === "gross_profit" ? -v : v));
+      });
+      if (!ok) return;
+      var diff = r2(lv - rv);
+      if (Math.abs(diff) <= cfg.balanceToleranceAbs) return;
+      out.push(finding({
+        id: id("IDENT"), severity: sev, type: "identity",
+        metric: labelEn, period: p.label, sheet: L.sh.name,
+        cells: [L.li.cells[i]].concat(Rs.map(function (R) { return R.li.cells[i]; })).filter(Boolean),
+        current: lv, comparison: rv, variance: diff,
+        calc: labelEn + " — stated " + lv.toLocaleString() + " vs computed " + rv.toLocaleString(),
+        en: labelEn + " does not reconcile at " + p.label + ". Difference of " + Math.abs(diff).toLocaleString() + ".",
+        ar: labelAr + " لا يتطابق في " + p.label + ". الفرق " + Math.abs(diff).toLocaleString() + "."
+      }));
+    });
+  }
+
+  identity("total_assets", ["total_liab_equity"], "Balance sheet", "الميزانية", SEV.CRITICAL);
+  identity("gross_profit", ["revenue", "cogs"], "Gross profit", "مجمل الربح", SEV.CRITICAL);
+
+  /* ---- 8b. totals vs the components above them --------------------------
+     Components are the CONTIGUOUS rows directly above the total. A blank row,
+     a preceding subtotal, or any gap ends the block — otherwise a walk-back
+     happily sums Revenue and COGS into "Total Operating Expenses".          */
+  model.sheets.forEach(function (sh) {
+    sh.lineItems.forEach(function (li, idx) {
+      if (!li.isTotal) return;
+      var comps = [], expectedRow = li.row - 1;
+      for (var k = idx - 1; k >= 0; k--) {
+        var prev = sh.lineItems[k];
+        if (prev.row !== expectedRow) break;   // gap -> end of block
+        if (prev.isTotal) break;               // another total -> end of block
+        comps.unshift(prev);
+        expectedRow--;
+      }
+      if (comps.length < 2) return;
+
+      sh.periods.forEach(function (p, i) {
+        var stated = li.values[i];
+        if (!isNum(stated)) return;
+        var parts = comps.map(function (c) { return c.values[i]; });
+        if (parts.filter(isNum).length < 2) return;
+        var computed = r2(sum(parts)), diff = r2(stated - computed);
+        if (Math.abs(diff) <= cfg.balanceToleranceAbs) return;
+        out.push(finding({
+          id: id("TOTAL"), severity: SEV.CRITICAL, type: "total_mismatch",
+          metric: li.label, period: p.label, sheet: sh.name,
+          cells: [li.cells[i]].concat(comps.map(function (c) { return c.cells[i]; })).filter(Boolean),
+          current: stated, comparison: computed, variance: diff,
+          calc: li.label + " = " + comps.map(function (c) { return c.label; }).join(" + "),
+          en: '"' + li.label + '" at ' + p.label + " shows " + stated.toLocaleString() +
+              " but its components sum to " + computed.toLocaleString() + ".",
+          ar: '"' + li.label + '" في ' + p.label + " مسجل " + stated.toLocaleString() +
+              " بينما مجموع بنوده " + computed.toLocaleString() + "."
+        }));
+      });
+    });
+  });
+
+  /* ---- 8c. a literal sitting in a row that is otherwise formulas -------- */
+  model.sheets.forEach(function (sh) {
+    sh.lineItems.forEach(function (li) {
+      var withF = li.formulas.filter(Boolean).length;
+      var withV = li.values.filter(isNum).length;
+      if (withF < 2 || withF >= withV) return;
+      li.values.forEach(function (v, i) {
+        if (!isNum(v) || li.formulas[i]) return;
+        out.push(finding({
+          id: id("HARD"), severity: SEV.WARNING, type: "hardcoded",
+          metric: li.label, period: sh.periods[i].label, sheet: sh.name,
+          cells: [li.cells[i]], current: v,
+          calc: "Sibling periods use: " + (li.formulas.filter(Boolean)[0] || ""),
+          en: '"' + li.label + '" at ' + sh.periods[i].label +
+              " is a typed number while every other period is a formula. Typed-over formulas are a common source of silent error.",
+          ar: '"' + li.label + '" في ' + sh.periods[i].label +
+              " قيمة مكتوبة يدويًا بينما باقي الفترات معادلات. الكتابة فوق المعادلات سبب شائع للأخطاء غير الظاهرة."
+        }));
+      });
+    });
+  });
+
+  /* ---- 8d. gaps inside an otherwise populated series -------------------- */
+  model.sheets.forEach(function (sh) {
+    sh.lineItems.forEach(function (li) {
+      var idxs = li.values.map(function (v, i) { return isNum(v) ? i : -1; }).filter(function (i) { return i > -1; });
+      if (idxs.length < 3) return;
+      for (var i = idxs[0]; i < idxs[idxs.length - 1]; i++) {
+        if (isNum(li.values[i])) continue;
+        out.push(finding({
+          id: id("MISS"), severity: SEV.WARNING, type: "missing",
+          metric: li.label, period: sh.periods[i].label, sheet: sh.name,
+          cells: [li.cells[i]],
+          en: '"' + li.label + '" has no value at ' + sh.periods[i].label +
+              " although the periods either side are populated.",
+          ar: '"' + li.label + '" بدون قيمة في ' + sh.periods[i].label + " رغم وجود قيم قبله وبعده."
+        }));
+      }
+    });
+  });
+
+  /* ---- 8e. duplicated line items ---------------------------------------- */
+  model.sheets.forEach(function (sh) {
+    var seen = {};
+    sh.lineItems.forEach(function (li) {
+      var key = norm(li.label) + "|" + li.values.join(",");
+      if (seen[key]) {
+        out.push(finding({
+          id: id("DUP"), severity: SEV.CRITICAL, type: "duplicate",
+          metric: li.label, sheet: sh.name,
+          cells: [seen[key].cells[0], li.cells[0]].filter(Boolean),
+          current: sum(li.values),
+          en: '"' + li.label + '" appears twice with identical values (rows ' +
+              (seen[key].row + 1) + " and " + (li.row + 1) + "). If unintended this double-counts " +
+              sum(li.values).toLocaleString() + ".",
+          ar: '"' + li.label + '" مكرر بنفس القيم (صف ' + (seen[key].row + 1) + " و " + (li.row + 1) +
+              "). إذا كان غير مقصود فهذا يضاعف " + sum(li.values).toLocaleString() + "."
+        }));
+      } else seen[key] = li;
+    });
+  });
+
+  /* ---- 8f. period-over-period movement ---------------------------------- */
+  var EXPENSEY = ["cogs","payroll","utilities","maintenance","freight","other_opex","total_opex"];
+  model.sheets.forEach(function (sh) {
+    sh.lineItems.forEach(function (li) {
+      if (!li.category || li.isTotal && li.category !== "total_opex") return;
+      var thr = li.category === "revenue" ? cfg.revenueVariancePct
+              : EXPENSEY.indexOf(li.category) > -1 ? cfg.expenseVariancePct : null;
+      if (thr === null) return;
+
+      for (var i = 1; i < li.values.length; i++) {
+        var d = pct(li.values[i], li.values[i - 1]);
+        if (d === null || Math.abs(d) < thr) continue;
+        out.push(finding({
+          id: id("VAR"), severity: SEV.WARNING, type: "variance",
+          metric: li.label, period: sh.periods[i].label, sheet: sh.name,
+          cells: [li.cells[i], li.cells[i - 1]].filter(Boolean),
+          current: li.values[i], comparison: li.values[i - 1], variance: d,
+          calc: "(" + li.values[i].toLocaleString() + " - " + li.values[i - 1].toLocaleString() +
+                ") / " + Math.abs(li.values[i - 1]).toLocaleString() + " = " + (d * 100).toFixed(1) + "%",
+          en: li.label + " moved " + (d * 100).toFixed(1) + "% from " + sh.periods[i - 1].label +
+              " to " + sh.periods[i].label + ", beyond the " + (thr * 100) + "% threshold.",
+          ar: li.label + " تغير بنسبة " + (d * 100).toFixed(1) + "% من " + sh.periods[i - 1].label +
+              " إلى " + sh.periods[i].label + "، وهو يتجاوز حد " + (thr * 100) + "%."
+        }));
+      }
+    });
+  });
+
+  /* ---- 8g. actual vs budget --------------------------------------------- */
+  var budgetSheet = model.sheets.filter(function (s) {
+    return !s.skipped && /budget|forecast|موازنه|الموازنه|توقعات/.test(norm(s.name));
+  })[0];
+  var actualSheet = model.sheets.filter(function (s) {
+    return !s.skipped && s !== budgetSheet && s.lineItems.length > 3;
+  })[0];
+
+  if (budgetSheet && actualSheet) {
+    actualSheet.lineItems.forEach(function (a) {
+      var b = budgetSheet.lineItems.filter(function (x) { return norm(x.label) === norm(a.label); })[0];
+      if (!b) return;
+      var thr = a.category === "revenue" ? cfg.revenueVariancePct : cfg.expenseVariancePct;
+      actualSheet.periods.forEach(function (p, i) {
+        var bi = budgetSheet.periods.findIndex(function (q) { return q.sort === p.sort; });
+        if (bi === -1) return;
+        var d = pct(a.values[i], b.values[bi]);
+        if (d === null || Math.abs(d) < thr) return;
+        out.push(finding({
+          id: id("BUD"), severity: SEV.WARNING, type: "budget",
+          metric: a.label, period: p.label, sheet: actualSheet.name,
+          cells: [a.cells[i], b.cells[bi]].filter(Boolean),
+          current: a.values[i], comparison: b.values[bi], variance: d,
+          calc: "actual " + a.values[i].toLocaleString() + " vs budget " + b.values[bi].toLocaleString(),
+          en: a.label + " at " + p.label + " is " + (d * 100).toFixed(1) + "% against budget.",
+          ar: a.label + " في " + p.label + " بنسبة " + (d * 100).toFixed(1) + "% مقابل الموازنة."
+        }));
+      });
+    });
+  }
+
+  /* ---- 8h. statistical anomaly (median + MAD, robust to outliers) ------- */
+  model.sheets.forEach(function (sh) {
+    sh.lineItems.forEach(function (li) {
+      var vals = li.values.filter(isNum);
+      if (vals.length < 5) return;
+      var m = median(li.values), d = mad(li.values);
+      if (m === null || !d) return;
+      li.values.forEach(function (v, i) {
+        if (!isNum(v)) return;
+        var z = 0.6745 * (v - m) / d;
+        if (Math.abs(z) < cfg.anomalyZ) return;
+        out.push(finding({
+          id: id("ANOM"), severity: SEV.WARNING, type: "anomaly",
+          metric: li.label, period: sh.periods[i].label, sheet: sh.name,
+          cells: [li.cells[i]], current: v, comparison: m, variance: pct(v, m),
+          calc: "median " + m.toLocaleString() + ", robust z = " + z.toFixed(1),
+          en: "Unusual movement detected in " + li.label + " at " + sh.periods[i].label +
+              " — review recommended. It sits far from its own history (median " + m.toLocaleString() + ").",
+          ar: "حركة غير معتادة في " + li.label + " في " + sh.periods[i].label +
+              " — يُنصح بالمراجعة. القيمة بعيدة عن سلوكها التاريخي (الوسيط " + m.toLocaleString() + ")."
+        }));
+      });
+    });
+  });
+
+  /* ---- 8i. gross margin shift ------------------------------------------- */
+  var rev = pick("revenue"), cogs = pick("cogs");
+  if (rev && cogs && rev.sh === cogs.sh) {
+    var sh = rev.sh, margins = sh.periods.map(function (p, i) {
+      var r = rev.li.values[i], c = cogs.li.values[i];
+      return isNum(r) && isNum(c) && r !== 0 ? (r - c) / r : null;
+    });
+    for (var i = 1; i < margins.length; i++) {
+      if (margins[i] === null || margins[i - 1] === null) continue;
+      var dp = (margins[i] - margins[i - 1]) * 100;
+      if (Math.abs(dp) < cfg.marginDropPts) continue;
+      out.push(finding({
+        id: id("MARGIN"), severity: SEV.WARNING, type: "margin",
+        metric: "Gross margin", period: sh.periods[i].label, sheet: sh.name,
+        cells: [rev.li.cells[i], cogs.li.cells[i]].filter(Boolean),
+        current: margins[i], comparison: margins[i - 1], variance: dp / 100,
+        calc: "Gross margin = (Revenue - COGS) / Revenue — " +
+              (margins[i - 1] * 100).toFixed(1) + "% -> " + (margins[i] * 100).toFixed(1) + "%",
+        en: "Gross margin moved " + dp.toFixed(1) + " points from " + sh.periods[i - 1].label +
+            " to " + sh.periods[i].label + ".",
+        ar: "هامش الربح الإجمالي تغير بمقدار " + dp.toFixed(1) + " نقطة من " +
+            sh.periods[i - 1].label + " إلى " + sh.periods[i].label + "."
+      }));
+    }
+  }
+
+  /* ---- score -------------------------------------------------------------
+     Deliberately simple and explainable: the share of validated data points
+     that came back clean, weighting a critical finding as 3 warnings.
+     A number a finance manager can be told the meaning of in one sentence.  */
+  var crit = out.filter(function (f) { return f.severity === SEV.CRITICAL; }).length;
+  var warn = out.filter(function (f) { return f.severity === SEV.WARNING; }).length;
+  var checked = Math.max(1, model.stats.lineItems * Math.max(1, model.stats.periods));
+  var weighted = crit * 3 + warn;
+  var score = Math.max(0, Math.min(100, Math.round(100 * (1 - weighted / checked))));
+
+  return {
+    findings: out,
+    summary: {
+      critical: crit, warning: warn, total: out.length,
+      score: score, checked: checked, weighted: weighted
+    }
+  };
+}
+
+return {
+  ingest: ingest, validate: validate, classify: classify, norm: norm,
+  parsePeriod: parsePeriod, detectCurrency: detectCurrency,
+  DEFAULTS: DEFAULTS, CATEGORIES: CATEGORIES, SEVERITY: SEV
+};
+});
+
+</script>
+
+<script>
+(function(){
+"use strict";
+
+/* ===================== i18n ===================== */
+var T = {
+en:{
+  railSub:"Financial input review", privacy:"Workbooks are read in your browser. No file is uploaded.",
+  loadDemo:"Load demo workbook",
+  nav_dash:"Dashboard", nav_files:"Files", nav_review:"Review centre",
+  nav_report:"Analysis", nav_settings:"Settings",
+  dash:"Dashboard", files:"Files", review:"Review centre", report:"Analysis", settings:"Settings",
+  score:"Data quality score", critical:"Critical issues", warnings:"Warnings",
+  pending:"Awaiting review", checked:"Data points checked", anomalies:"Anomalies",
+  scoreNote:"Share of checked values with no finding against them",
+  noFile:"No workbook loaded", noFileB:"Upload an .xlsx file or load the demo to begin.",
+  noData:"Nothing to analyse", noDataB:"No sheet in this workbook has a row of period headings with at least two periods, so there is nothing to validate against. Check the Files tab to see what was read.",
+  onePeriod:"Only one period found. Comparisons need at least two.",
+  crashed:"That page could not be drawn", crashedB:"The error is shown below. Everything else still works — switch tabs to carry on.",
+  dropT:"Drop an Excel workbook here", dropB:"or click to choose a file — .xlsx and .xls, multiple files allowed. Nothing leaves this computer.",
+  sheet:"Sheet", rows:"Rows", periods:"Periods", currency:"Currency", lineItems:"Line items",
+  detected:"Detected", allClear:"No findings", allClearB:"Every check passed on this workbook.",
+  current:"Stated", comparison:"Computed", variance:"Difference", period:"Period",
+  investigate:"Investigate", markReviewed:"Mark reviewed", approve:"Approve", reopen:"Reopen",
+  reviewed:"Reviewed", approved:"Approved", investigating:"Investigating",
+  filterAll:"All", filterOpen:"Open only", filterCrit:"Critical only",
+  cellInspector:"Cell inspector", value:"Value", formula:"Formula", address:"Address",
+  noFormula:"typed value, no formula",
+  execSummary:"Executive summary", revenueH:"Revenue", profitH:"Profitability",
+  expensesH:"Expenses", wcH:"Working capital", issuesH:"Key issues", recsH:"Recommendations",
+  insufficient:"Insufficient data to determine the cause.",
+  thresholds:"Validation thresholds", revThr:"Revenue variance threshold",
+  expThr:"Expense variance threshold", balTol:"Balance tolerance", anomZ:"Anomaly sensitivity (z)",
+  marginPts:"Margin shift (points)", recheck:"Re-run validation",
+  exportJson:"Export findings (JSON)", exportCsv:"Export findings (CSV)",
+  aiNote:"This narrative is assembled from the validated figures above by template. No figure in it was written by a language model.",
+  srcLabel:"Source", calcLabel:"Calculation", nothing:"—",
+  filesT:"Workbook", uploaded:"Loaded", sheetsFound:"Sheets analysed"
+},
+ar:{
+  railSub:"مراجعة المدخلات المالية", privacy:"يتم قراءة الملفات داخل متصفحك. لا يتم رفع أي ملف.",
+  loadDemo:"تحميل ملف تجريبي",
+  nav_dash:"لوحة المتابعة", nav_files:"الملفات", nav_review:"مركز المراجعة",
+  nav_report:"التحليل", nav_settings:"الإعدادات",
+  dash:"لوحة المتابعة", files:"الملفات", review:"مركز المراجعة", report:"التحليل", settings:"الإعدادات",
+  score:"مؤشر جودة البيانات", critical:"ملاحظات حرجة", warnings:"تنبيهات",
+  pending:"في انتظار المراجعة", checked:"القيم التي تم فحصها", anomalies:"حركات غير معتادة",
+  scoreNote:"نسبة القيم التي لم تُسجَّل عليها أي ملاحظة",
+  noFile:"لا يوجد ملف", noFileB:"ارفع ملف Excel أو حمّل الملف التجريبي للبدء.",
+  noData:"لا يوجد ما يمكن تحليله", noDataB:"لا توجد ورقة في هذا الملف تحتوي على صف فترات بفترتين على الأقل، لذلك لا يوجد ما يمكن التحقق منه. راجع تبويب الملفات لمعرفة ما تمت قراءته.",
+  onePeriod:"تم العثور على فترة واحدة فقط. المقارنة تحتاج فترتين على الأقل.",
+  crashed:"تعذر عرض هذه الصفحة", crashedB:"تفاصيل الخطأ بالأسفل. باقي الصفحات تعمل — يمكنك التنقل بينها.",
+  dropT:"أفلت ملف Excel هنا", dropB:"أو اضغط لاختيار ملف — بصيغة xlsx أو xls، ويمكن اختيار أكثر من ملف. لا شيء يغادر هذا الجهاز.",
+  sheet:"ورقة", rows:"صفوف", periods:"الفترات", currency:"العملة", lineItems:"البنود",
+  detected:"تم التعرف على", allClear:"لا توجد ملاحظات", allClearB:"اجتاز الملف جميع الفحوصات.",
+  current:"المسجَّل", comparison:"المحتسب", variance:"الفرق", period:"الفترة",
+  investigate:"قيد الفحص", markReviewed:"تمت المراجعة", approve:"اعتماد", reopen:"إعادة فتح",
+  reviewed:"تمت المراجعة", approved:"معتمد", investigating:"قيد الفحص",
+  filterAll:"الكل", filterOpen:"المفتوحة فقط", filterCrit:"الحرجة فقط",
+  cellInspector:"عارض الخلية", value:"القيمة", formula:"المعادلة", address:"العنوان",
+  noFormula:"قيمة مكتوبة، بدون معادلة",
+  execSummary:"الملخص التنفيذي", revenueH:"المبيعات", profitH:"الربحية",
+  expensesH:"المصروفات", wcH:"رأس المال العامل", issuesH:"أهم الملاحظات", recsH:"التوصيات",
+  insufficient:"لا توجد بيانات كافية لتحديد السبب.",
+  thresholds:"حدود التحقق", revThr:"حد انحراف المبيعات",
+  expThr:"حد انحراف المصروفات", balTol:"هامش تطابق الميزانية", anomZ:"حساسية الشذوذ",
+  marginPts:"تغير الهامش (نقاط)", recheck:"إعادة الفحص",
+  exportJson:"تصدير الملاحظات (JSON)", exportCsv:"تصدير الملاحظات (CSV)",
+  aiNote:"هذا النص مُجمَّع من الأرقام المتحقق منها أعلاه عبر قوالب ثابتة. لم يكتب أي رقم فيه نموذج لغوي.",
+  srcLabel:"المصدر", calcLabel:"طريقة الحساب", nothing:"—",
+  filesT:"الملف", uploaded:"تم التحميل", sheetsFound:"الأوراق المحللة"
+}};
+
+/* localStorage throws outright on a file:// origin and under strict privacy
+   settings in Safari. Unwrapped, that one call kills the entire script and
+   the page renders blank with no visible cause. Preferences are a nicety;
+   losing them must never cost the app. */
+var store = {
+  get: function(k){ try { return window.localStorage.getItem(k); } catch(e){ return null; } },
+  set: function(k,v){ try { window.localStorage.setItem(k,v); } catch(e){ /* ignore */ } }
+};
+
+var lang = store.get("fs_lang") === "ar" ? "ar" : "en";
+var theme = store.get("fs_theme") === "dark" ? "dark" : "light";
+function t(k){ return (T[lang] && T[lang][k]) || T.en[k] || k; }
+function loc(){ return lang === "ar" ? "ar-EG-u-nu-latn" : "en-GB"; }
+
+/* ===================== state ===================== */
+var S = { file:null, wb:null, model:null, result:null, page:"dash", filter:"all", cfg:{} };
+var el = function(id){ return document.getElementById(id); };
+
+/* Fail in words, not in the console. A blocked CDN or a missing engine file
+   otherwise shows up only as "XLSX is not defined" on a blank screen. */
+function halt(title, body){
+  el("view").innerHTML = '<div class="card"><div class="card-b">'+
+    '<h2 style="color:var(--crit);margin-bottom:6px">'+title+'</h2>'+
+    '<p class="note">'+body+'</p></div></div>';
+  el("demoBtn").disabled = true;
+  el("demoBtn").style.opacity = ".5";
+}
+var MISSING = null;
+if(typeof XLSX === "undefined")
+  MISSING = ["Spreadsheet library did not load",
+    "This page needs cdn.jsdelivr.net to read Excel files. Check the connection or any network filtering, then reload."];
+else if(typeof FinSight === "undefined")
+  MISSING = ["Validation engine did not load",
+    "finsight-engine.js must sit in the same folder as this page. Without it there is nothing to validate with."];
+
+window.addEventListener("error", function(e){
+  console.error("FinSight uncaught:", e.message, e.filename + ":" + e.lineno);
+});
+window.addEventListener("unhandledrejection", function(e){
+  console.error("FinSight unhandled rejection:", e.reason);
+});
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function fmt(n, dp){ if(n===null||n===undefined||!isFinite(n)) return t("nothing");
+  return new Intl.NumberFormat(loc(),{minimumFractionDigits:dp||0,maximumFractionDigits:dp||0}).format(n); }
+function pctf(n){ return n===null||n===undefined||!isFinite(n) ? t("nothing") : (n*100).toFixed(1)+"%"; }
+
+/* ===================== workbook -> engine input ===================== */
+function toEngine(wb){
+  return { sheets: wb.SheetNames.map(function(name){
+    var ws = wb.Sheets[name], ref = ws["!ref"];
+    if(!ref) return { name:name, rows:[] };
+    var R = XLSX.utils.decode_range(ref), rows = [];
+    for(var r=R.s.r;r<=R.e.r;r++){
+      var row=[];
+      for(var c=R.s.c;c<=R.e.c;c++){
+        var a = XLSX.utils.encode_cell({r:r,c:c}), cell = ws[a];
+        row.push(cell ? {v:cell.v, f:cell.f||null, a:a} : null);
+      }
+      rows.push(row);
+    }
+    return { name:name, rows:rows };
+  })};
+}
+
+function analyse(wb, fileName){
+  S.wb = wb; S.file = { name:fileName, at:new Date() };
+  S.model = FinSight.ingest(toEngine(wb));
+  S.result = FinSight.validate(S.model, S.cfg);
+  render();
+}
+
+/* ===================== navigation ===================== */
+var PAGES = [
+  {id:"dash",    key:"nav_dash"},
+  {id:"files",   key:"nav_files"},
+  {id:"review",  key:"nav_review", badge:true},
+  {id:"report",  key:"nav_report"},
+  {id:"settings",key:"nav_settings"}
+];
+
+function renderNav(){
+  var open = S.result ? S.result.findings.filter(function(f){return f.status==="open";}).length : 0;
+  el("nav").innerHTML = PAGES.map(function(p){
+    var b = p.badge && open ? '<span class="badge">'+open+'</span>' : "";
+    return '<button data-page="'+p.id+'" class="'+(S.page===p.id?"on":"")+'">'+esc(t(p.key))+b+'</button>';
+  }).join("");
+  Array.prototype.forEach.call(el("nav").querySelectorAll("button"), function(b){
+    b.addEventListener("click", function(){ S.page = b.getAttribute("data-page"); render(); });
+  });
+}
+
+/* ===================== pages ===================== */
+function metric(k, v, sub, cls, extra){
+  return '<div class="metric '+(cls||"")+'"><div class="k">'+esc(k)+'</div>'+
+         '<div class="v">'+v+'</div>'+(sub?'<div class="s">'+esc(sub)+'</div>':"")+(extra||"")+'</div>';
+}
+
+function pageDash(){
+  if(!S.result) return emptyState();
+  var s = S.result.summary, F = S.result.findings;
+  var open = F.filter(function(f){return f.status==="open";}).length;
+  var anom = F.filter(function(f){return f.type==="anomaly";}).length;
+  return '<div class="metrics">'+
+    metric(t("score"), s.score+"%", t("scoreNote"), s.score>=90?"ok":s.score>=70?"warn":"crit",
+           '<div class="bar"><i style="width:'+s.score+'%;background:'+
+           (s.score>=90?"var(--ok)":s.score>=70?"var(--warn)":"var(--crit)")+'"></i></div>')+
+    metric(t("critical"), fmt(s.critical), "", s.critical?"crit":"ok")+
+    metric(t("warnings"), fmt(s.warning), "", s.warning?"warn":"ok")+
+    metric(t("pending"), fmt(open))+
+    metric(t("anomalies"), fmt(anom))+
+    metric(t("checked"), fmt(s.checked))+
+  '</div>'+ charts() +
+  '<div class="card" style="margin-top:18px"><div class="card-h"><h2>'+esc(t("issuesH"))+'</h2></div>'+
+  '<div class="card-b">'+
+    (F.filter(function(f){return f.severity==="critical";}).slice(0,4)
+      .map(function(f){ return findingCard(f, true); }).join("") ||
+     '<p class="note">'+esc(t("allClearB"))+'</p>')+
+  '</div></div>';
+}
+
+function charts(){
+  var sh = S.model.sheets.filter(function(x){return !x.skipped;})[0];
+  if(!sh) return "";
+  var rev = sh.lineItems.filter(function(l){return l.category==="revenue";})[0];
+  var cogs = sh.lineItems.filter(function(l){return l.category==="cogs";})[0];
+  if(!rev) return "";
+  var out = '<div class="chartwrap">';
+  out += chartCard(t("revenueH"), sh.periods.map(function(p){return p.label;}), rev.values, false);
+  if(cogs){
+    var m = rev.values.map(function(v,i){
+      var c = cogs.values[i];
+      return (typeof v==="number" && typeof c==="number" && v) ? (v-c)/v*100 : null; });
+    out += chartCard(lang==="ar"?"هامش الربح الإجمالي %":"Gross margin %", sh.periods.map(function(p){return p.label;}), m, true);
+  }
+  return out + '</div>';
+}
+
+function chartCard(title, labels, vals, isPct){
+  var pts = vals.map(function(v,i){return {v:v,i:i};}).filter(function(p){return typeof p.v==="number";});
+  if(pts.length < 2) return "";
+  var W=560,H=150,P=26;
+  var mx = Math.max.apply(null, pts.map(function(p){return p.v;}));
+  var mn = Math.min.apply(null, pts.map(function(p){return p.v;}));
+  if(mx===mn){mx=mx*1.1||1;mn=0;}
+  var pad=(mx-mn)*0.12; mx+=pad; mn=isPct?Math.max(0,mn-pad):Math.min(mn-pad, mn>0?0:mn-pad);
+  var x=function(i){return P + i*(W-P*2)/(labels.length-1);};
+  var y=function(v){return H-P - (v-mn)/(mx-mn)*(H-P*2);};
+  var d = pts.map(function(p,k){return (k?"L":"M")+x(p.i).toFixed(1)+" "+y(p.v).toFixed(1);}).join(" ");
+  var last = pts[pts.length-1];
+  return '<div class="card"><div class="card-h"><h2>'+esc(title)+'</h2>'+
+    '<span class="mono" style="margin-inline-start:auto;font-size:13px;color:var(--ink);font-weight:600">'+
+      (isPct? last.v.toFixed(1)+"%" : fmt(last.v))+'</span></div>'+
+    '<div class="card-b" style="padding:8px 6px">'+
+    '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block" role="img" aria-label="'+esc(title)+'">'+
+      '<path d="'+d+'" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>'+
+      pts.map(function(p){return '<circle cx="'+x(p.i).toFixed(1)+'" cy="'+y(p.v).toFixed(1)+'" r="2.5" fill="var(--accent)"/>';}).join("")+
+      labels.map(function(l,i){ return (i%2===0||i===labels.length-1) ?
+        '<text x="'+x(i).toFixed(1)+'" y="'+(H-7)+'" font-size="9" fill="var(--muted)" text-anchor="middle" font-family="IBM Plex Mono">'+esc(l)+'</text>' : "";}).join("")+
+    '</svg></div></div>';
+}
+
+function emptyState(){
+  return '<div class="card"><div class="empty"><strong>'+esc(t("noFile"))+'</strong>'+esc(t("noFileB"))+'</div></div>';
+}
+
+function pageFiles(){
+  var drop = '<div class="drop" id="drop"><div class="ic">XLSX</div>'+
+    '<h3>'+esc(t("dropT"))+'</h3><p>'+esc(t("dropB"))+'</p>'+
+    '<input type="file" id="fileInput" accept=".xlsx,.xls" multiple class="hide"></div>';
+  if(!S.model) return drop;
+  var rows = S.model.sheets.map(function(sh){
+    return '<tr><td>'+esc(sh.name)+'</td>'+
+      '<td class="n">'+(sh.skipped?t("nothing"):fmt(sh.lineItems.length))+'</td>'+
+      '<td class="n">'+(sh.skipped?t("nothing"):fmt(sh.periods.length))+'</td>'+
+      '<td class="mono" style="font-size:12px">'+(sh.skipped?t("nothing"):
+        esc(sh.periods[0].label+" → "+sh.periods[sh.periods.length-1].label))+'</td>'+
+      '<td>'+(sh.skipped?'<span class="sev info">skipped</span>':'<span class="sev" style="background:var(--ok-bg);color:var(--ok)">ok</span>')+'</td></tr>';
+  }).join("");
+  return drop +
+   '<div class="card" style="margin-top:16px"><div class="card-h"><h2>'+esc(S.file.name)+'</h2>'+
+   '<span class="mono" style="margin-inline-start:auto;font-size:12px;color:var(--muted)">'+
+     esc(t("currency"))+" "+esc(S.model.currency)+'</span></div>'+
+   '<table><thead><tr><th>'+esc(t("sheet"))+'</th><th style="text-align:end">'+esc(t("lineItems"))+
+   '</th><th style="text-align:end">'+esc(t("periods"))+'</th><th>'+esc(t("detected"))+'</th><th></th></tr></thead>'+
+   '<tbody>'+rows+'</tbody></table></div>';
+}
+
+function findingCard(f, compact){
+  var nums = "";
+  if(f.current !== null || f.comparison !== null){
+    var isP = f.type==="variance"||f.type==="budget"||f.type==="margin";
+    nums = '<div class="f-nums">'+
+      (f.current!==null?'<div class="f-num"><div class="k">'+esc(t("current"))+'</div><div class="v">'+
+        (f.type==="margin"?pctf(f.current):fmt(f.current))+'</div></div>':"")+
+      (f.comparison!==null?'<div class="f-num"><div class="k">'+esc(t("comparison"))+'</div><div class="v">'+
+        (f.type==="margin"?pctf(f.comparison):fmt(f.comparison))+'</div></div>':"")+
+      (f.variance!==null?'<div class="f-num"><div class="k">'+esc(t("variance"))+'</div><div class="v'+
+        (f.variance<0?" neg":"")+'">'+(isP?pctf(f.variance):fmt(f.variance))+'</div></div>':"")+
+      (f.period?'<div class="f-num"><div class="k">'+esc(t("period"))+'</div><div class="v">'+esc(f.period)+'</div></div>':"")+
+    '</div>';
+  }
+  var xrefs = f.cells.slice(0,4).map(function(c){
+    return '<button class="xref" data-sheet="'+esc(f.sheet)+'" data-cell="'+esc(c)+'">'+
+           esc(f.sheet)+' › '+esc(c)+'</button>'; }).join("");
+  var actions = compact ? "" : '<div class="act">'+
+      (f.status==="open"
+        ? '<button data-act="investigating" data-id="'+f.id+'">'+esc(t("investigate"))+'</button>'+
+          '<button data-act="reviewed" data-id="'+f.id+'">'+esc(t("markReviewed"))+'</button>'+
+          '<button class="ok" data-act="approved" data-id="'+f.id+'">'+esc(t("approve"))+'</button>'
+        : '<span class="status-tag '+f.status+'">'+esc(t(f.status))+'</span>'+
+          '<button data-act="open" data-id="'+f.id+'">'+esc(t("reopen"))+'</button>')+
+    '</div>';
+  return '<article class="finding '+f.severity+(f.status!=="open"?" done":"")+'" data-fid="'+f.id+'">'+
+    '<div class="f-h"><span class="sev '+f.severity+'"><span class="dot"></span>'+esc(f.severity)+'</span>'+
+      '<div class="f-t"><h3>'+esc(f.metric||f.type)+'</h3><p>'+esc(lang==="ar"?f.ar:f.en)+'</p></div></div>'+
+    nums +
+    (f.calc?'<div class="f-calc">'+esc(t("calcLabel"))+": "+esc(f.calc)+'</div>':"")+
+    '<div class="f-f">'+xrefs+actions+'</div></article>';
+}
+
+function pageReview(){
+  if(!S.result) return emptyState();
+  var F = S.result.findings.filter(function(f){
+    if(S.filter==="open") return f.status==="open";
+    if(S.filter==="crit") return f.severity==="critical";
+    return true;
+  });
+  var bar = '<div class="card" style="margin-bottom:14px"><div class="card-b" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'+
+    ["all","open","crit"].map(function(k){
+      return '<button class="tbtn'+(S.filter===k?" primary":"")+'" data-filter="'+k+'">'+
+        esc(t(k==="all"?"filterAll":k==="open"?"filterOpen":"filterCrit"))+'</button>';}).join("")+
+    '<span style="margin-inline-start:auto;display:flex;gap:8px">'+
+    '<button class="tbtn" id="expJson">'+esc(t("exportJson"))+'</button>'+
+    '<button class="tbtn" id="expCsv">'+esc(t("exportCsv"))+'</button></span>'+
+    '</div></div>';
+  if(!F.length) return bar + '<div class="card"><div class="empty"><strong>'+esc(t("allClear"))+'</strong>'+esc(t("allClearB"))+'</div></div>';
+  return bar + F.map(function(f){ return findingCard(f, false); }).join("");
+}
+
+function noData(){
+  return '<div class="card"><div class="empty"><strong>'+esc(t("noData"))+'</strong>'+esc(t("noDataB"))+'</div></div>';
+}
+
+/* ---------- deterministic narrative ---------- */
+function pageReport(){
+  if(!S.result) return emptyState();
+  var sh = S.model.sheets.filter(function(x){return !x.skipped;})[0];
+  if(!sh || !sh.periods.length) return noData();
+  var cur = S.model.currency, F = S.result.findings;
+  var get = function(cat){ return sh.lineItems.filter(function(l){return l.category===cat;})[0]; };
+  var rev = get("revenue"), cogs = get("cogs"), ni = get("net_income");
+  var P = sh.periods, last = P.length-1;
+  var prev = last > 0 ? last-1 : null;   // null when the workbook holds one period
+  var lines = [];
+
+  function src(li, i){ return li && li.cells[i] ? '<span class="src">'+esc(t("srcLabel"))+": "+esc(sh.name)+" › "+esc(li.cells[i])+'</span>' : ""; }
+
+  lines.push('<h2>'+esc(t("execSummary"))+'</h2>');
+  lines.push('<p>'+ (lang==="ar"
+    ? "تم فحص "+fmt(S.result.summary.checked)+" قيمة في "+esc(S.file.name)+". النتيجة: "+
+      fmt(S.result.summary.critical)+" ملاحظة حرجة و"+fmt(S.result.summary.warning)+
+      " تنبيهًا، بمؤشر جودة "+S.result.summary.score+"%."
+    : "Checked "+fmt(S.result.summary.checked)+" values across "+esc(S.file.name)+". Result: "+
+      fmt(S.result.summary.critical)+" critical finding(s) and "+fmt(S.result.summary.warning)+
+      " warning(s), giving a data quality score of "+S.result.summary.score+"%.")+'</p>');
+
+  if(rev){
+    lines.push('<h2>'+esc(t("revenueH"))+'</h2>');
+    var a = rev.values[last];
+    var b = prev===null ? null : rev.values[prev];
+    if(typeof a==="number" && typeof b==="number"){
+      var d=(a-b)/Math.abs(b)*100;
+      lines.push('<p>'+(lang==="ar"
+        ? "بلغت المبيعات "+fmt(a)+" "+cur+" في "+esc(P[last].label)+"، بتغير "+d.toFixed(1)+
+          "% مقارنة بـ "+fmt(b)+" في "+esc(P[prev].label)+". "
+        : "Revenue was "+fmt(a)+" "+cur+" in "+esc(P[last].label)+", a change of "+d.toFixed(1)+
+          "% against "+fmt(b)+" in "+esc(P[prev].label)+". ")+
+        src(rev,last)+'</p>');
+      lines.push('<div class="unknown">'+esc(t("insufficient"))+'</div>');
+    } else if(typeof a==="number"){
+      lines.push('<p>'+(lang==="ar" ? "بلغت المبيعات " : "Revenue was ")+fmt(a)+" "+cur+
+        " ("+esc(P[last].label)+"). "+src(rev,last)+'</p>');
+      if(prev===null) lines.push('<div class="unknown">'+esc(t("onePeriod"))+'</div>');
+    }
+  }
+
+  if(rev && cogs){
+    lines.push('<h2>'+esc(t("profitH"))+'</h2>');
+    var gm = function(i){
+      var r=rev.values[i], c=cogs.values[i];
+      return (typeof r==="number" && typeof c==="number" && r) ? ((r-c)/r*100) : null; };
+    var mNow = gm(last), mPrev = prev===null ? null : gm(prev);
+    if(mNow!==null && mPrev!==null){
+      lines.push('<p>'+(lang==="ar"
+        ? "هامش الربح الإجمالي "+mNow.toFixed(1)+"% في "+esc(P[last].label)+" مقابل "+mPrev.toFixed(1)+"% في "+esc(P[prev].label)+". "
+        : "Gross margin was "+mNow.toFixed(1)+"% in "+esc(P[last].label)+" against "+mPrev.toFixed(1)+"% in "+esc(P[prev].label)+". ")+
+        '<span class="src">'+esc(t("calcLabel"))+": (Revenue - COGS) / Revenue</span></p>");
+    } else if(mNow!==null){
+      lines.push('<p>'+(lang==="ar" ? "هامش الربح الإجمالي " : "Gross margin was ")+mNow.toFixed(1)+
+        "% ("+esc(P[last].label)+'). <span class="src">'+esc(t("calcLabel"))+
+        ": (Revenue - COGS) / Revenue</span></p>");
+    }
+    if(ni && typeof ni.values[last]==="number")
+      lines.push('<p>'+(lang==="ar"?"صافي الربح ":"Net income ")+fmt(ni.values[last])+" "+cur+". "+src(ni,last)+'</p>');
+  }
+
+  var big = F.filter(function(f){return f.type==="variance"||f.type==="budget";}).slice(0,5);
+  if(big.length){
+    lines.push('<h2>'+esc(t("expensesH"))+'</h2>');
+    big.forEach(function(f){ lines.push('<p>'+esc(lang==="ar"?f.ar:f.en)+' <span class="src">'+
+      esc(t("srcLabel"))+": "+esc(f.sheet)+" › "+esc(f.cells[0]||"")+'</span></p>'); });
+  }
+
+  var crits = F.filter(function(f){return f.severity==="critical";});
+  lines.push('<h2>'+esc(t("issuesH"))+'</h2>');
+  if(!crits.length) lines.push('<p>'+esc(t("allClearB"))+'</p>');
+  crits.forEach(function(f){ lines.push('<p><strong>'+esc(f.metric)+'</strong> — '+
+    esc(lang==="ar"?f.ar:f.en)+' <span class="src">'+esc(f.sheet)+" › "+esc(f.cells[0]||"")+'</span></p>'); });
+
+  return '<div class="card"><div class="card-b report">'+lines.join("")+
+    '<div class="unknown" style="margin-top:20px;background:var(--info-bg);border-color:var(--info);color:var(--info)">'+
+    esc(t("aiNote"))+'</div></div></div>';
+}
+
+function pageSettings(){
+  var c = Object.assign({}, FinSight.DEFAULTS, S.cfg);
+  function row(k,label,val,step){
+    return '<tr><td>'+esc(label)+'</td><td class="n"><input class="mono" style="width:110px;text-align:end;padding:5px 8px;border:1px solid var(--line-2);border-radius:4px;background:var(--card)" type="number" step="'+step+'" data-cfg="'+k+'" value="'+val+'"></td></tr>';
+  }
+  return '<div class="card"><div class="card-h"><h2>'+esc(t("thresholds"))+'</h2></div>'+
+    '<table><tbody>'+
+      row("revenueVariancePct", t("revThr"), c.revenueVariancePct, "0.01")+
+      row("expenseVariancePct", t("expThr"), c.expenseVariancePct, "0.01")+
+      row("balanceToleranceAbs", t("balTol"), c.balanceToleranceAbs, "1")+
+      row("anomalyZ", t("anomZ"), c.anomalyZ, "0.1")+
+      row("marginDropPts", t("marginPts"), c.marginDropPts, "0.5")+
+    '</tbody></table>'+
+    '<div class="card-b"><button class="tbtn primary" id="recheck">'+esc(t("recheck"))+'</button></div></div>';
+}
+
+/* ===================== cell inspector ===================== */
+function openCell(sheetName, addr){
+  var ws = S.wb.Sheets[sheetName]; if(!ws) return;
+  var pos = XLSX.utils.decode_cell(addr);
+  var r0=Math.max(0,pos.r-3), r1=pos.r+3, c0=Math.max(0,pos.c-2), c1=pos.c+2;
+  var head='<tr><th></th>'; for(var c=c0;c<=c1;c++) head+='<th>'+XLSX.utils.encode_col(c)+'</th>'; head+='</tr>';
+  var body="";
+  for(var r=r0;r<=r1;r++){
+    body+='<tr><td class="rowhdr">'+(r+1)+'</td>';
+    for(var c2=c0;c2<=c1;c2++){
+      var a=XLSX.utils.encode_cell({r:r,c:c2}), cell=ws[a];
+      var v = cell ? (typeof cell.v==="number"?fmt(cell.v):String(cell.v)) : "";
+      body+='<td class="'+(a===addr?"hit":"")+'">'+esc(v.length>18?v.slice(0,18)+"…":v)+'</td>';
+    }
+    body+='</tr>';
+  }
+  var cell = ws[addr]||{};
+  el("insp").innerHTML =
+    '<div class="insp-h"><h2>'+esc(t("cellInspector"))+'</h2>'+
+    '<button class="x" id="inspX" aria-label="close">&times;</button></div>'+
+    '<div style="padding:16px 18px">'+
+      '<table style="margin-bottom:14px"><tbody>'+
+        '<tr><td style="color:var(--muted)">'+esc(t("address"))+'</td><td class="mono">'+esc(sheetName)+" › "+esc(addr)+'</td></tr>'+
+        '<tr><td style="color:var(--muted)">'+esc(t("value"))+'</td><td class="mono">'+
+          esc(typeof cell.v==="number"?fmt(cell.v):String(cell.v==null?"":cell.v))+'</td></tr>'+
+        '<tr><td style="color:var(--muted)">'+esc(t("formula"))+'</td><td class="mono" style="direction:ltr">'+
+          (cell.f?"="+esc(cell.f):'<span style="color:var(--muted)">'+esc(t("noFormula"))+'</span>')+'</td></tr>'+
+      '</tbody></table>'+
+      '<div class="cellgrid"><table><thead>'+head+'</thead><tbody>'+body+'</tbody></table></div>'+
+    '</div>';
+  el("insp").classList.add("on"); el("scrim").classList.add("on");
+  el("inspX").addEventListener("click", closeCell);
+}
+function closeCell(){ el("insp").classList.remove("on"); el("scrim").classList.remove("on"); }
+el("scrim").addEventListener("click", closeCell);
+document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeCell(); });
+
+/* ===================== render + wiring ===================== */
+function render(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==="ar" ? "rtl" : "ltr";
+  document.documentElement.setAttribute("data-theme", theme);
+  el("langBtn").textContent = lang==="ar" ? "English" : "العربية";
+  el("themeBtn").textContent = theme==="dark" ? "Light" : "Dark";
+  el("demoBtn").textContent = t("loadDemo");
+  document.querySelectorAll("[data-t]").forEach(function(n){ n.textContent = t(n.getAttribute("data-t")); });
+  el("pageTitle").textContent = t(S.page);
+  renderNav();
+
+  if(MISSING){ halt(esc(MISSING[0]), esc(MISSING[1])); return; }
+
+  var v = el("view");
+  try {
+    v.innerHTML = S.page==="dash" ? pageDash()
+      : S.page==="files" ? pageFiles()
+      : S.page==="review" ? pageReview()
+      : S.page==="report" ? pageReport()
+      : pageSettings();
+  } catch (err) {
+    /* A page that throws should cost the user that page, not the session. */
+    console.error("FinSight render error on page '" + S.page + "':", err);
+    v.innerHTML = '<div class="card"><div class="card-b">'+
+      '<h2 style="color:var(--crit);margin-bottom:6px">'+esc(t("crashed"))+'</h2>'+
+      '<p class="note" style="margin-bottom:10px">'+esc(t("crashedB"))+'</p>'+
+      '<pre class="mono" style="font-size:11.5px;white-space:pre-wrap;color:var(--crit);'+
+      'background:var(--crit-bg);border:1px solid var(--crit-line);border-radius:6px;padding:10px;direction:ltr">'+
+      esc(String(err && err.stack || err))+'</pre></div></div>';
+  }
+
+  try { wireDrop(); wireFindings(); wireSettings(); }
+  catch (err) { console.error("FinSight wiring error:", err); }
+}
+
+function wireDrop(){
+  var d = el("drop"), input = el("fileInput");
+  if(!d) return;
+  d.addEventListener("click", function(){ input.click(); });
+  ["dragenter","dragover"].forEach(function(ev){
+    d.addEventListener(ev, function(e){ e.preventDefault(); d.classList.add("over"); }); });
+  ["dragleave","drop"].forEach(function(ev){
+    d.addEventListener(ev, function(e){ e.preventDefault(); d.classList.remove("over"); }); });
+  d.addEventListener("drop", function(e){ if(e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]); });
+  input.addEventListener("change", function(){ if(input.files[0]) readFile(input.files[0]); });
+}
+
+function readFile(file){
+  var fr = new FileReader();
+  fr.onerror = function(){ alert(lang==="ar" ? "تعذر قراءة الملف." : "That file could not be read."); };
+  fr.onload = function(e){
+    var wb;
+    try{
+      wb = XLSX.read(new Uint8Array(e.target.result), {type:"array", cellFormula:true, cellDates:true});
+    }catch(err){
+      alert((lang==="ar" ? "تعذر فتح هذا الملف كملف Excel:\n\n" : "Could not open this as an Excel workbook:\n\n") + err.message);
+      return;
+    }
+    /* SheetJS does not always throw on a non-spreadsheet — check the result
+       is actually a workbook before handing it to the engine. */
+    if(!wb || !wb.SheetNames || !wb.SheetNames.length){
+      alert(lang==="ar"
+        ? "هذا الملف لا يحتوي على أي أوراق عمل. تأكد أنه ملف .xlsx أو .xls صالح."
+        : "That file contains no worksheets. Check it is a valid .xlsx or .xls file.");
+      return;
+    }
+    try{
+      analyse(wb, file.name);
+      S.page = "dash"; render();
+    }catch(err){
+      console.error("FinSight analysis error:", err);
+      alert((lang==="ar" ? "تعذر تحليل هذا الملف:\n\n" : "Could not analyse this workbook:\n\n") + err.message);
+    }
+  };
+  fr.readAsArrayBuffer(file);
+}
+
+function wireFindings(){
+  document.querySelectorAll(".xref").forEach(function(b){
+    b.addEventListener("click", function(){ openCell(b.getAttribute("data-sheet"), b.getAttribute("data-cell")); });
+  });
+  document.querySelectorAll("[data-act]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var f = S.result.findings.filter(function(x){return x.id===b.getAttribute("data-id");})[0];
+      if(f){ f.status = b.getAttribute("data-act"); render(); }
+    });
+  });
+  document.querySelectorAll("[data-filter]").forEach(function(b){
+    b.addEventListener("click", function(){ S.filter = b.getAttribute("data-filter"); render(); });
+  });
+  if(el("expJson")) el("expJson").addEventListener("click", function(){
+    download("finsight-findings.json", JSON.stringify(S.result, null, 2), "application/json"); });
+  if(el("expCsv")) el("expCsv").addEventListener("click", function(){
+    var head = ["id","severity","type","metric","period","sheet","cells","stated","computed","difference","status","note"];
+    var rows = S.result.findings.map(function(f){
+      return [f.id,f.severity,f.type,f.metric,f.period,f.sheet,f.cells.join(" "),
+              f.current,f.comparison,f.variance,f.status,(lang==="ar"?f.ar:f.en)]
+        .map(function(x){ return '"'+String(x==null?"":x).replace(/"/g,'""')+'"'; }).join(",");
+    });
+    download("finsight-findings.csv", "\ufeff"+[head.join(",")].concat(rows).join("\n"), "text/csv"); });
+}
+
+function wireSettings(){
+  if(!el("recheck")) return;
+  el("recheck").addEventListener("click", function(){
+    document.querySelectorAll("[data-cfg]").forEach(function(i){ S.cfg[i.getAttribute("data-cfg")] = parseFloat(i.value); });
+    if(S.model){ S.result = FinSight.validate(S.model, S.cfg); S.page="review"; }
+    render();
+  });
+}
+
+function download(name, text, mime){
+  var b = new Blob([text], {type:mime});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(b); a.download = name; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+}
+
+el("langBtn").addEventListener("click", function(){
+  lang = lang==="ar" ? "en" : "ar"; store.set("fs_lang", lang); render(); });
+el("themeBtn").addEventListener("click", function(){
+  theme = theme==="dark" ? "light" : "dark"; store.set("fs_theme", theme); render(); });
+function b64ToBytes(b64){
+  var bin = atob(b64), out = new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+function embeddedDemo(){
+  var n = document.getElementById("demoXlsx");
+  if(!n) return null;
+  var b = n.textContent.replace(/\s+/g, "");
+  return (!b || b.indexOf("__DEMO") === 0) ? null : b;
+}
+
+el("demoBtn").addEventListener("click", function(){
+  /* The demo workbook is embedded in this file, so it works offline, from
+     disk, and inside a preview pane. Fetch is only a fallback. */
+  var b64 = embeddedDemo();
+  if(b64){
+    try{
+      analyse(XLSX.read(b64ToBytes(b64), {type:"array", cellFormula:true, cellDates:true}),
+              "finsight-demo-workbook.xlsx");
+      S.page = "dash"; render();
+    }catch(err){
+      console.error("FinSight demo error:", err);
+      alert("Could not read the embedded demo workbook:\n\n" + err.message);
+    }
+    return;
+  }
+  if(location.protocol === "file:"){
+    alert(lang==="ar"
+      ? "المتصفح يمنع قراءة الملفات تلقائيًا عند فتح الصفحة من القرص مباشرة.\n\n"+
+        "اسحب ملف finsight-demo-workbook.xlsx إلى منطقة الرفع في تبويب الملفات — سيعمل بشكل طبيعي.\n\n"+
+        "أو شغّل خادمًا محليًا:  python3 -m http.server"
+      : "Browsers block reading files automatically when a page is opened straight from disk.\n\n"+
+        "Drag finsight-demo-workbook.xlsx onto the upload area in the Files tab instead — that works normally.\n\n"+
+        "Or serve the folder:  python3 -m http.server");
+    S.page = "files"; render();
+    return;
+  }
+  fetch("finsight-demo-workbook.xlsx").then(function(r){
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    return r.arrayBuffer(); })
+  .then(function(buf){
+    analyse(XLSX.read(new Uint8Array(buf), {type:"array", cellFormula:true, cellDates:true}),
+            "finsight-demo-workbook.xlsx");
+    S.page="dash"; render(); })
+  .catch(function(e){
+    alert("Could not load the demo workbook. Keep finsight-demo-workbook.xlsx in the same folder as this page.\n\n"+e.message);
+    S.page="files"; render(); });
+});
+
+window.__FS = S;   // exposed for the test harness
+render();
+})();
+</script>
+</body>
+</html>
