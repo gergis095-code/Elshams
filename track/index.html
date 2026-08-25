@@ -401,9 +401,9 @@ function esc(s){
     return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
   });
 }
-function normalise(raw){
-  var s = String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
-  var m = s.match(/^ELS(\d{2})([A-Z0-9]{6})$/);
+  function normalise(raw){
+  var s = String(raw||"").toUpperCase().replace(/\s+/g,"");
+  var m = s.replace(/[^A-Z0-9]/g,"").match(/^ELS(\d{2})([A-Z0-9]{6})$/);
   return m ? ("ELS-"+m[1]+"-"+m[2]) : s;
 }
 
