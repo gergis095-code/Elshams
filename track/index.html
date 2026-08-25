@@ -562,7 +562,7 @@ async function lookup(){
   var code = normalise(input.value);
   input.value = code;
 
-  if(code.length < 8){ 
+  if(code.length < 3){ 
     last=null; resultBox.classList.remove("on"); resultBox.innerHTML="";
     showMsg("shortT","shortB",false); return;
   }
