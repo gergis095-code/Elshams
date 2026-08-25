@@ -597,7 +597,7 @@ async function lookup(){
 goBtn.addEventListener("click", lookup);
 input.addEventListener("keydown", function(e){ if(e.key==="Enter") lookup(); });
 input.addEventListener("input", function(){
-  this.value = this.value.toUpperCase().replace(/[^A-Z0-9\-]/g,"");
+  this.value = this.value.toUpperCase().replace(/[^A-Z0-9\-\/._]/g,"");
 });
 
 /* ---------------- boot ---------------- */
