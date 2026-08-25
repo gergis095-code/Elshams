@@ -293,7 +293,9 @@ en:{
   share:"Customer link", copy:"Copy link", copied:"Link copied",
   print:"Print QR", danger:"Delete this order", confirmDel:"Delete this order and its whole timeline? This cannot be undone.",
   created:"Order opened", stageTo:"Moved to", noteEv:"Note", statusEv:"Status set to",
-  saved:"Saved", created2:"Order created", needCustomer:"Enter a customer name.",
+    saved:"Saved", created2:"Order created", needCustomer:"Enter a customer name.",
+  code:"Tracking code", needCode:"Enter the tracking code.",
+  dupCode:"That code is already used by another order.",
   newT:"New order", create:"Create order", close:"Close", overdue:"overdue",
   noShade:"no shade set", noQr:"QR library did not load — check the connection."
 },
@@ -326,7 +328,9 @@ ar:{
   share:"رابط العميل", copy:"نسخ الرابط", copied:"تم نسخ الرابط",
   print:"طباعة الكود", danger:"حذف هذا الطلب", confirmDel:"حذف هذا الطلب وكل مساره الزمني؟ لا يمكن التراجع.",
   created:"تم فتح الطلب", stageTo:"انتقل إلى", noteEv:"ملاحظة", statusEv:"تم ضبط الحالة على",
-  saved:"تم الحفظ", created2:"تم إنشاء الطلب", needCustomer:"أدخل اسم العميل.",
+    saved:"تم الحفظ", created2:"تم إنشاء الطلب", needCustomer:"أدخل اسم العميل.",
+  code:"كود التتبع", needCode:"أدخل كود التتبع.",
+  dupCode:"هذا الكود مستخدم بالفعل في طلب آخر.",
   newT:"طلب جديد", create:"إنشاء الطلب", close:"إغلاق", overdue:"متأخر",
   noShade:"بدون لون محدد", noQr:"تعذر تحميل مكتبة الكود — تحقق من الاتصال."
 }};
@@ -718,7 +722,8 @@ el("newBtn").addEventListener("click", function(){
   '<div class="p-cust">'+esc(t("noneB"))+'</div></div>'+
   '<button class="x" id="pClose">&times;</button></div>'+
   '<div class="block" style="margin-bottom:20px">'+
-    '<div class="grid2">'+
+      '<div class="grid2">'+
+      field("nCode", t("code"), "", "text", 'maxlength="32" autocomplete="off" spellcheck="false"')+
       field("nCust", t("customer"), "")+
       field("nRef",  t("ref"), "")+
       '<div><label class="lbl" for="nRoute">'+esc(t("route"))+'</label>'+
@@ -737,13 +742,19 @@ el("newBtn").addEventListener("click", function(){
     '<div class="row" style="margin-top:16px"><button class="btn amber" id="create">'+esc(t("create"))+'</button></div>'+
   '</div>';
 
-  el("pClose").addEventListener("click", closePanel);
+    el("pClose").addEventListener("click", closePanel);
   wireHex("nHex");
+  el("nCode").addEventListener("input", function(){
+    this.value = this.value.toUpperCase().replace(/\s+/g,"");
+  });
   el("create").addEventListener("click", async function(){
+    var code = el("nCode").value.trim().toUpperCase();
     var name = el("nCust").value.trim();
+    if(!code){ toast(t("needCode")); el("nCode").focus(); return; }
     if(!name){ toast(t("needCustomer")); el("nCust").focus(); return; }
     this.disabled = true;
     var r = await sb.from("orders").insert({
+      tracking_code: code,
       customer_name:name,
       customer_ref: el("nRef").value.trim() || null,
       route: el("nRoute").value,
@@ -756,8 +767,11 @@ el("newBtn").addEventListener("click", function(){
       promised_date: el("nPd").value || null,
       created_by: ME.id
     }).select().single();
-    this.disabled = false;
-    if(r.error){ toast(r.error.message); return; }
+        this.disabled = false;
+    if(r.error){
+      toast(r.error.code === "23505" ? t("dupCode") : r.error.message);
+      return;
+    }
     ORDERS.unshift(r.data); draw();
     toast(t("created2") + " · " + r.data.tracking_code);
     openOrder(r.data.id);
