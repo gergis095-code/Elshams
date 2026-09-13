@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /track/admin.html
+
+Sitemap: https://elshams.org/sitemap.xml
