@@ -2,4 +2,60 @@ User-agent: *
 Allow: /
 Disallow: /track/admin.html
 
+# AI crawlers and answer engines - explicitly welcome.
+# Each group repeats the admin Disallow, because a named group
+# overrides the wildcard group rather than inheriting from it.
+
+User-agent: GPTBot
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: Claude-User
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: Bingbot
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /track/admin.html
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /track/admin.html
+
 Sitemap: https://elshams.org/sitemap.xml
