@@ -51,6 +51,9 @@ header{
 .nav-links a{font-size:14.5px;font-weight:600;color:#fff;transition:color .2s var(--ease);}
 .nav-links a:hover{color:var(--sun-light);}
 .nav-links a[aria-current="page"]{color:var(--sun);}
+.nav-links a.lang-switch{border:1.5px solid rgba(255,255,255,0.55);border-radius:999px;padding:5px 13px;}
+.nav-links a.lang-switch:hover{border-color:var(--sun-light);}
+.nav-links a.lang-switch[lang="ar"]{font-family:'Noto Sans Arabic',sans-serif;}
 
 /* Buttons */
 .btn{
@@ -165,6 +168,16 @@ footer{background:var(--ink);color:#fff;padding:44px 0 30px;}
   font-size:13.5px;color:#9FB2D4;
 }
 
+/* Photos on service pages */
+.photo-row{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.photo{margin:0;background:#fff;border:1px solid var(--line-on-light);border-radius:16px;overflow:hidden;}
+.photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;}
+.photo figcaption{padding:12px 16px;font-size:14px;color:#4A5366;}
+
+/* Links inside running text */
+.prose a,.sec-head p a,.faq details p a{color:var(--madder);font-weight:600;border-bottom:1px solid rgba(178,58,46,0.35);}
+.prose a:hover,.sec-head p a:hover,.faq details p a:hover{color:var(--ink);border-color:var(--ink);}
+
 /* Arabic / RTL */
 html[dir="rtl"] .eyebrow{letter-spacing:0;text-transform:none;font-family:'Noto Sans Arabic',sans-serif;}
 html[dir="rtl"] body{font-family:'Noto Sans Arabic','Inter',system-ui,sans-serif;}
@@ -175,9 +188,11 @@ html[dir="rtl"] .card ul li::before{left:auto;right:0;}
 html[dir="rtl"] .spec-table th,html[dir="rtl"] .spec-table td{text-align:right;}
 html[dir="rtl"] .faq summary::after{float:left;}
 
-@media (max-width:720px){
+@media (max-width:1040px){
   .nav-row{height:auto;padding-block:14px;flex-direction:column;align-items:flex-start;}
   .nav-links{gap:16px;}
+}
+@media (max-width:720px){
   section{padding:48px 0;}
   .hero{padding:52px 0 46px;}
 }
