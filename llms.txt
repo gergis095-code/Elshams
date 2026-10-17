@@ -50,7 +50,12 @@
 - [Fabric finishing](https://elshams.org/fabric-finishing/): mechanical and
   chemical finishing — stenter setting, compacting and shrinkage control, checked
   against the customer's spec.
-- Knitting: in-house knitted fabric production at 20 tons per day.
+- [Commission dyeing](https://elshams.org/commission-dyeing-egypt/): the customer
+  sends their own greige cloth; El Shams dyes and finishes it to their shade and
+  spec. MOQ 250 kg per colour, lab dip approved before bulk.
+- [Knitted fabric](https://elshams.org/knitted-fabric-egypt/): in-house knitting
+  at 20 tons per day (single jersey, rib, interlock, fleece), then dyed, printed
+  and finished in the same mill.
 - [The factory](https://elshams.org/textile-manufacturer-egypt/): capabilities,
   certifications and how the mill operates.
 
@@ -63,12 +68,15 @@ to visit and to run the audits a European or Gulf customer would expect.
 
 ## Arabic pages
 
+- [الصفحة الرئيسية](https://elshams.org/ar/) — Arabic homepage
 - [صباغة أقمشة](https://elshams.org/ar/sabgha-aqmesha/) — fabric dyeing (Arabic)
 - [طباعة أقمشة](https://elshams.org/ar/tebaa-aqmesha/) — textile printing (Arabic)
 - [تجهيز أقمشة](https://elshams.org/ar/tajheez-aqmesha/) — fabric finishing (Arabic)
+- [أقمشة تريكو](https://elshams.org/ar/triko-aqmesha/) — knitted fabric (Arabic)
+- [عن المصنع](https://elshams.org/ar/masnaa-mansoujat/) — the factory (Arabic)
 
 ## Getting a quote
 
 Send fibre, weight, quantity and target shade to the commercial office. El Shams
 replies with a lead time and a price, usually within two working days.
-Contact form: https://elshams.org/#contact
+Contact form: https://elshams.org/#contact (Arabic: https://elshams.org/ar/#contact)

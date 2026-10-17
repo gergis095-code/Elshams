@@ -3,62 +3,116 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://elshams.org/</loc>
-    <lastmod>2026-09-22</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/"/>
+  </url>
+  <url>
+    <loc>https://elshams.org/ar/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/"/>
   </url>
   <url>
     <loc>https://elshams.org/fabric-dyeing-egypt/</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/fabric-dyeing-egypt/"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/sabgha-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/fabric-dyeing-egypt/"/>
+  </url>
+  <url>
+    <loc>https://elshams.org/commission-dyeing-egypt/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://elshams.org/textile-printing-egypt/</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/textile-printing-egypt/"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/tebaa-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/textile-printing-egypt/"/>
   </url>
   <url>
     <loc>https://elshams.org/fabric-finishing/</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/fabric-finishing/"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/tajheez-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/fabric-finishing/"/>
+  </url>
+  <url>
+    <loc>https://elshams.org/knitted-fabric-egypt/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/knitted-fabric-egypt/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/triko-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/knitted-fabric-egypt/"/>
   </url>
   <url>
     <loc>https://elshams.org/textile-manufacturer-egypt/</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/textile-manufacturer-egypt/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/masnaa-mansoujat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/textile-manufacturer-egypt/"/>
   </url>
   <url>
     <loc>https://elshams.org/ar/sabgha-aqmesha/</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/sabgha-aqmesha/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/fabric-dyeing-egypt/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/sabgha-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/fabric-dyeing-egypt/"/>
   </url>
   <url>
     <loc>https://elshams.org/ar/tebaa-aqmesha/</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/tebaa-aqmesha/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/textile-printing-egypt/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/tebaa-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/textile-printing-egypt/"/>
   </url>
   <url>
     <loc>https://elshams.org/ar/tajheez-aqmesha/</loc>
-    <lastmod>2026-10-13</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/tajheez-aqmesha/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/fabric-finishing/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/tajheez-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/fabric-finishing/"/>
+  </url>
+  <url>
+    <loc>https://elshams.org/ar/triko-aqmesha/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/knitted-fabric-egypt/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/triko-aqmesha/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/knitted-fabric-egypt/"/>
+  </url>
+  <url>
+    <loc>https://elshams.org/ar/masnaa-mansoujat/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://elshams.org/textile-manufacturer-egypt/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://elshams.org/ar/masnaa-mansoujat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://elshams.org/textile-manufacturer-egypt/"/>
   </url>
 </urlset>
